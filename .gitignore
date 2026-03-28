@@ -16,6 +16,10 @@ Packages/*
 !Packages/PICO Unity Integration SDK-3.4.0-20260226/
 # 重新包含该文件夹下的所有文件和子文件夹
 !Packages/PICO Unity Integration SDK-3.4.0-20260226/**
+
+!Packages/Unity Live Preview Plugin-1.0.5-20250211/
+!Packages/Unity Live Preview Plugin-1.0.5-20250211/**
+
 *.log
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
@@ -65,6 +69,7 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
+*.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt
