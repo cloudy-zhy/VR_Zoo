@@ -580,11 +580,33 @@
                 },
                 {
                     "name": "",
+                    "id": "f2e12939-a468-4e46-ad49-6d34e7bb98de",
+                    "path": "<PicoAimHand>{LeftHand}/devicePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "2623b909-75bd-40da-97bd-ae1ecfb0a89b",
                     "path": "<MetaAimHand>{LeftHand}/deviceRotation",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
+                    "action": "Aim Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c166e2ff-dfb2-4779-84e6-71f1354b3693",
+                    "path": "<PicoAimHand>{LeftHand}/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Aim Rotation",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -651,6 +673,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
+                    "action": "Aim Flags",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "27a40c1b-e459-40f3-bef7-7b459b21fa00",
+                    "path": "<PicoAimHand>{LeftHand}/aimFlags",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Aim Flags",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -808,6 +841,17 @@
                 },
                 {
                     "name": "",
+                    "id": "98dc69ac-7d1b-4532-ae38-e1c612c4f18f",
+                    "path": "<PicoAimHand>{LeftHand}/indexPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "49a23327-a116-48c0-8af9-0d2c50c15a88",
                     "path": "<XRController>{LeftHand}/{Grip}",
                     "interactions": "",
@@ -824,6 +868,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
+                    "action": "Select Value",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cf67879e-bb3b-4d98-8e3a-575431a29a24",
+                    "path": "<PicoAimHand>{LeftHand}/pinchStrengthIndex",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Select Value",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -874,6 +929,17 @@
                 },
                 {
                     "name": "",
+                    "id": "a157e8cb-138c-4054-aa00-1d373c0f75a0",
+                    "path": "<PicoAimHand>{LeftHand}/indexPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UI Press",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "71d94579-1bf4-4034-ab9e-e7166842128f",
                     "path": "<XRController>{LeftHand}/{Trigger}",
                     "interactions": "",
@@ -890,6 +956,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
+                    "action": "UI Press Value",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2cca9830-5846-435c-9283-7f016ea3a737",
+                    "path": "<PicoAimHand>{LeftHand}/pinchStrengthIndex",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "UI Press Value",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1376,11 +1453,33 @@
                 },
                 {
                     "name": "",
+                    "id": "cb7e4f22-2994-43e7-a20f-d4746bbf545d",
+                    "path": "<PicoAimHand>{RightHand}/devicePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "2bb1158a-2d78-446b-9351-6f9b3f1364cb",
                     "path": "<MetaAimHand>{RightHand}/deviceRotation",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
+                    "action": "Aim Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "29a9b406-d85f-4b6d-a72b-2a07a7875f33",
+                    "path": "<PicoAimHand>{RightHand}/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Aim Rotation",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1447,6 +1546,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
+                    "action": "Aim Flags",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "00bfbcb3-7d5a-4f9a-b48d-ea3868250c61",
+                    "path": "<PicoAimHand>{RightHand}/aimFlags",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Aim Flags",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1604,6 +1714,17 @@
                 },
                 {
                     "name": "",
+                    "id": "4edd24ea-b23d-4cd6-9eff-d6f2b6b5a408",
+                    "path": "<PicoAimHand>{RightHand}/indexPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "dd433817-216c-46b9-8dd3-f3a4ea1767b9",
                     "path": "<XRController>{RightHand}/{Grip}",
                     "interactions": "",
@@ -1620,6 +1741,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
+                    "action": "Select Value",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97d4533d-0967-4507-86e8-930367dbd8b5",
+                    "path": "<PicoAimHand>{RightHand}/pinchStrengthIndex",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Select Value",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1670,6 +1802,17 @@
                 },
                 {
                     "name": "",
+                    "id": "1690f384-c035-484f-9596-42e455a0da7d",
+                    "path": "<PicoAimHand>{RightHand}/indexPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UI Press",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5b4ef08d-9ddd-4f0a-8539-d1114d14d143",
                     "path": "<XRController>{RightHand}/{Trigger}",
                     "interactions": "",
@@ -1686,6 +1829,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
+                    "action": "UI Press Value",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c72d2c1-f0c7-4147-bb3b-700b59f590d6",
+                    "path": "<PicoAimHand>{RightHand}/pinchStrengthIndex",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "UI Press Value",
                     "isComposite": false,
                     "isPartOfComposite": false
