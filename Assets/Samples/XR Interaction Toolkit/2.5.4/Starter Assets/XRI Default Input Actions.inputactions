@@ -580,7 +580,7 @@
                 },
                 {
                     "name": "",
-                    "id": "f2e12939-a468-4e46-ad49-6d34e7bb98de",
+                    "id": "2928605b-131a-4cb6-af32-daa473fe181a",
                     "path": "<PicoAimHand>{LeftHand}/devicePosition",
                     "interactions": "",
                     "processors": "",
@@ -602,7 +602,7 @@
                 },
                 {
                     "name": "",
-                    "id": "c166e2ff-dfb2-4779-84e6-71f1354b3693",
+                    "id": "9e220c63-7ba4-4fbc-82b4-4ad70c866d02",
                     "path": "<PicoAimHand>{LeftHand}/deviceRotation",
                     "interactions": "",
                     "processors": "",
@@ -679,7 +679,7 @@
                 },
                 {
                     "name": "",
-                    "id": "27a40c1b-e459-40f3-bef7-7b459b21fa00",
+                    "id": "bc0be7bb-9ab7-4f07-a39b-8d8dee06d1d0",
                     "path": "<PicoAimHand>{LeftHand}/aimFlags",
                     "interactions": "",
                     "processors": "",
@@ -841,7 +841,7 @@
                 },
                 {
                     "name": "",
-                    "id": "98dc69ac-7d1b-4532-ae38-e1c612c4f18f",
+                    "id": "7acaf8b3-2dc1-46ba-9249-0888bc469594",
                     "path": "<PicoAimHand>{LeftHand}/indexPressed",
                     "interactions": "",
                     "processors": "",
@@ -874,7 +874,7 @@
                 },
                 {
                     "name": "",
-                    "id": "cf67879e-bb3b-4d98-8e3a-575431a29a24",
+                    "id": "2aab3830-b46a-430a-8d72-3d6e3f27a734",
                     "path": "<PicoAimHand>{LeftHand}/pinchStrengthIndex",
                     "interactions": "",
                     "processors": "",
@@ -929,7 +929,7 @@
                 },
                 {
                     "name": "",
-                    "id": "a157e8cb-138c-4054-aa00-1d373c0f75a0",
+                    "id": "3fa76a36-c10c-40be-a1f0-a7974ed69274",
                     "path": "<PicoAimHand>{LeftHand}/indexPressed",
                     "interactions": "",
                     "processors": "",
@@ -962,7 +962,7 @@
                 },
                 {
                     "name": "",
-                    "id": "2cca9830-5846-435c-9283-7f016ea3a737",
+                    "id": "a7cc3e4d-80bb-4f5d-8e51-8bf6abbc48ff",
                     "path": "<PicoAimHand>{LeftHand}/pinchStrengthIndex",
                     "interactions": "",
                     "processors": "",
@@ -1453,7 +1453,7 @@
                 },
                 {
                     "name": "",
-                    "id": "cb7e4f22-2994-43e7-a20f-d4746bbf545d",
+                    "id": "9b58f048-12f0-4472-a9b8-bbba7e7860fd",
                     "path": "<PicoAimHand>{RightHand}/devicePosition",
                     "interactions": "",
                     "processors": "",
@@ -1475,7 +1475,7 @@
                 },
                 {
                     "name": "",
-                    "id": "29a9b406-d85f-4b6d-a72b-2a07a7875f33",
+                    "id": "1f63d89c-4aeb-4c17-97a3-a2ddebefb939",
                     "path": "<PicoAimHand>{RightHand}/deviceRotation",
                     "interactions": "",
                     "processors": "",
@@ -1552,7 +1552,7 @@
                 },
                 {
                     "name": "",
-                    "id": "00bfbcb3-7d5a-4f9a-b48d-ea3868250c61",
+                    "id": "3b947115-7191-41dd-8df3-12aa166faec7",
                     "path": "<PicoAimHand>{RightHand}/aimFlags",
                     "interactions": "",
                     "processors": "",
@@ -1714,7 +1714,7 @@
                 },
                 {
                     "name": "",
-                    "id": "4edd24ea-b23d-4cd6-9eff-d6f2b6b5a408",
+                    "id": "183cdc58-0dcb-47e3-b67c-4b046c71f150",
                     "path": "<PicoAimHand>{RightHand}/indexPressed",
                     "interactions": "",
                     "processors": "",
@@ -1747,7 +1747,7 @@
                 },
                 {
                     "name": "",
-                    "id": "97d4533d-0967-4507-86e8-930367dbd8b5",
+                    "id": "1515213d-85f1-4293-9239-61cc6b9df62f",
                     "path": "<PicoAimHand>{RightHand}/pinchStrengthIndex",
                     "interactions": "",
                     "processors": "",
@@ -1802,7 +1802,7 @@
                 },
                 {
                     "name": "",
-                    "id": "1690f384-c035-484f-9596-42e455a0da7d",
+                    "id": "330a1a35-599a-46fb-a629-b61eea4c5165",
                     "path": "<PicoAimHand>{RightHand}/indexPressed",
                     "interactions": "",
                     "processors": "",
@@ -1835,7 +1835,7 @@
                 },
                 {
                     "name": "",
-                    "id": "2c72d2c1-f0c7-4147-bb3b-700b59f590d6",
+                    "id": "58a60974-c793-4c04-8f5f-45a52f4215a5",
                     "path": "<PicoAimHand>{RightHand}/pinchStrengthIndex",
                     "interactions": "",
                     "processors": "",
