@@ -7,7 +7,7 @@ using UnityEngine;
 /// 使用方法：挂载到场景中的游戏对象，在Inspector中配置音效
 /// </summary>
 [RequireComponent(typeof(AudioSource))]
-public class AudioManager : MonoBehaviour
+public class GameAudioManager : MonoBehaviour
 {
     [Header("音频源配置")]
     [SerializeField] private AudioSource audioSource;

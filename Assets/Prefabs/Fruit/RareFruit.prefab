@@ -88,6 +88,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RareFruit
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7843d24a904945446a22489b1f40b41d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Fruit
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -176,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba3a00ff9724e09bda9b81df5f0acba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slingshotFruitType: 0
+  slingshotFruitType: 1
 --- !u!82 &2416360980790258681
 AudioSource:
   m_ObjectHideFlags: 0

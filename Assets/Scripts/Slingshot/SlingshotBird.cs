@@ -3,6 +3,7 @@ using Core.Event;
 // using DG.Tweening;
 using UnityEngine;
 using Manager;
+using System.Collections;
 
 namespace Slingshot
 {
@@ -110,8 +111,22 @@ namespace Slingshot
             ui.ShowScore(_totalScore, isGolden);
             ui.ShowDelta(delta, isGolden/*, isCombo*/);
 
+            // 判断是否达到目标分数
+            FruitManager fruitManager = FruitManager.Instance;
+            if (fruitManager.targetScore <= _totalScore)
+            {
+                StartCoroutine(SwitchToNextLevel(isGolden,fruitManager));
+            }
             // if (isCombo)
             //     ShowComboEffectAsync().Forget();
+        }
+
+        IEnumerator SwitchToNextLevel(bool isGolden, FruitManager fruitManager)
+        {
+            yield return new WaitForSeconds(3f);
+            _totalScore = 0;
+            ui.ShowScore(_totalScore, isGolden);
+            fruitManager.NextLevel();
         }
 
         // ─── UniTask：连击重置计时 ───────────────────────────────────────────

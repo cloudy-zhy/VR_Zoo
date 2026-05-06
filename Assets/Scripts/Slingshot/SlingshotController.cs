@@ -112,7 +112,7 @@ namespace Slingshot
             _trajectoryPredictor.ShowPreview();
             _ropeRenderer.SetProjectile(dodoBird.transform);
             _ropeRenderer.BeginPull();
-            GetComponent<AudioManager>().PlaySound("Pull");
+            GetComponent<GameAudioManager>().PlaySound("Pull");
         }
 
         private void OnRelease(DodoBird dodoBird)
@@ -124,7 +124,7 @@ namespace Slingshot
             _trajectoryPredictor.HidePreview();
             _ropeRenderer.ResetInstant();
             CallNextBird();
-            GetComponent<AudioManager>().PlaySound("Shoot");
+            GetComponent<GameAudioManager>().PlaySound("Shoot");
         }
 
         /// <summary>

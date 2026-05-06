@@ -31,7 +31,10 @@ namespace Core.Utils
             _isInside = inside;
 
             if (_isInside)
+            {
+                FruitManager.Instance.LoadLevel(FruitManager.Instance.currentLevelIndex);
                 OnPlayerEnterArea?.Invoke();
+            }
             else
                 OnPlayerExitArea?.Invoke();
         }

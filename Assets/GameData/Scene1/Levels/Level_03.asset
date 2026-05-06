@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4ec226e08b2fdb41bbb552bb361da25, type: 3}
+  m_Name: Level_03
+  m_EditorClassIdentifier: 
+  levelName: thirdlevel
+  targetScore: 110
+  fruits:
+  - position: {x: -17.396, y: 7.36, z: 2.77}
+    rotationEuler: {x: -90, y: 0, z: 0}
+    prefabIndex: 0
+  - position: {x: -17.69, y: 7.89, z: 2.18}
+    rotationEuler: {x: -90, y: 0, z: 0}
+    prefabIndex: 0
+  - position: {x: -17.96, y: 8.7, z: 1.71}
+    rotationEuler: {x: -90, y: 0, z: 0}
+    prefabIndex: 0
+  - position: {x: -18.28, y: 9.41, z: 1.18}
+    rotationEuler: {x: -90, y: 0, z: 0}
+    prefabIndex: 0
+  - position: {x: -16.99, y: 6.21, z: 3.3}
+    rotationEuler: {x: -90, y: 0, z: 0}
+    prefabIndex: 1
+  - position: {x: -16.95, y: 7.78, z: 3.73}
+    rotationEuler: {x: -90, y: 0, z: 0}
+    prefabIndex: 1
+  - position: {x: -17.25, y: 6.87, z: 5.87}
+    rotationEuler: {x: -90, y: 0, z: 0}
+    prefabIndex: 1
+  - position: {x: -16.88, y: 8.11, z: 5.09}
+    rotationEuler: {x: -90, y: 0, z: 0}
+    prefabIndex: 1
+  - position: {x: -16.44, y: 6.24, z: 4.59}
+    rotationEuler: {x: -90, y: 0, z: 0}
+    prefabIndex: 2
+  - position: {x: -17.73, y: 5.44, z: 6.63}
+    rotationEuler: {x: -90, y: 0, z: 0}
+    prefabIndex: 2
