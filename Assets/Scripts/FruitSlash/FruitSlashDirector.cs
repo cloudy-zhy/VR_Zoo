@@ -82,14 +82,8 @@ namespace FruitSlash
 
         private void OnEnable()
         {
-            GameManager.Event.Register(
-                FruitSlashEvents.InternalFruitCut,
-                new Event<FruitSlashFruit, FruitSlashBlade, int>(OnFruitCut)
-            );
-            GameManager.Event.Register(
-                FruitSlashEvents.InternalFruitMissed,
-                new Event<FruitSlashFruit>(OnFruitMissed)
-            );
+            GameManager.Event.Register<FruitSlashFruit, FruitSlashBlade, int>(FruitSlashEvents.InternalFruitCut, OnFruitCut);
+            GameManager.Event.Register<FruitSlashFruit>(FruitSlashEvents.InternalFruitMissed, OnFruitMissed);
         }
 
         private void OnDisable()
@@ -127,7 +121,7 @@ namespace FruitSlash
 
             if (scoreController != null)
                 scoreController.ResetScore();
-            GameManager.Event.Broadcast(FruitSlashEvents.Started, new EventParameter<FruitSlashDirector>(this));
+            GameManager.Event.Broadcast(FruitSlashEvents.Started, this);
             if (debugLog)
                 Debug.Log("[FruitSlashDirector] Started");
             BroadcastStageChanged(CurrentStage);
@@ -200,14 +194,14 @@ namespace FruitSlash
                     Debug.Log($"[FruitSlashDirector] Rainbow completed, totalScore={(scoreController != null ? scoreController.TotalScore : 0)}");
                 _completed = true;
                 StopGame();
-                GameManager.Event.Broadcast(FruitSlashEvents.Completed, new EventParameter<int>(scoreController != null ? scoreController.TotalScore : 0));
+                GameManager.Event.Broadcast(FruitSlashEvents.Completed, scoreController != null ? scoreController.TotalScore : 0);
                 return;
             }
 
             CutFruitCount += 1;
             if (scoreController != null)
                 scoreController.AddFruitScore(fruit, sameSwingCutCount);
-            GameManager.Event.Broadcast(FruitSlashEvents.FruitCut, new EventParameter<FruitSlashFruit>(fruit));
+            GameManager.Event.Broadcast(FruitSlashEvents.FruitCut, fruit);
             if (debugLog)
                 Debug.Log($"[FruitSlashDirector] Fruit cut: type={fruit.FruitType}, count={CutFruitCount}, sameSwing={sameSwingCutCount}, stage={CurrentStage}");
 
@@ -517,7 +511,7 @@ namespace FruitSlash
         {
             if (debugLog)
                 Debug.Log($"[FruitSlashDirector] Stage changed: {stage}");
-            GameManager.Event.Broadcast(FruitSlashEvents.StageChanged, new EventParameter<FruitSlashStageType>(stage));
+            GameManager.Event.Broadcast(FruitSlashEvents.StageChanged, stage);
         }
 
         private void RequestSlowDown()

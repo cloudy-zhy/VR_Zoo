@@ -114,7 +114,7 @@ namespace Entity.Pterosaur
 
             _caught = true;
             _it.enabled = false;
-            GameManager.Event.Broadcast("Gift.Caught", new EventParameter<PterosaurGiftType>(_type));
+            GameManager.Event.Broadcast("Gift.Caught", _type);
             PoolManager.I.Return(this);
             groundMark.SetActive(false);
         }
@@ -129,7 +129,7 @@ namespace Entity.Pterosaur
 
             _missed = true;
             _it.enabled = false;
-            GameManager.Event.Broadcast("Gift.Missed", new EventParameter<PterosaurGiftType>(_type));
+            GameManager.Event.Broadcast("Gift.Missed", _type);
             BecomeGroundGift();
             groundMark.SetActive(false);
         }

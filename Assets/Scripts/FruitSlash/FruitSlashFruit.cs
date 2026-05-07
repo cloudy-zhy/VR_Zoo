@@ -158,10 +158,7 @@ namespace FruitSlash
             if (cutAudio != null)
                 AudioSource.PlayClipAtPoint(cutAudio, transform.position);
 
-            GameManager.Event.Broadcast(
-                FruitSlashEvents.InternalFruitCut,
-                new EventParameter<FruitSlashFruit, FruitSlashBlade, int>(this, blade, sameSwingCutCount)
-            );
+            GameManager.Event.Broadcast(FruitSlashEvents.InternalFruitCut,this, blade, sameSwingCutCount);
             ReturnToPool();
         }
 
@@ -182,7 +179,7 @@ namespace FruitSlash
                 return;
 
             _missed = true;
-            GameManager.Event.Broadcast(FruitSlashEvents.InternalFruitMissed, new EventParameter<FruitSlashFruit>(this));
+            GameManager.Event.Broadcast(FruitSlashEvents.InternalFruitMissed, this);
             ReturnToPool();
         }
 

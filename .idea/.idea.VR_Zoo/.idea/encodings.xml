@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Controller/DialogueController.cs" charset="GB2312" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Manager/AudioManager.cs" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Manager/GameAudioManager.cs" charset="GB2312" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Manager/UIManager.cs" charset="GB2312" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Model/FaceExpressionController.cs" charset="GB2312" />
   </component>

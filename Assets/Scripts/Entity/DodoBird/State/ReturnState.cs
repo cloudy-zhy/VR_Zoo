@@ -35,7 +35,7 @@ namespace Entity.DodoBird.State
         {
             base.OnExit();
             owner.NavAgent.enabled = false;
-            GameManager.Event.Broadcast("DodoBird.OnEnqueue", new EventParameter<DodoBird>(owner));
+            GameManager.Event.Broadcast("DodoBird.OnEnqueue", owner);
         }
 
         private async void ReturnLogic()

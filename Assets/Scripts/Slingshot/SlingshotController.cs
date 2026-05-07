@@ -87,9 +87,9 @@ namespace Slingshot
         private void OnEnable()
         {
             // 注册事件
-            GameManager.Event.Register("DodoBird.OnPulling", new Event<DodoBird>(OnPulling));
-            GameManager.Event.Register("DodoBird.OnRelease", new Event<DodoBird>(OnRelease));
-            GameManager.Event.Register("DodoBird.OnEnqueue", new Event<DodoBird>(OnEnqueue));
+            GameManager.Event.Register<DodoBird>("DodoBird.OnPulling", OnPulling);
+            GameManager.Event.Register<DodoBird>("DodoBird.OnRelease", OnRelease);
+            GameManager.Event.Register<DodoBird>("DodoBird.OnEnqueue", OnEnqueue);
         }
 
         private void OnDisable()

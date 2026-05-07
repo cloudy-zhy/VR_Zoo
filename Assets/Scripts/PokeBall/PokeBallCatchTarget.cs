@@ -85,7 +85,7 @@ namespace PokeBall
             if (shrinkDuration <= 0f)
             {
                 root.localScale = finalScale;
-                GameManager.Event.Broadcast("PokeBall.Caught", new EventParameter<PokeBallCatchTarget>(this));
+                GameManager.Event.Broadcast("PokeBall.Caught", this);
                 DeactivateRootIfNeeded(root);
                 return;
             }
@@ -101,7 +101,7 @@ namespace PokeBall
                     .SetEase(Ease.InBack))
                 .OnComplete(() =>
                 {
-                    GameManager.Event.Broadcast("PokeBall.Caught", new EventParameter<PokeBallCatchTarget>(this));
+                    GameManager.Event.Broadcast("PokeBall.Caught", this);
                     DeactivateRootIfNeeded(root);
                 })
                 .SetLink(root.gameObject, LinkBehaviour.KillOnDestroy);

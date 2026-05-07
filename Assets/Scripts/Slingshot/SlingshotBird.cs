@@ -53,7 +53,7 @@ namespace Slingshot
 
         private void OnEnable()
         {
-            GameManager.Event.Register("DodoBird.HitFruit", new Event<SlingshotFruitType>(OnFruitHit));
+            GameManager.Event.Register<SlingshotFruitType>("DodoBird.HitFruit", OnFruitHit);
 
             _totalScore = 0;
             // _comboCount = 0;

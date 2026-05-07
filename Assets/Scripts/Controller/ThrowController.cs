@@ -83,9 +83,9 @@ namespace Controller
 
         private void Start()
         {
-            GameManager.Event.Register("Pterosaur.Throw", new Event<Vector3>(OnPterosaurThrow));
-            GameManager.Event.Register("Gift.Caught", new Event<PterosaurGiftType>(OnGiftCaught));
-            GameManager.Event.Register("Gift.Missed", new Event<PterosaurGiftType>(OnGiftMissed));
+            GameManager.Event.Register<Vector3>("Pterosaur.Throw", OnPterosaurThrow);
+            GameManager.Event.Register<PterosaurGiftType>("Gift.Caught", OnGiftCaught);
+            GameManager.Event.Register<PterosaurGiftType>("Gift.Missed", OnGiftMissed);
             
             _pterosaurs = pterosaurParent.GetComponentsInChildren<Pterosaur>(true);
         }

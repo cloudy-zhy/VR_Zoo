@@ -4,66 +4,94 @@ namespace Core.Event
 {
     public interface IEvent
     {
-        public void Invoke(IEventParameter parameter);
+        
     }
-
+    // 无参
     public class Event : IEvent
     {
-        private Action noneParamCallBack;
-        public Event(Action noneParamCallBack)
+        private Action _actions;
+        public Event(Action action)
         {
-            this.noneParamCallBack = noneParamCallBack;
+            _actions += action;
         }
-        public void Invoke(IEventParameter parameter)
+        public void Subscribe(Action action)
         {
-            noneParamCallBack?.Invoke();
+            _actions += action;
+        }
+        public void Unsubscribe(Action action)
+        {
+            _actions -= action;
+        }
+
+        public void Invoke()
+        {
+            _actions?.Invoke();
         }
     }
-
+    // 单参
     public class Event<T1> : IEvent
     {
-        private Action<T1> oneParamCallBack;
-        public Event(Action<T1> oneParamCallBack)
+        private Action<T1> _actions;
+        public Event(Action<T1> action)
         {
-            this.oneParamCallBack = oneParamCallBack;
+            _actions += action;
+        }
+        public void Subscribe(Action<T1> action)
+        {
+            _actions += action;
+        }
+        public void Unsubscribe(Action<T1> action)
+        {
+            _actions -= action;
         }
 
-        public void Invoke(IEventParameter parameter)
+        public void Invoke(T1 arg1)
         {
-            if (parameter == null) return;
-            EventParameter<T1> param = parameter as EventParameter<T1>;
-            oneParamCallBack?.Invoke(param.param1);
+            _actions?.Invoke(arg1);
         }
     }
+    // 双参
     public class Event<T1, T2> : IEvent
     {
-        private Action<T1, T2> twoParamCallBack;
-        public Event(Action<T1, T2> twoParamCallBack)
+        private Action<T1, T2> _actions;
+        public Event(Action<T1, T2> action)
         {
-            this.twoParamCallBack = twoParamCallBack;
+            _actions += action;
+        }
+        public void Subscribe(Action<T1, T2> action)
+        {
+            _actions += action;
+        }
+        public void Unsubscribe(Action<T1, T2> action)
+        {
+            _actions -= action;
         }
 
-        public void Invoke(IEventParameter parameter)
+        public void Invoke(T1 arg1, T2 arg2)
         {
-            if (parameter == null) return;
-            EventParameter<T1, T2> param = parameter as EventParameter<T1, T2>;
-            twoParamCallBack?.Invoke(param.param1, param.param2);
+            _actions?.Invoke(arg1, arg2);
         }
     }
-
+    // 三参
     public class Event<T1, T2, T3> : IEvent
     {
-        private Action<T1, T2, T3> threeParamCallBack;
-        public Event(Action<T1, T2, T3> threeParamCallBack)
+        private Action<T1, T2, T3> _actions;
+        public Event(Action<T1, T2, T3> action)
         {
-            this.threeParamCallBack = threeParamCallBack;
+            _actions += action;
+        }
+        public void Subscribe(Action<T1, T2, T3> action)
+        {
+            _actions += action;
+        }
+        public void Unsubscribe(Action<T1, T2, T3> action)
+        {
+            _actions -= action;
         }
 
-        public void Invoke(IEventParameter parameter)
+        public void Invoke(T1 arg1, T2 arg2, T3 arg3)
         {
-            if (parameter == null) return;
-            EventParameter<T1, T2, T3> param = parameter as EventParameter<T1, T2, T3>;
-            threeParamCallBack?.Invoke(param.param1, param.param2, param.param3);
+            _actions?.Invoke(arg1, arg2, arg3);
         }
     }
 }
