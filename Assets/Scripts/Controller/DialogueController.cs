@@ -302,4 +302,9 @@ public class DialogueController : MonoBehaviour
         dialogueSequence.Clear();
         Debug.Log("已清除所有对话");
     }
+
+    public void SwitchToNextScene()
+    {
+        SceneManager.LoadScene(targetSceneName);
+    }
 }

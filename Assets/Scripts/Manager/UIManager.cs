@@ -60,6 +60,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 72;
         // µ•¿˝…Ë÷√
         if (Instance == null)
         {

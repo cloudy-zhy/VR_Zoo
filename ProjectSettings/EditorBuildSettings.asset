@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scene1.unity
     guid: 406961c15d1c14f4a8ce79fb83633d7c
+  - enabled: 0
+    path: Assets/Scenes/YunTest.unity
+    guid: 811ae3d8ca2edf84b9e964841139e765
   m_configObjects:
     Unity.XR.PICO.LivePreview.Settings: {fileID: 11400000, guid: f7f781bc5322c5748bf7c83a664d4bfd,
       type: 2}
