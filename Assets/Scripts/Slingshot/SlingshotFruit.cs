@@ -33,6 +33,7 @@ namespace Slingshot
                 _rb.useGravity = true;
                 // 广播消息被撞到了，只有在树上的有资格被撞
                 GameManager.Event.Broadcast("DodoBird.HitFruit", slingshotFruitType);
+                GameManager.Event.Broadcast("DodoBird.FruitHit", "DodoBird.FruitHit");
                 GetComponent<AudioSource>().Play();
                 return;
             }

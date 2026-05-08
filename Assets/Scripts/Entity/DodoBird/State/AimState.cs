@@ -15,6 +15,7 @@ namespace Entity.DodoBird.State
         {
             base.OnEnter();
             GameManager.Event.Broadcast("DodoBird.OnPulling", owner);
+            GameManager.Event.Broadcast("DodoBird.Aimed", "DodoBird.Aimed");
         }
 
         public override void OnUpdate()

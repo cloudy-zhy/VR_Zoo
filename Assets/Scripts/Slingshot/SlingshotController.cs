@@ -40,6 +40,15 @@ namespace Slingshot
         [SerializeField] private float maxForce = 30f;
         [SerializeField] private float velocityFactor = 2.5f;
 
+        [Header("瞄准手感")]
+        [Tooltip("横向瞄准灵敏度。数值越小，手横向移动造成的落点偏移越小。")]
+        [Range(0.05f, 1f)]
+        [SerializeField] private float horizontalAimSensitivity = 0.5f;
+
+        [Tooltip("纵向瞄准灵敏度。数值越小，手上下移动造成的落点偏移越小。")]
+        [Range(0.05f, 1f)]
+        [SerializeField] private float verticalAimSensitivity = 0.5f;
+
         [Header("锁定瞄准")]
         [Tooltip("锁定轨迹线的固定颜色，不受当前拉力影响。")]
         [SerializeField] private Color lockedTrajectoryColor = new(0.1f, 0.85f, 1f, 0.95f);
@@ -87,8 +96,9 @@ namespace Slingshot
         {
             if (_isPulling)
             {
-                _launchDirection = startPoint.position - _firePoint.position;
-                _launchForce = Mathf.Clamp(_launchDirection.magnitude * 10f, 0, maxForce);
+                Vector3 rawLaunchDirection = startPoint.position - _firePoint.position;
+                _launchDirection = GetAimAdjustedLaunchDirection(rawLaunchDirection);
+                _launchForce = Mathf.Clamp(rawLaunchDirection.magnitude * 10f, 0, maxForce);
                 Vector3 normalizedDir = _launchDirection.normalized;
                 if (normalizedDir == Vector3.zero) 
                 {
@@ -108,6 +118,8 @@ namespace Slingshot
             GameManager.Event.Register<DodoBird>("DodoBird.OnPulling", OnPulling);
             GameManager.Event.Register<DodoBird>("DodoBird.OnRelease", OnRelease);
             GameManager.Event.Register<DodoBird>("DodoBird.OnEnqueue", OnEnqueue);
+            // 注册剧情事件
+            RegisterStoryEvent();
         }
 
         private void OnDisable()
@@ -117,6 +129,8 @@ namespace Slingshot
             GameManager.Event.Unregister("DodoBird.OnRelease");
             GameManager.Event.Unregister("DodoBird.OnEnqueue");
             ClearLockedTarget();
+            // 注销剧情事件
+            UnregisterStoryEvent();
         }
 
         private void OnDestroy()
@@ -306,7 +320,9 @@ namespace Slingshot
             }
             
             SlingshotFruit fruit = previewResult.HitCollider.GetComponentInParent<SlingshotFruit>();
-            if (fruit == null || fruit == _lockedTarget) return;
+            if (fruit == null) return;
+
+            bool isNewTarget = fruit != _lockedTarget;
 
             _lockedTarget = fruit;
             _lockedTrajectoryResult = previewResult;
@@ -317,7 +333,23 @@ namespace Slingshot
             _lockedHitNormal = previewResult.LandingNormal;
 
             UpdateLockedTrajectoryLine(previewResult);
-            GameManager.Event.Broadcast(SlingshotEvents.AimFruitLocked);
+            if (isNewTarget)
+                GameManager.Event.Broadcast("DodoBird.FruitLocked", "DodoBird.FruitLocked");
+        }
+
+        /// <summary>
+        /// 降低拉弓位移到发射方向的角度敏感度，但保留原始拉弓距离计算力度。
+        /// </summary>
+        private Vector3 GetAimAdjustedLaunchDirection(Vector3 rawLaunchDirection)
+        {
+            if (rawLaunchDirection == Vector3.zero) return rawLaunchDirection;
+
+            Transform reference = startPoint != null ? startPoint : transform;
+            Vector3 localDirection = reference.InverseTransformDirection(rawLaunchDirection);
+            localDirection.x *= horizontalAimSensitivity;
+            localDirection.y *= verticalAimSensitivity;
+
+            return reference.TransformDirection(localDirection);
         }
 
         private void UpdateLockedTrajectoryLine(TrajectoryResult result)
@@ -389,6 +421,45 @@ namespace Slingshot
         }
 #endif
         
+        #endregion
+
+        #region  ShitMethod / StoryMethod
+        // 屎先这么放着先Orz
+        private readonly HashSet<string> _finishStoryKeys = new();
+
+        private void RegisterStoryEvent()
+        {
+            GameManager.Event.Register<string>("DodoBird.Grabbed", OnStoryProceed);
+            GameManager.Event.Register<string>("DodoBird.Loaded", OnStoryProceed);
+            GameManager.Event.Register<string>("DodoBird.Aimed", OnStoryProceed);
+            GameManager.Event.Register<string>("DodoBird.FruitLocked", OnStoryProceed);
+            GameManager.Event.Register<string>("DodoBird.FruitHit", OnStoryProceed);
+        }
+        
+        private void UnregisterStoryEvent()
+        {
+            GameManager.Event.Unregister<string>("DodoBird.Grabbed", OnStoryProceed);
+            GameManager.Event.Unregister<string>("DodoBird.Loaded", OnStoryProceed);
+            GameManager.Event.Unregister<string>("DodoBird.Aimed", OnStoryProceed);
+            GameManager.Event.Unregister<string>("DodoBird.FruitLocked", OnStoryProceed);
+            GameManager.Event.Unregister<string>("DodoBird.FruitHit", OnStoryProceed);
+        }
+
+        private void OnStoryProceed(string key)
+        {
+            if (CheckKey(key))
+            {
+                DialogueController.Instance.ShowDialogueWithIndex();
+                GameManager.Event.Unregister<string>(key, OnStoryProceed);
+            }
+        }
+
+        private bool CheckKey(string key)
+        {
+            // 已经完成，key已存在，add失败，返回false
+            return _finishStoryKeys.Add(key);
+        }
+
         #endregion
     }
 }

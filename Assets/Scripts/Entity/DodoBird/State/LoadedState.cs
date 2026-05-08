@@ -1,4 +1,5 @@
 using Core.Fsm;
+using Manager;
 
 namespace Entity.DodoBird.State
 {
@@ -14,6 +15,7 @@ namespace Entity.DodoBird.State
             base.OnEnter();
             owner.IsBeGrabbed = false;
             owner.PlayParticle(DodoBirdParticleType.Cry);
+            GameManager.Event.Broadcast("DodoBird.Loaded", "DodoBird.Loaded");
         }
 
         public override void OnUpdate()
