@@ -7040,6 +7040,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
+      propertyPath: sceneChangeflag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
+        type: 3}
       propertyPath: targetSceneName
       value: Scene1
       objectReference: {fileID: 0}

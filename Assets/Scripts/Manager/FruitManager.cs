@@ -62,5 +62,6 @@ public class FruitManager : MonoBehaviour
     {
         currentLevelIndex++;
         LoadLevel(currentLevelIndex);
+        DialogueController.Instance.ShowDialogueWithIndex();
     }
 }

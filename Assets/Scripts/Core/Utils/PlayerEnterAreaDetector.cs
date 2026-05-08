@@ -32,6 +32,7 @@ namespace Core.Utils
 
             if (_isInside)
             {
+                DialogueController.Instance.ShowDialogueWithIndex();
                 FruitManager.Instance.LoadLevel(FruitManager.Instance.currentLevelIndex);
                 OnPlayerEnterArea?.Invoke();
             }

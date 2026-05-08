@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static DialogueController;
 
 public class DialogueController : MonoBehaviour
 {
+    public static DialogueController Instance;
     [System.Serializable]
     public class DialogueEntry
     {
@@ -24,10 +26,12 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private Sprite npcPortrait;       // NPC头像
 
     [Header("场景跳转")]
+    [SerializeField] private bool sceneChangeFlag = false;// 对话结束后是否跳转
     [SerializeField] private string targetSceneName = "Scene1"; // 目标场景名称
     [SerializeField] private float delayBeforeSceneChange = 2.0f; // 对话结束后延迟跳转
 
     [Header("自动对话设置")]
+    [SerializeField] private bool autoDisplayFlag = true;
     [SerializeField] private float initialDelay = 1.0f; // 开始前的初始延迟
     [SerializeField] private float delayBetweenDialogues = 0.5f; // 对话之间的延迟
     [SerializeField] private float minimumDisplayTime = 2.0f; // 每句话最少显示时间
@@ -41,11 +45,16 @@ public class DialogueController : MonoBehaviour
     private bool isDialogueActive = false;
     private Coroutine dialogueCoroutine;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         // 开始对话
         if (showDebugLogs) Debug.Log("对话控制器启动");
-        StartDialogueSequence();
+        if (autoDisplayFlag) StartDialogueSequence();
     }
 
     /// <summary>
@@ -126,17 +135,42 @@ public class DialogueController : MonoBehaviour
         yield return new WaitForSeconds(delayBeforeSceneChange);
 
         // 跳转到目标场景
-        if (!string.IsNullOrEmpty(targetSceneName))
+        if (!string.IsNullOrEmpty(targetSceneName) && sceneChangeFlag)
         {
             if (showDebugLogs) Debug.Log($"跳转到场景: {targetSceneName}");
             SceneManager.LoadScene(targetSceneName);
         }
         else
         {
-            Debug.LogWarning("目标场景名称为空，无法跳转");
+            if (string.IsNullOrEmpty(targetSceneName))
+                Debug.LogWarning("目标场景名称为空，无法跳转");
+            else
+                Debug.Log("对话结束后不跳转");
         }
     }
 
+    public void ShowDialogueWithIndex()
+    {
+        var dialogueEntry = dialogueSequence[currentDialogueIndex];
+
+        ShowDialogue(dialogueEntry);
+        float displayTime = dialogueEntry.displayDuration;
+        if (displayTime <= 0)
+        {
+            // 自动计算：基于文本长度，但不少于最小显示时间
+            displayTime = Mathf.Max(minimumDisplayTime, dialogueEntry.dialogueText.Length * timePerCharacter);
+        }
+
+        if (showDebugLogs) Debug.Log($"显示对话 {currentDialogueIndex + 1}/{dialogueSequence.Count}，时长: {displayTime:F1}秒");
+        StartCoroutine(DialogsHideDelay(displayTime));
+        currentDialogueIndex++;
+    }
+
+    private IEnumerator DialogsHideDelay(float displayTime)
+    {
+        yield return new WaitForSeconds(displayTime);
+        UIManager.Instance.HideAllDialogs();
+    }
     /// <summary>
     /// 显示对话
     /// </summary>
