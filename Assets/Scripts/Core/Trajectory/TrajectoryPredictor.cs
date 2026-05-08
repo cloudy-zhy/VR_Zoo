@@ -56,12 +56,13 @@ namespace Core.Trajectory
         /// </summary>
         /// <param name="startPos">发射起点（渡渡鸟出膛位置，世界坐标）</param>
         /// <param name="initialVelocity">初始速度向量（方向 × 速度大小，世界坐标）</param>
-        public void UpdatePreview(Vector3 startPos, Vector3 initialVelocity)
+        public TrajectoryResult UpdatePreview(Vector3 startPos, Vector3 initialVelocity)
         {
-            if (!_isVisible || !_allowedByDifficulty) return;
+            if (!_isVisible || !_allowedByDifficulty) return null;
 
             var result = Predict(startPos, initialVelocity);
             trajectoryRenderer.UpdateLine(result);
+            return result;
         }
 
         /// <summary>
@@ -98,6 +99,7 @@ namespace Core.Trajectory
 
             Vector3? landingPoint  = null;
             Vector3  landingNormal = Vector3.up;
+            Collider hitCollider   = null;
 
             points.Add(pos);
 
@@ -123,6 +125,7 @@ namespace Core.Trajectory
                     points.Add(hit.point);
                     landingPoint  = hit.point;
                     landingNormal = hit.normal;
+                    hitCollider   = hit.collider;
                     break;
                 }
 
@@ -130,7 +133,7 @@ namespace Core.Trajectory
                 points.Add(pos);
             }
 
-            return new TrajectoryResult(points, landingPoint, landingNormal);
+            return new TrajectoryResult(points, landingPoint, landingNormal, hitCollider);
         }
 
         // ─── 参数设置 API ────────────────────────────────────────────────────

@@ -30,14 +30,22 @@ namespace Core.Trajectory
         /// </summary>
         public Vector3 LandingNormal { get; }
 
+        /// <summary>
+        /// 本次轨迹预测命中的碰撞体。
+        /// 无碰撞时为 null。
+        /// </summary>
+        public Collider HitCollider { get; }
+
         public TrajectoryResult(
             List<Vector3> points,
             Vector3?      landingPoint,
-            Vector3       landingNormal = default)
+            Vector3       landingNormal = default,
+            Collider      hitCollider   = null)
         {
             Points        = points.AsReadOnly();
             LandingPoint  = landingPoint;
             LandingNormal = landingNormal == default ? Vector3.up : landingNormal;
+            HitCollider   = hitCollider;
         }
     }
 }

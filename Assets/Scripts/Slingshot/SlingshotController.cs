@@ -39,6 +39,10 @@ namespace Slingshot
         [SerializeField] private Vector3 offset;
         [SerializeField] private float maxForce = 30f;
         [SerializeField] private float velocityFactor = 2.5f;
+
+        [Header("锁定瞄准")]
+        [Tooltip("锁定轨迹线的固定颜色，不受当前拉力影响。")]
+        [SerializeField] private Color lockedTrajectoryColor = new(0.1f, 0.85f, 1f, 0.95f);
         #endregion
 
         #region PrivateVariables
@@ -51,6 +55,17 @@ namespace Slingshot
         private Vector3 _launchDirection;
         private float _launchForce;
         private bool _isPulling;
+        private LineRenderer _lockedTrajectoryLine;
+        private Material _lockedTrajectoryMaterialInstance;
+        private SlingshotFruit _lockedTarget;
+        private TrajectoryResult _lockedTrajectoryResult;
+        private Vector3 _lockedStartPosition;
+        private Vector3 _lockedBirdPosition;
+        private Vector3 _lockedLaunchVelocity;
+        private Vector3 _lockedHitPoint;
+        private Vector3 _lockedHitNormal = Vector3.up;
+
+        private bool HasLockedTarget => _lockedTarget != null && _lockedTrajectoryResult != null;
 
         #endregion
         
@@ -62,6 +77,7 @@ namespace Slingshot
             _trajectoryRenderer = GetComponentInChildren<TrajectoryRenderer>();
             _ropeRenderer = GetComponentInChildren<SlingshotRopeRenderer>();
             _ropeRenderer.offset = offset;
+            CreateLockedTrajectoryLine();
             
             // Debug.Log("tail slot position " + TailSlotPosition);
             await InitDodoBird();
@@ -79,8 +95,10 @@ namespace Slingshot
                     normalizedDir = Vector3.forward; // 给个默认前方
                 }
                 _launchVelocity = normalizedDir * (_launchForce * velocityFactor);
-                _trajectoryPredictor.UpdatePreview(_firePoint.position + offset, _launchVelocity);
+                Vector3 previewStartPosition = _firePoint.position + offset;
+                TrajectoryResult previewResult = _trajectoryPredictor.UpdatePreview(previewStartPosition, _launchVelocity);
                 _trajectoryRenderer.SetForceRatio(_launchForce / maxForce);
+                TryUpdateLockedTarget(previewResult, previewStartPosition, _launchVelocity);
             }
         }
 
@@ -98,6 +116,13 @@ namespace Slingshot
             GameManager.Event.Unregister("DodoBird.OnPulling");
             GameManager.Event.Unregister("DodoBird.OnRelease");
             GameManager.Event.Unregister("DodoBird.OnEnqueue");
+            ClearLockedTarget();
+        }
+
+        private void OnDestroy()
+        {
+            if (_lockedTrajectoryMaterialInstance != null)
+                Destroy(_lockedTrajectoryMaterialInstance);
         }
         
         #endregion
@@ -109,6 +134,7 @@ namespace Slingshot
             // 通知绳索发射物是谁，开启发射轨迹渲染
             _firePoint = dodoBird.transform;
             _isPulling = true;
+            ClearLockedTarget();
             _trajectoryPredictor.ShowPreview();
             _ropeRenderer.SetProjectile(dodoBird.transform);
             _ropeRenderer.BeginPull();
@@ -118,10 +144,15 @@ namespace Slingshot
         private void OnRelease(DodoBird dodoBird)
         {
             // 释放并发射该渡渡鸟
-            dodoBird.LaunchVelocity = _launchVelocity;
+            if (HasLockedTarget)
+                ApplyLockedShot(dodoBird);
+            else
+                dodoBird.LaunchVelocity = _launchVelocity;
+
             dodoBird.MoveToPos = slots[^1];
             _isPulling = false;
             _trajectoryPredictor.HidePreview();
+            ClearLockedTarget();
             _ropeRenderer.ResetInstant();
             CallNextBird();
             GetComponent<GameAudioManager>().PlaySound("Shoot");
@@ -189,6 +220,159 @@ namespace Slingshot
         {
             bird.MoveToPos = slots[slotIndex];
             bird.IsFirstInQueue = slotIndex == 0;
+        }
+
+        /// <summary>
+        /// 运行时复制当前轨迹线配置，生成一条独立的锁定轨迹线。
+        /// </summary>
+        private void CreateLockedTrajectoryLine()
+        {
+            if (_trajectoryRenderer == null) return;
+
+            LineRenderer source = _trajectoryRenderer.GetComponent<LineRenderer>();
+            if (source == null) return;
+
+            GameObject lineObject = new("LockedTrajectory_Line");
+            lineObject.transform.SetParent(_trajectoryRenderer.transform, false);
+
+            _lockedTrajectoryLine = lineObject.AddComponent<LineRenderer>();
+            CopyLineRendererSettings(source, _lockedTrajectoryLine);
+
+            Shader fallbackShader = Shader.Find("Sprites/Default");
+            _lockedTrajectoryMaterialInstance = source.sharedMaterial != null
+                ? new Material(source.sharedMaterial)
+                : new Material(fallbackShader);
+
+            _lockedTrajectoryLine.material = _lockedTrajectoryMaterialInstance;
+            _lockedTrajectoryLine.colorGradient = CreateLockedTrajectoryGradient();
+            _lockedTrajectoryLine.enabled = false;
+            _lockedTrajectoryLine.positionCount = 0;
+        }
+
+        private void CopyLineRendererSettings(LineRenderer source, LineRenderer target)
+        {
+            target.useWorldSpace = source.useWorldSpace;
+            target.loop = false;
+            target.widthCurve = source.widthCurve;
+            target.widthMultiplier = source.widthMultiplier;
+            target.numCornerVertices = source.numCornerVertices;
+            target.numCapVertices = source.numCapVertices;
+            target.alignment = source.alignment;
+            target.textureMode = source.textureMode;
+            target.shadowCastingMode = source.shadowCastingMode;
+            target.receiveShadows = source.receiveShadows;
+            target.generateLightingData = source.generateLightingData;
+            target.sortingLayerID = source.sortingLayerID;
+            target.sortingOrder = source.sortingOrder;
+        }
+
+        private Gradient CreateLockedTrajectoryGradient()
+        {
+            Gradient gradient = new();
+            Color endColor = new(
+                lockedTrajectoryColor.r,
+                lockedTrajectoryColor.g,
+                lockedTrajectoryColor.b,
+                0f);
+
+            gradient.SetKeys(
+                new[]
+                {
+                    new GradientColorKey(lockedTrajectoryColor, 0f),
+                    new GradientColorKey(endColor, 1f)
+                },
+                new[]
+                {
+                    new GradientAlphaKey(lockedTrajectoryColor.a, 0f),
+                    new GradientAlphaKey(0f, 1f)
+                });
+            return gradient;
+        }
+
+        /// <summary>
+        /// 当前预览轨迹命中新的果子时，替换锁定结果并广播事件。
+        /// </summary>
+        private void TryUpdateLockedTarget(
+            TrajectoryResult previewResult,
+            Vector3 previewStartPosition,
+            Vector3 previewLaunchVelocity)
+        {
+            if (previewResult == null ||
+                !previewResult.HasLanding ||
+                previewResult.HitCollider == null ||
+                !previewResult.LandingPoint.HasValue)
+            {
+                return;
+            }
+            
+            SlingshotFruit fruit = previewResult.HitCollider.GetComponentInParent<SlingshotFruit>();
+            if (fruit == null || fruit == _lockedTarget) return;
+
+            _lockedTarget = fruit;
+            _lockedTrajectoryResult = previewResult;
+            _lockedStartPosition = previewStartPosition;
+            _lockedBirdPosition = _firePoint != null ? _firePoint.position : previewStartPosition - offset;
+            _lockedLaunchVelocity = previewLaunchVelocity;
+            _lockedHitPoint = previewResult.LandingPoint.Value;
+            _lockedHitNormal = previewResult.LandingNormal;
+
+            UpdateLockedTrajectoryLine(previewResult);
+            GameManager.Event.Broadcast(SlingshotEvents.AimFruitLocked);
+        }
+
+        private void UpdateLockedTrajectoryLine(TrajectoryResult result)
+        {
+            if (_lockedTrajectoryLine == null) return;
+
+            if (result == null || result.Points.Count < 2)
+            {
+                _lockedTrajectoryLine.positionCount = 0;
+                _lockedTrajectoryLine.enabled = false;
+                return;
+            }
+
+            int count = result.Points.Count;
+            Vector3[] positions = new Vector3[count];
+            for (int i = 0; i < count; i++)
+                positions[i] = result.Points[i];
+
+            _lockedTrajectoryLine.positionCount = count;
+            _lockedTrajectoryLine.SetPositions(positions);
+            _lockedTrajectoryLine.enabled = true;
+        }
+
+        private void ApplyLockedShot(DodoBird dodoBird)
+        {
+            Vector3 shotDirection = _lockedLaunchVelocity.sqrMagnitude > Mathf.Epsilon
+                ? _lockedLaunchVelocity.normalized
+                : (_lockedHitPoint - _lockedStartPosition).normalized;
+
+            if (shotDirection == Vector3.zero)
+                shotDirection = -_lockedHitNormal;
+
+            if (shotDirection == Vector3.zero)
+                shotDirection = Vector3.forward;
+
+            dodoBird.transform.position = _lockedBirdPosition;
+            dodoBird.LaunchVelocity = _lockedLaunchVelocity.sqrMagnitude > Mathf.Epsilon
+                ? _lockedLaunchVelocity
+                : shotDirection * Mathf.Max(1f, _launchForce * velocityFactor);
+        }
+
+        private void ClearLockedTarget()
+        {
+            _lockedTarget = null;
+            _lockedTrajectoryResult = null;
+            _lockedStartPosition = Vector3.zero;
+            _lockedBirdPosition = Vector3.zero;
+            _lockedLaunchVelocity = Vector3.zero;
+            _lockedHitPoint = Vector3.zero;
+            _lockedHitNormal = Vector3.up;
+
+            if (_lockedTrajectoryLine == null) return;
+
+            _lockedTrajectoryLine.positionCount = 0;
+            _lockedTrajectoryLine.enabled = false;
         }
         
 #if UNITY_EDITOR
