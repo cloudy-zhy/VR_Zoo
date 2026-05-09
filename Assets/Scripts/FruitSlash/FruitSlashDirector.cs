@@ -82,14 +82,14 @@ namespace FruitSlash
 
         private void OnEnable()
         {
-            GameManager.Event.Register<FruitSlashFruit, FruitSlashBlade, int>(FruitSlashEvents.InternalFruitCut, OnFruitCut);
+            GameManager.Event.Register<FruitSlashFruit>(FruitSlashEvents.InternalFruitCut, OnFruitCut);
             GameManager.Event.Register<FruitSlashFruit>(FruitSlashEvents.InternalFruitMissed, OnFruitMissed);
         }
 
         private void OnDisable()
         {
-            GameManager.Event.Unregister(FruitSlashEvents.InternalFruitCut);
-            GameManager.Event.Unregister(FruitSlashEvents.InternalFruitMissed);
+            GameManager.Event.Unregister<FruitSlashFruit>(FruitSlashEvents.InternalFruitCut, OnFruitCut);
+            GameManager.Event.Unregister<FruitSlashFruit>(FruitSlashEvents.InternalFruitMissed, OnFruitMissed);
         }
 
         private void Start()
@@ -174,10 +174,14 @@ namespace FruitSlash
         /// <summary>
         /// 果实切中回调。
         /// </summary>
-        private void OnFruitCut(FruitSlashFruit fruit, FruitSlashBlade blade, int sameSwingCutCount)
+        private void OnFruitCut(EventContext<FruitSlashFruit> context)
         {
+            FruitSlashFruit fruit = context.Payload;
+
             if (fruit == null || _completed)
                 return;
+
+            int sameSwingCutCount = fruit.LastSameSwingCutCount;
 
             _activeFruits.Remove(fruit);
             _currentWaveCuts += 1;
@@ -231,8 +235,10 @@ namespace FruitSlash
         /// <summary>
         /// 果实完整落地回调。
         /// </summary>
-        private void OnFruitMissed(FruitSlashFruit fruit)
+        private void OnFruitMissed(EventContext<FruitSlashFruit> context)
         {
+            FruitSlashFruit fruit = context.Payload;
+
             if (fruit != null)
                 _activeFruits.Remove(fruit);
 

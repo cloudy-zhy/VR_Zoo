@@ -42,6 +42,10 @@ namespace FruitSlash
         public bool IsRainbowBunch => isRainbowBunch;
         public int RainbowReward => rainbowReward;
         public bool IsFinished => _cutFinished || _missed;
+        /// <summary>本次切中该果实的光刃。</summary>
+        public FruitSlashBlade LastCutBlade { get; private set; }
+        /// <summary>本次挥刀连续切中的果实数量。</summary>
+        public int LastSameSwingCutCount { get; private set; }
 
         private Rigidbody _rb;
         private Collider _collider;
@@ -85,6 +89,8 @@ namespace FruitSlash
             _cutFinished = false;
             _missed = false;
             _rainbowHitCount = 0;
+            LastCutBlade = null;
+            LastSameSwingCutCount = 0;
 
             if (config != null)
             {
@@ -149,6 +155,8 @@ namespace FruitSlash
             _rb.velocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             _rb.isKinematic = true;
+            LastCutBlade = blade;
+            LastSameSwingCutCount = sameSwingCutCount;
 
             Vector3 splitDirection = CalculateSplitDirection(segmentStart, segmentEnd);
             SpawnHalves(splitDirection);
@@ -158,7 +166,7 @@ namespace FruitSlash
             if (cutAudio != null)
                 AudioSource.PlayClipAtPoint(cutAudio, transform.position);
 
-            GameManager.Event.Broadcast(FruitSlashEvents.InternalFruitCut,this, blade, sameSwingCutCount);
+            GameManager.Event.Broadcast(FruitSlashEvents.InternalFruitCut, this);
             ReturnToPool();
         }
 

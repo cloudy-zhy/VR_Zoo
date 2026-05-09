@@ -62,7 +62,7 @@ namespace Slingshot
 
         private void OnDisable()
         {
-            GameManager.Event.Unregister("DodoBird.HitFruit");
+            GameManager.Event.Unregister<SlingshotFruitType>("DodoBird.HitFruit", OnFruitHit);
 
             // CancelComboReset();
         }
@@ -73,8 +73,9 @@ namespace Slingshot
         /// 命中果实事件回调。
         /// 参数 fruitType 由广播方传入，连锁命中时 score 由广播方折半后传入。
         /// </summary>
-        private void OnFruitHit(SlingshotFruitType fruitType)
+        private void OnFruitHit(EventContext<SlingshotFruitType> context)
         {
+            SlingshotFruitType fruitType = context.Payload;
             int delta = fruitType.GetScore();
             AddScore(delta, fruitType == SlingshotFruitType.GoldenFruit);
         }

@@ -14,7 +14,7 @@ namespace Entity.DodoBird.State
         {
             base.OnEnter();
             owner.PlayParticle(DodoBirdParticleType.Shock);
-            GameManager.Event.Broadcast("DodoBird.Grabbed", "DodoBird.Grabbed");
+            GameManager.Event.Broadcast("DodoBird.Grabbed");
         }
 
         public override void OnUpdate()

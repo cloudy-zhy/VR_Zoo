@@ -92,9 +92,9 @@ namespace Controller
 
         private void OnDestroy()
         {
-            GameManager.Event.Unregister("Pterosaur.Throw");
-            GameManager.Event.Unregister("Gift.Caught");
-            GameManager.Event.Unregister("Gift.Missed");
+            GameManager.Event.Unregister<Vector3>("Pterosaur.Throw", OnPterosaurThrow);
+            GameManager.Event.Unregister<PterosaurGiftType>("Gift.Caught", OnGiftCaught);
+            GameManager.Event.Unregister<PterosaurGiftType>("Gift.Missed", OnGiftMissed);
         }
 
         #endregion
@@ -168,11 +168,12 @@ namespace Controller
 
         #region Event Handlers
 
-        private void OnPterosaurThrow(Vector3 throwPosition)
+        private void OnPterosaurThrow(EventContext<Vector3> context)
         {
             if (!_isRunning)
                 return;
 
+            Vector3 throwPosition = context.Payload;
             PterosaurGiftType type = DecidePterosaurGiftType();
 
             PterosaurGift gift = PoolManager.I.Get<PterosaurGift>(
@@ -183,11 +184,12 @@ namespace Controller
             gift.Initialize(type, GetAirDrag(type), GetInitialVelocity(type));
         }
 
-        private void OnGiftCaught(PterosaurGiftType type)
+        private void OnGiftCaught(EventContext<PterosaurGiftType> context)
         {
             if (!_isRunning)
                 return;
 
+            PterosaurGiftType type = context.Payload;
             _continuousCatchCount++;
             _combo++;
 
@@ -215,7 +217,7 @@ namespace Controller
             }
         }
 
-        private void OnGiftMissed(PterosaurGiftType type)
+        private void OnGiftMissed(EventContext<PterosaurGiftType> context)
         {
             if (!_isRunning)
                 return;

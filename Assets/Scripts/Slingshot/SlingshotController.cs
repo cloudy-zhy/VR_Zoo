@@ -125,9 +125,9 @@ namespace Slingshot
         private void OnDisable()
         {
             // 注销事件
-            GameManager.Event.Unregister("DodoBird.OnPulling");
-            GameManager.Event.Unregister("DodoBird.OnRelease");
-            GameManager.Event.Unregister("DodoBird.OnEnqueue");
+            GameManager.Event.Unregister<DodoBird>("DodoBird.OnPulling", OnPulling);
+            GameManager.Event.Unregister<DodoBird>("DodoBird.OnRelease", OnRelease);
+            GameManager.Event.Unregister<DodoBird>("DodoBird.OnEnqueue", OnEnqueue);
             ClearLockedTarget();
             // 注销剧情事件
             UnregisterStoryEvent();
@@ -143,8 +143,10 @@ namespace Slingshot
         
         #region EventMethods
 
-        private void OnPulling(DodoBird dodoBird)
+        private void OnPulling(EventContext<DodoBird> context)
         {
+            DodoBird dodoBird = context.Payload;
+
             // 通知绳索发射物是谁，开启发射轨迹渲染
             _firePoint = dodoBird.transform;
             _isPulling = true;
@@ -155,8 +157,10 @@ namespace Slingshot
             GetComponent<GameAudioManager>().PlaySound("Pull");
         }
 
-        private void OnRelease(DodoBird dodoBird)
+        private void OnRelease(EventContext<DodoBird> context)
         {
+            DodoBird dodoBird = context.Payload;
+
             // 释放并发射该渡渡鸟
             if (HasLockedTarget)
                 ApplyLockedShot(dodoBird);
@@ -176,8 +180,10 @@ namespace Slingshot
         /// 将归队的鸟加入队尾，分配最后一个空槽位。
         /// 由 ReturningState 到达目标后调用。
         /// </summary>
-        private void OnEnqueue(DodoBird bird)
+        private void OnEnqueue(EventContext<DodoBird> context)
         {
+            DodoBird bird = context.Payload;
+
             int tailSlotIndex = _queue.Count; // 当前队列长度即下一个可用槽位 index
             if (tailSlotIndex >= slots.Count)
             {
@@ -334,7 +340,7 @@ namespace Slingshot
 
             UpdateLockedTrajectoryLine(previewResult);
             if (isNewTarget)
-                GameManager.Event.Broadcast("DodoBird.FruitLocked", "DodoBird.FruitLocked");
+                GameManager.Event.Broadcast("DodoBird.FruitLocked");
         }
 
         /// <summary>
@@ -429,28 +435,30 @@ namespace Slingshot
 
         private void RegisterStoryEvent()
         {
-            GameManager.Event.Register<string>("DodoBird.Grabbed", OnStoryProceed);
-            GameManager.Event.Register<string>("DodoBird.Loaded", OnStoryProceed);
-            GameManager.Event.Register<string>("DodoBird.Aimed", OnStoryProceed);
-            GameManager.Event.Register<string>("DodoBird.FruitLocked", OnStoryProceed);
-            GameManager.Event.Register<string>("DodoBird.FruitHit", OnStoryProceed);
+            GameManager.Event.Register("DodoBird.Grabbed", OnStoryProceed);
+            GameManager.Event.Register("DodoBird.Loaded", OnStoryProceed);
+            GameManager.Event.Register("DodoBird.Aimed", OnStoryProceed);
+            GameManager.Event.Register("DodoBird.FruitLocked", OnStoryProceed);
+            GameManager.Event.Register("DodoBird.FruitHit", OnStoryProceed);
         }
         
         private void UnregisterStoryEvent()
         {
-            GameManager.Event.Unregister<string>("DodoBird.Grabbed", OnStoryProceed);
-            GameManager.Event.Unregister<string>("DodoBird.Loaded", OnStoryProceed);
-            GameManager.Event.Unregister<string>("DodoBird.Aimed", OnStoryProceed);
-            GameManager.Event.Unregister<string>("DodoBird.FruitLocked", OnStoryProceed);
-            GameManager.Event.Unregister<string>("DodoBird.FruitHit", OnStoryProceed);
+            GameManager.Event.Unregister("DodoBird.Grabbed", OnStoryProceed);
+            GameManager.Event.Unregister("DodoBird.Loaded", OnStoryProceed);
+            GameManager.Event.Unregister("DodoBird.Aimed", OnStoryProceed);
+            GameManager.Event.Unregister("DodoBird.FruitLocked", OnStoryProceed);
+            GameManager.Event.Unregister("DodoBird.FruitHit", OnStoryProceed);
         }
 
-        private void OnStoryProceed(string key)
+        private void OnStoryProceed(EventContext context)
         {
+            string key = context.EventName;
+
             if (CheckKey(key))
             {
                 DialogueController.Instance.ShowDialogueWithIndex();
-                GameManager.Event.Unregister<string>(key, OnStoryProceed);
+                GameManager.Event.Unregister(key, OnStoryProceed);
             }
         }
 

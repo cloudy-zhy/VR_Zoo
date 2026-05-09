@@ -15,7 +15,7 @@ namespace Entity.DodoBird.State
             base.OnEnter();
             owner.IsBeGrabbed = false;
             owner.PlayParticle(DodoBirdParticleType.Cry);
-            GameManager.Event.Broadcast("DodoBird.Loaded", "DodoBird.Loaded");
+            GameManager.Event.Broadcast("DodoBird.Loaded");
         }
 
         public override void OnUpdate()
