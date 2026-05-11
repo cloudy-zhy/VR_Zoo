@@ -1,7 +1,6 @@
 using Core.Event;
 using Core.Pool;
 using Core.Utils;
-using UnityEngine;
 
 namespace Manager
 {
@@ -18,5 +17,15 @@ namespace Manager
         
         private static PoolManager _poolManager;
         public static PoolManager Pool => _poolManager ??= new PoolManager();
+
+        protected override void OnSingletonDestroyed()
+        {
+            _assetLoader = null;
+            _mAudioManager = null;
+            _poolManager.Unregister();
+            _poolManager = null;
+            _eventManager.Unregister();
+            _eventManager = null;
+        }
     }
 }

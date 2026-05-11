@@ -35,6 +35,10 @@ namespace Controller
         [SerializeField] private Transform pterosaurParent;
         [SerializeField] private string pterosaurGiftPrefabKey = "PterosaurGift";
 
+        [Header("Catch")]
+        [SerializeField] private GameObject catchZone;
+        [SerializeField] private bool useCatchZoneCatch = true;
+
         [Header("Score")]
         [SerializeField] private int scoreToAdvanced = 100;
         [SerializeField] private int scoreToStable = 400;
@@ -75,6 +79,7 @@ namespace Controller
         private Pterosaur[] _pterosaurs;
 
         private Coroutine _throwLoopCoroutine;
+        private Transform _giftParent;
 
         #endregion
 
@@ -87,6 +92,11 @@ namespace Controller
             GameManager.Event.Register<PterosaurGiftType>("Gift.Missed", OnGiftMissed);
             
             _pterosaurs = pterosaurParent.GetComponentsInChildren<Pterosaur>(true);
+            catchZone.SetActive(false);
+
+            var go = new GameObject("PterosaurGiftParent");
+            go.transform.SetParent(transform);
+            _giftParent = go.transform;
         }
 
         private void OnDestroy()
@@ -107,6 +117,7 @@ namespace Controller
                 return;
 
             _isRunning = true;
+            // catchZone.SetActive(true);
             _currentStage = ThrowStage.Tutorial;
 
             _score = 0;
@@ -121,6 +132,7 @@ namespace Controller
         public void StopThrowGame()
         {
             _isRunning = false;
+            catchZone.SetActive(false);
 
             if (_throwLoopCoroutine != null)
             {
@@ -177,10 +189,12 @@ namespace Controller
 
             PterosaurGift gift = GameManager.Pool.Rent<PterosaurGift>(
                 pterosaurGiftPrefabKey,
-                throwPosition
+                throwPosition,
+                Quaternion.identity,
+                _giftParent
             );
             
-            gift?.Initialize(type, GetAirDrag(type), GetInitialVelocity(type));
+            gift?.Initialize(type, GetAirDrag(type), GetInitialVelocity(type), useCatchZoneCatch);
         }
 
         private void OnGiftCaught(EventContext<PterosaurGiftType> context)

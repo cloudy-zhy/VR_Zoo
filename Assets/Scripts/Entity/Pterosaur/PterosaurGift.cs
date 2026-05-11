@@ -14,6 +14,7 @@ namespace Entity.Pterosaur
         [SerializeField] private float groundBounceForce = 2.5f;
         [SerializeField] private float groundDrag = 0.8f;
         [SerializeField] private bool onlyDirectInteract = true;
+        [SerializeField] private bool useCatchZoneCatch;
 
         #endregion
 
@@ -63,16 +64,21 @@ namespace Entity.Pterosaur
 
         #region Public Methods
 
-        public void Initialize(PterosaurGiftType type, float airDrag, Vector3 initVelocity)
+        public void Initialize(
+            PterosaurGiftType type,
+            float airDrag,
+            Vector3 initVelocity,
+            bool useCatchZone = false)
         {
             _type = type;
+            useCatchZoneCatch = useCatchZone;
 
             _initialized = true;
             _caught = false;
             _missed = false;
             _hasBecomeGroundGift = false;
             
-            _it.enabled = true;
+            _it.enabled = !useCatchZoneCatch;
             _rb.isKinematic = false;
             _rb.drag = airDrag;
             _rb.velocity = initVelocity;
@@ -102,10 +108,18 @@ namespace Entity.Pterosaur
             if (!_initialized || _caught || _missed || _hasBecomeGroundGift)
                 return;
 
-            if (_caught || _missed)
+            if (useCatchZoneCatch)
                 return;
 
             if (onlyDirectInteract && args.interactorObject.transform.GetComponent<XRDirectInteractor>() == null)
+                return;
+
+            Catch();
+        }
+
+        private void Catch()
+        {
+            if (!_initialized || _caught || _missed || _hasBecomeGroundGift)
                 return;
 
             _caught = true;
@@ -180,6 +194,14 @@ namespace Entity.Pterosaur
 
         public void OnRelayTriggerEnter(Collider other)
         {
+            if (!_initialized || _caught || _missed || _hasBecomeGroundGift)
+                return;
+
+            if (!useCatchZoneCatch)
+                return;
+
+            if (other.CompareTag("Player"))
+                Catch();
         }
 
         public void OnRelayTriggerExit(Collider other)

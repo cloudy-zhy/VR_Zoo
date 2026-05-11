@@ -73,6 +73,13 @@ namespace Core.Event
             _eventSlotsPayload.Remove(eventName);
         }
 
+        public void Unregister()
+        {
+            _eventSlots.Clear();
+            _eventSlotsPayload.Clear();
+            _payloadTypes.Clear();
+        }
+
         public void Broadcast(string eventName)
         {
             if (_eventSlots.TryGetValue(eventName, out var slot))

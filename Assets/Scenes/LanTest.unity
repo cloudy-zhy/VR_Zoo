@@ -1121,6 +1121,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1915316560}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &482392105 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4157317995870338101, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1180355210}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &514807489
 GameObject:
   m_ObjectHideFlags: 11
@@ -1351,6 +1357,12 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!4 &554685881 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1493562960551366086, guid: e9b56588b5bce02438275de01097f0b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1846106935}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &679035722 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1493562960645992804, guid: e9b56588b5bce02438275de01097f0b3,
@@ -2171,6 +2183,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pterosaurParent: {fileID: 1915316560}
   pterosaurGiftPrefabKey: PterosaurGift
+  catchZone: {fileID: 482392105}
+  useCatchZoneCatch: 1
   scoreToAdvanced: 100
   scoreToStable: 400
   scoreToRainbow: 800
@@ -2221,7 +2235,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1100006275}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27637ac9a8beda14f929fc492fe350eb, type: 3}
   m_Name: 
@@ -2242,7 +2256,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3db7d3eba175f94479c7bfb84daca6e7, type: 2}
   placeholderFruitPoolKey: FruitSlash.PlaceholderFruit
   placeholderHalfPoolKey: FruitSlash.PlaceholderHalf
-  autoStart: 1
   flightTimeMultiplier: 0.3
   tutorialEndCutCount: 5
   advancedEndCutCount: 18
@@ -2257,6 +2270,80 @@ MonoBehaviour:
   emptyWavesToSlowDown: 2
   successCutsToRecover: 3
   debugLog: 1
+--- !u!1001 &1180355210
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 554685881}
+    m_Modifications:
+    - target: {fileID: 4157317995870338101, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_Name
+      value: PterosaurGiftCatchZone
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d, type: 3}
+--- !u!4 &1180355211 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4157317995870338104, guid: 17af1b5f7a2341b0ab5b2f2cd461fd9d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1180355210}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1214760002
 GameObject:
   m_ObjectHideFlags: 0
@@ -3818,6 +3905,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1493562960551366086, guid: e9b56588b5bce02438275de01097f0b3,
+        type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 1180355211}
     - targetCorrespondingSourceObject: {fileID: 1493562959077437829, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
       insertIndex: -1
