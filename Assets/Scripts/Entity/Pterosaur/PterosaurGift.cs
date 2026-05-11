@@ -1,14 +1,11 @@
-using Core.Event;
-using Core.Pool;
 using Core.Utils;
-using Cysharp.Threading.Tasks;
 using Manager;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Entity.Pterosaur
 {
-    public class PterosaurGift : PoolableObject, IRigidbodyRelayReceiver
+    public class PterosaurGift : MonoBehaviour, IRigidbodyRelayReceiver
     {
         #region SerializedFieldVariables
 
@@ -56,9 +53,8 @@ namespace Entity.Pterosaur
             _it.firstHoverEntered.RemoveListener(OnFirstHoverEntered);
         }
 
-        public override void OnSpawnFromPool()
+        public void OnEnable()
         {
-            base.OnSpawnFromPool();
             _bodyRelay.transform.localPosition = Vector3.zero;
             _bodyRelay.transform.localRotation = Quaternion.identity;
         }
@@ -115,7 +111,7 @@ namespace Entity.Pterosaur
             _caught = true;
             _it.enabled = false;
             GameManager.Event.Broadcast("Gift.Caught", _type);
-            PoolManager.I.Return(this);
+            GameManager.Pool.Return(this);
             groundMark.SetActive(false);
         }
 

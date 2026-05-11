@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a57717bd64f4384a17ba1765a799cbd, type: 3}
+  m_Script: {fileID: 11500000, guid: 8adbf4e13f4157a4c814f02a2b2c37bd, type: 3}
   m_Name: FruitSlash_TestHalfPool
   m_EditorClassIdentifier: 
-  key: FruitSlash.PlaceholderHalf
+  poolName: FruitSlash.PlaceholderHalf
+  step: 8
+  capacity: 96
+  prewarm: 24
+  useAddressable: 0
   prefab: {fileID: 7594181046037159141, guid: d21c5f82a2d44a5448fbf3a9e883790e, type: 3}
-  initialSize: 24
-  autoExpand: 1
-  maxSize: 96

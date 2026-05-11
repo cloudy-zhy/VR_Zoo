@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Core.Pool.PoolObjects
 {
-    public class POParticle : PoolableObject
+    public class PooledParticle : MonoBehaviour
     {
         [SerializeField] private ParticleSystem ps;
         public ParticleSystem ParticleSystem => ps;

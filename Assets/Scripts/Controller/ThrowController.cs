@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Manager;
 using UnityEngine;
 using Core.Event;
-using Core.Pool;
 using Entity.Pterosaur;
 
 namespace Controller
@@ -176,12 +175,12 @@ namespace Controller
             Vector3 throwPosition = context.Payload;
             PterosaurGiftType type = DecidePterosaurGiftType();
 
-            PterosaurGift gift = PoolManager.I.Get<PterosaurGift>(
+            PterosaurGift gift = GameManager.Pool.Rent<PterosaurGift>(
                 pterosaurGiftPrefabKey,
                 throwPosition
             );
             
-            gift.Initialize(type, GetAirDrag(type), GetInitialVelocity(type));
+            gift?.Initialize(type, GetAirDrag(type), GetInitialVelocity(type));
         }
 
         private void OnGiftCaught(EventContext<PterosaurGiftType> context)

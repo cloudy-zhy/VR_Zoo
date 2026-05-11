@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 55266583}
   - component: {fileID: 55266582}
-  - component: {fileID: 55266584}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -168,18 +167,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &55266584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 55266581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30a84503578845d2b96e59ca8d715485, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!21 &74537566
 Material:
   serializedVersion: 8
@@ -313,7 +300,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.4, g: 1, b: 0.65, a: 1}
-    - _Color: {r: 0.39999998, g: 1, b: 0.65, a: 1}
+    - _Color: {r: 0.4, g: 1, b: 0.65, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
@@ -2147,7 +2134,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.4, g: 1, b: 0.65, a: 1}
-    - _Color: {r: 0.39999998, g: 1, b: 0.65, a: 1}
+    - _Color: {r: 0.4, g: 1, b: 0.65, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
@@ -2160,8 +2147,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1100006278}
+  - component: {fileID: 1100006279}
   - component: {fileID: 1100006277}
-  - component: {fileID: 1100006276}
+  - component: {fileID: 1100006280}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -2169,22 +2157,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1100006276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1100006275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f88e332dfdbb4879a91f4c6121832d7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  group: {fileID: 0}
-  poolConfigs:
-  - {fileID: 11400000, guid: 112ddac9d292852408433afa6ebb0f41, type: 2}
-  - {fileID: 11400000, guid: 26392c69674a43349b13b93a73378720, type: 2}
 --- !u!114 &1100006277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2192,7 +2164,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1100006275}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d16e5081ef0e4b819553f587b5c4239b, type: 3}
   m_Name: 
@@ -2225,37 +2197,66 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1120092889
-GameObject:
+--- !u!114 &1100006279
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1120092890}
-  m_Layer: 0
-  m_Name: FruitSlash LanTest Bootstrap
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1120092890
-Transform:
+  m_GameObject: {fileID: 1100006275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b79084677f34a58ac80e8ff2e4945cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  group: {fileID: 0}
+  poolData:
+  - {fileID: 11400000, guid: 112ddac9d292852408433afa6ebb0f41, type: 2}
+  - {fileID: 11400000, guid: 26392c69674a43349b13b93a73378720, type: 2}
+  - {fileID: 11400000, guid: b2ea81fcb854f9041bd7ef543357f27b, type: 2}
+--- !u!114 &1100006280
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1120092889}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 1100006275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27637ac9a8beda14f929fc492fe350eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreController: {fileID: 128287658}
+  blades:
+  - {fileID: 1622610058}
+  - {fileID: 1269064347}
+  spawnPoint: {fileID: 1847164571}
+  targetCenter: {fileID: 113343595}
+  longNeckAnimator: {fileID: 0}
+  fruitConfigs:
+  - {fileID: 11400000, guid: 4ad35b718239d814e85274b23afbebb0, type: 2}
+  - {fileID: 11400000, guid: fcee337b0b4dbfc4dbfdff09df0a9020, type: 2}
+  - {fileID: 11400000, guid: 71debeb96acb1f04db91bf6960d9c941, type: 2}
+  - {fileID: 11400000, guid: 0d39a1334092cbd47956d6665b9360d4, type: 2}
+  - {fileID: 11400000, guid: d5b3d6160a3f6974cb0c867a3d113c6e, type: 2}
+  - {fileID: 11400000, guid: 3db7d3eba175f94479c7bfb84daca6e7, type: 2}
+  placeholderFruitPoolKey: FruitSlash.PlaceholderFruit
+  placeholderHalfPoolKey: FruitSlash.PlaceholderHalf
+  autoStart: 1
+  flightTimeMultiplier: 0.3
+  tutorialEndCutCount: 5
+  advancedEndCutCount: 18
+  rainbowTriggerCutCount: 30
+  rareInterval: 20
+  tutorialHalfWidth: 0
+  advancedHalfWidth: 1.2
+  stableHalfWidth: 1.5
+  targetHeight: 1.25
+  missWindow: 10
+  missesToSlowDown: 3
+  emptyWavesToSlowDown: 2
+  successCutsToRecover: 3
+  debugLog: 1
 --- !u!1 &1214760002
 GameObject:
   m_ObjectHideFlags: 0
@@ -2552,7 +2553,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1269064347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2758,12 +2759,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1280338854}
   m_Layer: 0
-  m_Name: FruitSlash Test Setup
+  m_Name: FruitSlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1280338854
 Transform:
   m_ObjectHideFlags: 0
@@ -2779,7 +2780,6 @@ Transform:
   m_Children:
   - {fileID: 1847164571}
   - {fileID: 113343595}
-  - {fileID: 2101558330}
   - {fileID: 128287657}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3312,7 +3312,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1622610054
 Transform:
   m_ObjectHideFlags: 0
@@ -3874,7 +3874,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1915316560
 Transform:
   m_ObjectHideFlags: 0
@@ -3894,81 +3894,6 @@ Transform:
   - {fileID: 431596771}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2101558329
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2101558330}
-  - component: {fileID: 2101558331}
-  m_Layer: 0
-  m_Name: FruitSlash Director
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2101558330
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2101558329}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1280338854}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2101558331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2101558329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27637ac9a8beda14f929fc492fe350eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scoreController: {fileID: 128287658}
-  blades:
-  - {fileID: 1622610058}
-  - {fileID: 1269064347}
-  spawnPoint: {fileID: 1847164571}
-  targetCenter: {fileID: 113343595}
-  longNeckAnimator: {fileID: 0}
-  fruitConfigs:
-  - {fileID: 11400000, guid: 4ad35b718239d814e85274b23afbebb0, type: 2}
-  - {fileID: 11400000, guid: fcee337b0b4dbfc4dbfdff09df0a9020, type: 2}
-  - {fileID: 11400000, guid: 71debeb96acb1f04db91bf6960d9c941, type: 2}
-  - {fileID: 11400000, guid: 0d39a1334092cbd47956d6665b9360d4, type: 2}
-  - {fileID: 11400000, guid: d5b3d6160a3f6974cb0c867a3d113c6e, type: 2}
-  - {fileID: 11400000, guid: 3db7d3eba175f94479c7bfb84daca6e7, type: 2}
-  placeholderFruitPoolKey: FruitSlash.PlaceholderFruit
-  placeholderHalfPoolKey: FruitSlash.PlaceholderHalf
-  autoStart: 1
-  flightTimeMultiplier: 0.3
-  tutorialEndCutCount: 5
-  advancedEndCutCount: 18
-  rainbowTriggerCutCount: 30
-  rareInterval: 20
-  tutorialHalfWidth: 0
-  advancedHalfWidth: 1.2
-  stableHalfWidth: 1.5
-  targetHeight: 1.25
-  missWindow: 10
-  missesToSlowDown: 3
-  emptyWavesToSlowDown: 2
-  successCutsToRecover: 3
-  debugLog: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3982,7 +3907,6 @@ SceneRoots:
   - {fileID: 55266583}
   - {fileID: 1238568998}
   - {fileID: 1915316560}
-  - {fileID: 522951949}
-  - {fileID: 1100006278}
-  - {fileID: 1120092890}
   - {fileID: 1280338854}
+  - {fileID: 1100006278}
+  - {fileID: 522951949}

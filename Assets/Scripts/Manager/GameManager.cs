@@ -1,4 +1,5 @@
 using Core.Event;
+using Core.Pool;
 using Core.Utils;
 using UnityEngine;
 
@@ -14,5 +15,8 @@ namespace Manager
 
         private static MAudioManager _mAudioManager;
         public static MAudioManager mAudio => _mAudioManager ??= new MAudioManager(null, null, null);
+        
+        private static PoolManager _poolManager;
+        public static PoolManager Pool => _poolManager ??= new PoolManager();
     }
 }

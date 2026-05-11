@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Core.Event;
-using Core.Pool;
 using Manager;
 using UnityEngine;
 
@@ -25,7 +24,6 @@ namespace FruitSlash
         [SerializeField] private string placeholderHalfPoolKey = "FruitSlash.PlaceholderHalf";
 
         [Header("节奏")]
-        [SerializeField] private bool autoStart;
         [Tooltip("果实飞行时间倍率。数值越大飞得越慢，推荐过快时调到 1.25-1.6。")]
         [SerializeField] private float flightTimeMultiplier = 1f;
         [SerializeField] private int tutorialEndCutCount = 5;
@@ -73,13 +71,6 @@ namespace FruitSlash
             BuildFruitConfigMap();
         }
 
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            BuildFruitConfigMap();
-        }
-#endif
-
         private void OnEnable()
         {
             GameManager.Event.Register<FruitSlashFruit>(FruitSlashEvents.InternalFruitCut, OnFruitCut);
@@ -92,21 +83,18 @@ namespace FruitSlash
             GameManager.Event.Unregister<FruitSlashFruit>(FruitSlashEvents.InternalFruitMissed, OnFruitMissed);
         }
 
-        private void Start()
-        {
-            if (autoStart)
-                StartGame();
-        }
-
         /// <summary>
         /// 开始小游戏。
         /// </summary>
+        [ContextMenu("StartGame")]
         public void StartGame()
         {
             if (IsRunning)
                 return;
-
             IsRunning = true;
+            foreach (var blade in blades)
+                blade.gameObject.SetActive(true);
+
             _completed = false;
             _rainbowSpawned = false;
             _pendingRareFruit = false;
@@ -134,9 +122,12 @@ namespace FruitSlash
         /// <summary>
         /// 停止小游戏并停止继续生成果实。
         /// </summary>
+        [ContextMenu("StopGame")]
         public void StopGame()
         {
             IsRunning = false;
+            foreach (var blade in blades)
+                blade.gameObject.SetActive(false);
             if (_spawnRoutine != null)
             {
                 StopCoroutine(_spawnRoutine);
@@ -315,7 +306,10 @@ namespace FruitSlash
             float flightTime = GetFlightTime(CurrentStage, slowWave, fastTrajectory, config);
             Vector3 velocity = CalculateBallisticVelocity(start, target, flightTime);
 
-            FruitSlashFruit fruit = GetFruitFromPool(config, start);
+            string poolName = config != null && !string.IsNullOrEmpty(config.fruitPoolKey)
+                ? config.fruitPoolKey
+                : placeholderFruitPoolKey;
+            FruitSlashFruit fruit = GameManager.Pool.Rent<FruitSlashFruit>(poolName, start, Quaternion.identity);
             if (fruit == null)
                 return;
 
@@ -329,21 +323,6 @@ namespace FruitSlash
                 placeholderHalfPoolKey
             );
             _activeFruits.Add(fruit);
-        }
-
-        private FruitSlashFruit GetFruitFromPool(FruitSlashFruitConfigSO config, Vector3 position)
-        {
-            string poolKey = config != null && !string.IsNullOrEmpty(config.fruitPoolKey)
-                ? config.fruitPoolKey
-                : placeholderFruitPoolKey;
-
-            if (PoolManager.I == null || !PoolManager.I.HasPool(poolKey))
-            {
-                Debug.LogError($"[FruitSlashDirector] Fruit pool '{poolKey}' is not registered.");
-                return null;
-            }
-
-            return PoolManager.I.Get<FruitSlashFruit>(poolKey, position, Quaternion.identity);
         }
 
         private Vector3 GetTargetPosition(bool slowWave)

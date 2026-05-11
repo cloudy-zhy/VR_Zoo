@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using Core.Pool;
 using Core.Pool.PoolObjects;
 using DG.Tweening;
+using Manager;
 using UnityEngine;
 
 namespace PokeBall
@@ -186,9 +186,10 @@ namespace PokeBall
             if (string.IsNullOrEmpty(targetVfxPrefabKey))
                 return;
             
-            POParticle particle = PoolManager.I.Get<POParticle>(targetVfxPrefabKey, position, rotation, parent);
+            PooledParticle particle = GameManager.Pool.Rent<PooledParticle>(targetVfxPrefabKey, position, rotation, parent);
             particle?.ParticleSystem?.Play();
-            PoolManager.I.Return(particle, particle?.Duration);
+            if (particle != null)
+                GameManager.Pool.Return(particle, particle.Duration);
         }
     }
 }

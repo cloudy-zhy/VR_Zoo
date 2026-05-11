@@ -6,7 +6,7 @@ namespace FruitSlash
     /// <summary>
     /// FruitSlash 临时池化对象。只负责回池时清理 Rigidbody 和粒子状态，延迟回池使用项目已有 PoolManager/PoolableObject API。
     /// </summary>
-    public class FruitSlashPooledObject : PoolableObject
+    public class FruitSlashPooledObject : MonoBehaviour
     {
         private Rigidbody _rb;
         private ParticleSystem[] _particles;
@@ -17,10 +17,8 @@ namespace FruitSlash
             _particles = GetComponentsInChildren<ParticleSystem>(true);
         }
 
-        public override void OnSpawnFromPool()
+        public void OnEnable()
         {
-            base.OnSpawnFromPool();
-
             CancelInvoke();
             if (_rb != null)
             {
@@ -39,7 +37,7 @@ namespace FruitSlash
             }
         }
 
-        public override void OnReturnToPool()
+        public void OnDisable()
         {
             CancelInvoke();
 
@@ -55,8 +53,6 @@ namespace FruitSlash
                 if (_particles[i] != null)
                     _particles[i].Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             }
-
-            base.OnReturnToPool();
         }
     }
 }

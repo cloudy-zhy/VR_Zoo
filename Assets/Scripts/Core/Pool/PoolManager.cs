@@ -3,272 +3,160 @@ using Core.Utils;
 using Cysharp.Threading.Tasks;
 using Manager;
 using UnityEngine;
-using UnityEngine.Pool;  // Unity 2021+ 官方对象池
 
 namespace Core.Pool
 {
-    /// <summary>
-    /// 通用对象池管理器。
-    ///
-    /// 架构说明：
-    ///   - 内部使用 UnityEngine.Pool.ObjectPool&lt;PoolableObject&gt; 作为每个 key 的池实现，
-    ///     获得官方维护的 collectionCheck（防重复归还）、onDestroy 等保障；
-    ///   - 本类负责 ObjectPool 本身不提供的三件事：
-    ///       1. 多 key 分类管理（一个 Manager 管所有类型）
-    ///       2. Inspector 可视化配置（PoolConfig）
-    ///       3. Hierarchy 层级容器（保持场景整洁）
-    ///
-    /// 调用示例：
-    ///   PoolManager.I.Get("FloatingText")
-    ///   PoolManager.I.Get&lt;FloatingTextObject&gt;("FloatingText")
-    ///   PoolManager.I.Return(obj)
-    /// </summary>
-    public class PoolManager : Singleton<PoolManager>
+    public class PoolManager
     {
-        private List<PoolConfigSO> poolConfigs = new();
+        private readonly Transform _poolRootTransform;
+        public Dictionary<string, GameObjectPool> PoolDict { get; } = new();
 
-        #region PrivateField
+        public PoolManager()
+        {
+            GameObject root = new GameObject("===Pools===");
+            _poolRootTransform = root.transform;
+        }
 
-        // key → UnityEngine.Pool.ObjectPool（真正的池逻辑在这里）
-        private readonly Dictionary<string, ObjectPool<PoolableObject>> _pools      = new();
-        // key → 配置缓存（供 createFunc 闭包使用）
-        private readonly Dictionary<string, PoolConfigSO>                 _configs    = new();
-        // key → Hierarchy 层级容器（场景层级整洁）
-        private readonly Dictionary<string, Transform>                  _containers = new();
+        #region Register
+        
+        public async UniTask Register(string poolName, 
+            int step = 4, int capacity = -1, int prewarm = 0, GameObject prefab = null)
+        {
+            if (PoolDict.ContainsKey(poolName))
+                return;
+            var pool = new GameObjectPool();
+            await pool.Initialize(poolName, _poolRootTransform, step, capacity, prewarm, prefab);
+            PoolDict.Add(poolName, pool);
+            GameManager.Event.Broadcast(PoolEvents.Registered, poolName);
+        }
 
+        public async UniTask Register(PoolDataSO poolData)
+        {
+            await Register(poolData.poolName, poolData.step, poolData.capacity, poolData.prewarm, 
+                poolData.useAddressable ? null : poolData.prefab);
+        }
+        
         #endregion
 
-        public void SetupPool(PoolConfigGroupSO group)
-        {
-            if (group != null)
-                SetupPool(group.poolConfigs);
-        }
+        #region Unregister
 
-        public void SetupPool(List<PoolConfigSO> configs)
+        public void Unregister(string poolName)
         {
-            foreach (var pool in _pools.Values)
-                pool.Dispose();
-            _pools.Clear();
-            
-            if (configs is { Count: > 0 })
-                poolConfigs = configs;
-            foreach (var cfg in poolConfigs)
-                RegisterPool(cfg);
-        }
-
-        #region PublicMethod
-
-        /// <summary>
-        /// 运行时动态注册一个对象池。
-        /// Inspector 中配置的池会在 Awake 时自动注册，无需手动调用。
-        /// </summary>
-        public void RegisterPool(PoolConfigSO config)
-        {
-            if (_pools.ContainsKey(config.key))
+            if (PoolDict.TryGetValue(poolName, out var pool))
             {
-                Debug.LogWarning($"[PoolManager] Pool '{config.key}' 已存在，跳过注册。");
-                return;
+                pool.Destroy();
+                PoolDict.Remove(poolName);
+                GameManager.Event.Broadcast(PoolEvents.Unregistered, poolName);
             }
-
-            // 层级容器
-            var container = new GameObject($"[Pool] {config.key}");
-            container.transform.SetParent(transform);
-            _containers[config.key] = container.transform;
-            _configs[config.key]    = config;
-
-            // ── 创建 UnityEngine.Pool.ObjectPool ──────────────────────────
-            // 四个回调完整覆盖对象池生命周期
-            var pool = new ObjectPool<PoolableObject>(
-
-                // 池耗尽时创建新实例
-                createFunc: () => CreateInstance(config.key),
-
-                // 从池中取出时
-                actionOnGet: obj =>
-                {
-                    obj.transform.SetParent(null);
-                    obj.OnSpawnFromPool();
-                },
-
-                // 归还至池时
-                actionOnRelease: obj =>
-                {
-                    obj.transform.SetParent(_containers[config.key]);
-                    obj.OnReturnToPool();
-                },
-
-                // 超出 maxSize 时销毁多余对象（ObjectPool 内部调用）
-                actionOnDestroy: obj =>
-                {
-                    if (obj != null) Destroy(obj.gameObject);
-                },
-
-                // Debug 版开启重复归还检测；Release 版 Unity 自动关闭，无性能损耗
-                collectionCheck: true,
-
-                defaultCapacity: config.initialSize,
-                maxSize:         config.autoExpand ? config.maxSize : config.initialSize
-            );
-
-            // 预热：提前取出再归还，让 ObjectPool 内部填满初始容量
-            var warmupBuffer = new PoolableObject[config.initialSize];
-            for (int i = 0; i < config.initialSize; i++)
-                warmupBuffer[i] = pool.Get();
-            foreach (var obj in warmupBuffer)
-                pool.Release(obj);
-
-            _pools[config.key] = pool;
         }
 
-        /// <summary>
-        /// 从指定池中取出一个对象（激活状态）。
-        /// </summary>
-        public PoolableObject Get(string key, 
-            Vector3? position = null, 
-            Quaternion? rotation = null, 
-            Transform parent = null)
+        public void Unregister()
         {
-            if (!_pools.TryGetValue(key, out var pool))
+            foreach (var pool in PoolDict.Values)
             {
-                Debug.LogError($"[PoolManager] Pool '{key}' 不存在。" +
-                               "请先在 Inspector 中配置或调用 RegisterPool()。");
-                return null;
+                pool.Destroy();
             }
-            var obj = pool.Get();
-            obj.PoolKey = key;
-            obj.transform.SetParent(parent ?? transform, false);
-            obj.transform.localPosition = position ?? Vector3.zero;
-            obj.transform.localRotation = rotation ?? Quaternion.identity;
-            return obj;
+            PoolDict.Clear();
+            GameManager.Event.Broadcast(PoolEvents.Cleared);
         }
 
-        /// <summary>
-        /// 泛型版本，取出后直接转型，省去外部强转。
-        /// </summary>
-        public T Get<T>(string key, 
-            Vector3? position = null, 
-            Quaternion? rotation = null, 
-            Transform parent = null)
-            where T : PoolableObject
+        #endregion
+        
+        #region Rent
+        
+        public GameObject Rent(string poolName,
+            Vector3? position = null, Quaternion? rotation = null, Transform parent = null)
         {
-            var obj = Get(key, position, rotation, parent);
-            if (obj == null) return null;
-
-            if (obj is T typed) return typed;
-
-            Debug.LogError($"[PoolManager] Pool '{key}' 中的对象无法转型为 {typeof(T).Name}。");
-            Return(obj);
+            if (PoolDict.TryGetValue(poolName, out var pool) && pool.TryRent(out var gameObject, parent))
+            {
+                if (position.HasValue) gameObject.transform.position = position.Value;
+                if (rotation.HasValue) gameObject.transform.rotation = rotation.Value;
+                GameManager.Event.Broadcast(PoolEvents.Rented, poolName);
+                return gameObject;
+            }
             return null;
         }
 
-        /// <summary>
-        /// 将对象归还至对应池（自动读取 PoolKey，推荐此重载）。
-        /// </summary>
-        public void Return(PoolableObject obj)
+        public bool TryRent(string poolName, out GameObject gameObject,
+            Vector3? position = null, Quaternion? rotation = null, Transform parent = null)
         {
-            if (obj == null) return;
-
-            if (string.IsNullOrEmpty(obj.PoolKey))
-            {
-                Debug.LogError($"[PoolManager] {obj.name} 的 PoolKey 为空，无法归还。" +
-                               "请确保对象通过 PoolManager.I.Get() 取出。");
-                return;
-            }
-            Return(obj.PoolKey, obj);
+            return (gameObject = Rent(poolName, position, rotation, parent)).IsNotNull();
         }
 
-        /// <summary>
-        /// 将对象归还至指定池（显式传入 key）。
-        /// </summary>
-        public void Return(string key, PoolableObject obj)
+        public T Rent<T>(string poolName,
+            Vector3? position = null, Quaternion? rotation = null, Transform parent = null) where T : Component
         {
-            if (obj == null) return;
-
-            if (!_pools.TryGetValue(key, out var pool))
+            if (TryRent(poolName, out var gameObject, position, rotation, parent) && gameObject.TryGetComponent(out T component))
             {
-                Debug.LogError($"[PoolManager] 归还失败：Pool '{key}' 不存在。对象将被直接销毁。");
-                Destroy(obj.gameObject);
-                return;
+                return component;
             }
-            
-            // obj.transform.SetParent(transform, false);
-            obj.transform.localPosition = Vector3.zero;
-            obj.transform.localRotation = Quaternion.identity;
-            // obj.transform.localScale = Vector3.one;
-            
-            pool.Release(obj);
+            return null;
+        }
+
+        public bool TryRent<T>(string poolName, out T component,
+            Vector3? position = null, Quaternion? rotation = null, Transform parent = null) where T : Component
+        {
+            return (component = Rent<T>(poolName, position, rotation, parent)) != null;
         }
         
-        /// <summary>
-        /// 延迟一段时间后，将对象归还至对应池
-        /// </summary>
-        public async void Return(PoolableObject obj, float? t)
+        public async UniTaskVoid Rent(string poolName, float duration,
+            Vector3? position = null, Quaternion? rotation = null, Transform parent = null)
         {
-            if (obj == null) return;
-
-            if (string.IsNullOrEmpty(obj.PoolKey))
+            if (PoolDict.TryGetValue(poolName, out var pool) && pool.TryRent(out var gameObject, parent))
             {
-                Debug.LogError($"[PoolManager] {obj.name} 的 PoolKey 为空，无法归还。" +
-                               "请确保对象通过 PoolManager.I.Get() 取出。");
-                return;
+                if (position.HasValue) gameObject.transform.position = position.Value;
+                if (rotation.HasValue) gameObject.transform.rotation = rotation.Value;
+                GameManager.Event.Broadcast(PoolEvents.Rented, poolName);
+                await UniTask.WaitForSeconds(duration);
+                // 等待的这会，可能池/物体被销毁了，物体不会无端销毁，关心池因为场景切换注销的问题
+                if (!pool.IsDestroyed)
+                {
+                    if (pool.Return(gameObject))
+                        GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+                }
             }
-            
-            if (t != null)
-                await UniTask.WaitForSeconds((float)t);
-            
-            Return(obj.PoolKey, obj);
         }
-
-        /// <summary>清空指定池（销毁所有闲置对象，活跃对象不受影响）。</summary>
-        public void ClearPool(string key)
-        {
-            if (_pools.TryGetValue(key, out var pool))
-                pool.Clear();
-        }
-
-        /// <summary>查询指定池当前的闲置数量（调试用）。</summary>
-        public int GetIdleCount(string key) =>
-            _pools.TryGetValue(key, out var pool) ? pool.CountInactive : 0;
-
-        /// <summary>查询指定池当前的活跃数量（调试用）。</summary>
-        public int GetActiveCount(string key) =>
-            _pools.TryGetValue(key, out var pool) ? pool.CountActive : 0;
-
-        /// <summary>查询指定 key 的对象池是否已注册。</summary>
-        public bool HasPool(string key) =>
-            !string.IsNullOrEmpty(key) && _pools.ContainsKey(key);
+        
         #endregion
 
-        // ─── Singleton 清理 ──────────────────────────────────────────────────
+        #region Return
 
-        protected override void OnSingletonDestroyed()
+        public void Return(string poolName, GameObject gameObject)
         {
-            // ObjectPool 实现了 IDisposable，确保原生内存正确释放
-            foreach (var pool in _pools.Values)
-                pool.Dispose();
-            _pools.Clear();
+            if (gameObject.IsNotNull() && PoolDict.TryGetValue(poolName, out var pool))
+            {
+                if (pool.Return(gameObject))
+                    GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+            }
         }
 
-        #region PrivateMethod
-
-        private PoolableObject CreateInstance(string key)
+        public async UniTaskVoid Return(string poolName, GameObject gameObject, float duration)
         {
-            var cfg = _configs[key];
-            var go  = Instantiate(cfg.prefab, _containers[key]);
-            // Debug.Log("***");
-
-            var poolable = go.GetComponent<PoolableObject>();
-            if (poolable == null)
+            if (gameObject.IsNotNull() && PoolDict.TryGetValue(poolName, out var pool))
             {
-                Debug.LogWarning($"[PoolManager] 预制体 '{cfg.prefab.name}' 缺少 PoolableObject 组件，" +
-                                 "已自动添加基类。建议在预制体上手动挂载对应子类。");
-                poolable = go.AddComponent<PoolableObject>();
+                await UniTask.WaitForSeconds(duration);
+                // 等待的这会，可能池/物体被销毁了，物体不会无端销毁，关心池因为场景切换注销的问题
+                if (!pool.IsDestroyed)
+                {
+                    if (pool.Return(gameObject))
+                        GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+                }
             }
-
-            poolable.PoolKey = key;
-            return poolable;
         }
         
+        public void Return<T>(string poolName, T component) where T : Component 
+            => Return(poolName, component.gameObject);
+        public void Return<T>(string poolName, T component, float duration) where T : Component 
+            => Return(poolName, component.gameObject, duration).Forget();
+        public void Return(GameObject gameObject) 
+            => Return(gameObject.name, gameObject);
+        public void Return(GameObject gameObject, float duration) 
+            => Return(gameObject.name, gameObject, duration).Forget();
+        public void Return<T>(T component) where T : Component 
+            => Return(component.gameObject.name, component.gameObject);
+        public void Return<T>(T component, float duration) where T : Component
+            => Return(component.gameObject.name, component, duration);
+
         #endregion
     }
 }

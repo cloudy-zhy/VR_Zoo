@@ -94,7 +94,7 @@ FruitSlash 当前测试资源位于：
 - 七彩巨大果串需要累计 3 次切中后才完成。
 - 完整落地或低于 `failSafeY` 时通知失误。
 
-当前已接入项目 `PoolManager`。占位果实和占位半果通过 `LanTest.unity` 中 `Controller/PoolConfigBinder.poolConfigs` 的独立 `PoolConfigSO` 注册，不使用 `PoolConfigGroupSO`。
+当前已接入项目重构后的 `PoolManager`。占位果实和占位半果通过 `LanTest.unity` 中 `Controller/PoolDataBinder.poolData` 的独立 `PoolDataSO` 注册，不使用 `PoolDataGroupSO`。
 
 ### `FruitSlashScoreController`
 
@@ -193,9 +193,8 @@ FruitSlash 当前测试资源位于：
 - `FruitSlashFruit`
 - `Rigidbody`
 - `Collider`
-- `PoolableObject`，或由 `FruitSlashFruit` 继承提供
 
-正式半果/VFX 池对应的预制体建议挂 `FruitSlashPooledObject`，用于回池时重置 Rigidbody 和粒子状态。延迟回池直接使用项目已有 `PoolManager.I.Return(obj, delay)`，不要重复实现新的延迟回池逻辑。
+正式半果/VFX 池对应的预制体建议挂 `FruitSlashPooledObject`，用于回池时重置 Rigidbody 和粒子状态。延迟回池直接使用项目已有 `GameManager.Pool.Return(obj, delay)`，不要重复实现新的延迟回池逻辑。
 
 ## 注意事项
 
@@ -207,16 +206,16 @@ FruitSlash 当前测试资源位于：
 - 光刃和拖影会在运行时创建兜底材质，避免 TrailRenderer 未分配材质时显示紫色。
 - `FruitSlashBlade.fruitMask` 默认是 `~0`，会查询所有 Layer；后续正式化时建议建立专用 Fruit layer 降低误判和查询成本。
 - 当前占位果实和占位半果已使用 `PoolManager`，默认 key 为 `FruitSlash.PlaceholderFruit` 和 `FruitSlash.PlaceholderHalf`。
-- 正式果实、正式半果和 VFX 如果使用自定义 key，需要先通过 `PoolConfigSO` 注册对象池。
-- `LanTest.unity` 中 FruitSlash 测试池走 `PoolConfigBinder.poolConfigs` 直接列表，不使用 `PoolConfigGroupSO`。
+- 正式果实、正式半果和 VFX 如果使用自定义 key，需要先通过 `PoolDataSO` 注册对象池。
+- `LanTest.unity` 中 FruitSlash 测试池走 `PoolDataBinder.poolData` 直接列表，不使用 `PoolDataGroupSO`。
 - `FruitSlashScoreController` 当前使用 `TextMeshPro` 世界空间文本，未做复杂动画和 Billboard，正式 UI 需要补充朝向玩家和动效。
 - `LanTest.unity` 中已有一个与本模块无关的 `Prefab Indexer` 缺失脚本问题，当前不处理。
 
 ## 后续开发建议
 
 - 完善对象池配置：
-  - 将正式果实、半果、果汁 VFX、火花 VFX、飘分 UI 加入独立 `PoolConfigSO`。
-  - 保持延迟回池使用 `PoolManager.I.Return(obj, delay)` 或 `PoolableObject.ReturnToPoolDelayed(delay)`。
+  - 将正式果实、半果、果汁 VFX、火花 VFX、飘分 UI 加入独立 `PoolDataSO`。
+  - 保持延迟回池使用 `GameManager.Pool.Return(obj, delay)`。
 - 完善正式资源：
   - 替换基础 3D Object 占位果实。
   - 为每种果实制作完整体、半果、断面材质、粒子和音效。

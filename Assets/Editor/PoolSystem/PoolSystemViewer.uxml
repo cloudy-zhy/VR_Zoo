@@ -1,0 +1,25 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement class="pool-viewer">
+        <uie:Toolbar class="pool-toolbar">
+            <ui:Label text="Pool System Viewer" class="pool-toolbar-title" />
+            <ui:VisualElement class="toolbar-spacer" />
+            <uie:ToolbarButton name="RefreshButton" text="刷新" />
+        </uie:Toolbar>
+
+        <ui:Label name="NoticeLabel" class="notice-label" />
+        <ui:Label name="StatusLabel" class="status-label" />
+
+        <ui:VisualElement class="pool-row pool-header">
+            <ui:Label text="Pool Name" class="pool-cell pool-name" />
+            <ui:Label text="Prefab" class="pool-cell pool-prefab" />
+            <ui:Label text="Idle" class="pool-cell pool-number" />
+            <ui:Label text="Rented" class="pool-cell pool-number" />
+            <ui:Label text="Total" class="pool-cell pool-number" />
+            <ui:Label text="Capacity" class="pool-cell pool-capacity" />
+            <ui:Label text="Step" class="pool-cell pool-number" />
+            <ui:Label text="Root" class="pool-cell pool-root" />
+        </ui:VisualElement>
+
+        <ui:ListView name="PoolList" class="pool-list" />
+    </ui:VisualElement>
+</ui:UXML>

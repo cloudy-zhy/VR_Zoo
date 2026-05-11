@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="True">
+    <ui:VisualElement class="pool-row pool-item">
+        <ui:Label name="PoolName" class="pool-cell pool-name" />
+        <ui:Label name="Prefab" class="pool-cell pool-prefab" />
+        <ui:Label name="Idle" class="pool-cell pool-number" />
+        <ui:Label name="Rented" class="pool-cell pool-number" />
+        <ui:Label name="Total" class="pool-cell pool-number" />
+        <ui:Label name="Capacity" class="pool-cell pool-capacity" />
+        <ui:Label name="Step" class="pool-cell pool-number" />
+        <ui:Label name="Root" class="pool-cell pool-root" />
+    </ui:VisualElement>
+</ui:UXML>
