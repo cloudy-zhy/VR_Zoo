@@ -27,7 +27,9 @@ namespace Core.Pool
             var pool = new GameObjectPool();
             await pool.Initialize(poolName, _poolRootTransform, step, capacity, prewarm, prefab);
             PoolDict.Add(poolName, pool);
+#if Unity_Editor
             GameManager.Event.Broadcast(PoolEvents.Registered, poolName);
+#endif
         }
 
         public async UniTask Register(PoolDataSO poolData)
@@ -46,7 +48,9 @@ namespace Core.Pool
             {
                 pool.Destroy();
                 PoolDict.Remove(poolName);
+#if Unity_Editor
                 GameManager.Event.Broadcast(PoolEvents.Unregistered, poolName);
+#endif
             }
         }
 
@@ -57,106 +61,107 @@ namespace Core.Pool
                 pool.Destroy();
             }
             PoolDict.Clear();
+#if Unity_Editor
             GameManager.Event.Broadcast(PoolEvents.Cleared);
+#endif
         }
 
         #endregion
-        
+
         #region Rent
-        
+
+        private bool TryRent(string poolName, out GameObjectPool pool, out GameObject gameObject,
+            Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default)
+        {
+            gameObject = null;
+            if (!PoolDict.TryGetValue(poolName, out pool) || !pool.TryRent(out gameObject, parent))
+                return false;
+#if Unity_Editor
+                GameManager.Event.Broadcast(PoolEvents.Rented, poolName);
+#endif
+            if (position.HasValue) gameObject.transform.position = position.Value;
+            if (rotation.HasValue) gameObject.transform.rotation = rotation.Value;
+            return true;
+        }
+
         public GameObject Rent(string poolName,
             Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default)
-        {
-            if (PoolDict.TryGetValue(poolName, out var pool) && pool.TryRent(out var gameObject, parent))
-            {
-                if (position.HasValue) gameObject.transform.position = position.Value;
-                if (rotation.HasValue) gameObject.transform.rotation = rotation.Value;
-                GameManager.Event.Broadcast(PoolEvents.Rented, poolName);
-                return gameObject;
-            }
-            return null;
-        }
+            => TryRent(poolName, out _, out var gameObject, position, rotation, parent) ? gameObject : null;
 
-        public bool TryRent(string poolName, out GameObject gameObject,
+        public async UniTaskVoid Rent(string poolName, float duration,
             Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default)
         {
-            return (gameObject = Rent(poolName, position, rotation, parent)).IsNotNull();
+            if (TryRent(poolName, out var pool, out var gameObject, position, rotation, parent))
+            {
+                await UniTask.WaitForSeconds(duration);
+                // 等待的这会，可能池/物体被销毁了，物体不会无端销毁，关心池因为场景切换注销的问题
+                if (!pool.IsDestroyed && pool.Return(gameObject))
+                {
+#if Unity_Editor
+                    GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+#endif
+                }
+            }
         }
-
+        
+        #region 语法糖
         public T Rent<T>(string poolName,
             Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default) where T : Component
         {
-            if (TryRent(poolName, out var gameObject, position, rotation, parent) && gameObject.TryGetComponent(out T component))
+            if (TryRent(poolName, out _, out var gameObject, position, rotation, parent) && 
+                gameObject.TryGetComponent(out T component))
             {
                 return component;
             }
             return null;
         }
+        public bool TryRent(string poolName, out GameObject gameObject,
+            Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default) 
+            => (gameObject = Rent(poolName, position, rotation, parent)).IsNotNull();
 
         public bool TryRent<T>(string poolName, out T component,
             Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default) where T : Component
-        {
-            return (component = Rent<T>(poolName, position, rotation, parent)) != null;
-        }
-        
-        public async UniTaskVoid Rent(string poolName, float duration,
-            Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default)
-        {
-            if (PoolDict.TryGetValue(poolName, out var pool) && pool.TryRent(out var gameObject, parent))
-            {
-                if (position.HasValue) gameObject.transform.position = position.Value;
-                if (rotation.HasValue) gameObject.transform.rotation = rotation.Value;
-                GameManager.Event.Broadcast(PoolEvents.Rented, poolName);
-                await UniTask.WaitForSeconds(duration);
-                // 等待的这会，可能池/物体被销毁了，物体不会无端销毁，关心池因为场景切换注销的问题
-                if (!pool.IsDestroyed)
-                {
-                    if (pool.Return(gameObject))
-                        GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
-                }
-            }
-        }
+            => (component = Rent<T>(poolName, position, rotation, parent)) != null;
+        #endregion
         
         #endregion
 
         #region Return
 
-        public void Return(string poolName, GameObject gameObject)
+        public void Return(GameObject gameObject, string poolName = null)
         {
-            if (gameObject.IsNotNull() && PoolDict.TryGetValue(poolName, out var pool))
+            poolName ??= gameObject.name;
+            if (gameObject.IsNotNull() && PoolDict.TryGetValue(poolName, out var pool) && pool.Return(gameObject))
             {
-                if (pool.Return(gameObject))
-                    GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+#if Unity_Editor
+                GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+#endif
             }
         }
 
-        public async UniTaskVoid Return(string poolName, GameObject gameObject, float duration)
+        public async UniTaskVoid Return(GameObject gameObject, float duration, string poolName = null)
         {
+            poolName ??= gameObject.name;
             if (gameObject.IsNotNull() && PoolDict.TryGetValue(poolName, out var pool))
             {
                 await UniTask.WaitForSeconds(duration);
                 // 等待的这会，可能池/物体被销毁了，物体不会无端销毁，关心池因为场景切换注销的问题
-                if (!pool.IsDestroyed)
+                if (!pool.IsDestroyed && pool.Return(gameObject))
                 {
-                    if (pool.Return(gameObject))
-                        GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+#if Unity_Editor
+                    GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+#endif
                 }
             }
         }
         
-        public void Return<T>(string poolName, T component) where T : Component 
-            => Return(poolName, component.gameObject);
-        public void Return<T>(string poolName, T component, float duration) where T : Component 
-            => Return(poolName, component.gameObject, duration).Forget();
-        public void Return(GameObject gameObject) 
-            => Return(gameObject.name, gameObject);
-        public void Return(GameObject gameObject, float duration) 
-            => Return(gameObject.name, gameObject, duration).Forget();
-        public void Return<T>(T component) where T : Component 
-            => Return(component.gameObject.name, component.gameObject);
-        public void Return<T>(T component, float duration) where T : Component
-            => Return(component.gameObject.name, component, duration);
-
+        #region 语法糖
+        public void Return<T>(T component, string poolName = null) where T : Component 
+            => Return(component.gameObject, poolName ?? component.gameObject.name);
+        public void Return<T>(T component, float duration, string poolName = null) where T : Component 
+            => Return(component.gameObject, duration, poolName ?? component.gameObject.name).Forget();
+        #endregion
+        
         #endregion
     }
 }

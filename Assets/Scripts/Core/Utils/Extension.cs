@@ -17,22 +17,22 @@ namespace Core.Utils
 
         public static void Return(this GameObject obj, string poolName = null)
         {
-            GameManager.Pool.Return(poolName ?? obj.name, obj);
+            GameManager.Pool.Return(obj, poolName ?? obj.name);
         }
 
         public static void Return<T>(this T component, string poolName = null) where T : Component
         {
-            GameManager.Pool.Return(poolName ?? component.gameObject.name, component);
+            GameManager.Pool.Return(component.gameObject, poolName ?? component.gameObject.name);
         }
         
         public static void Return(this GameObject obj, float duration, string poolName = null)
         {
-            GameManager.Pool.Return(poolName ?? obj.name, obj, duration).Forget();
+            GameManager.Pool.Return(obj, duration, poolName ?? obj.name).Forget();
         }
 
         public static void Return<T>(this T component, float duration, string poolName = null) where T : Component
         {
-            GameManager.Pool.Return(poolName ?? component.gameObject.name, component, duration);
+            GameManager.Pool.Return(component.gameObject, duration, poolName ?? component.gameObject.name).Forget();
         }
     }
 }
