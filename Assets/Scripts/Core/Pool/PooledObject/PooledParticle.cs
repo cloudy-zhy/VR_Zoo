@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Core.Pool.PoolObjects
@@ -18,6 +19,16 @@ namespace Core.Pool.PoolObjects
             {
                 ps.Stop();
             }
+        }
+
+        private void OnEnable()
+        {
+            ps.Play();
+        }
+
+        private void OnDisable()
+        {
+            ps.Stop();
         }
     }
 }

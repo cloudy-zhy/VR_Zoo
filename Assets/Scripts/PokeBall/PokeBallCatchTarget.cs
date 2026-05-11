@@ -133,7 +133,6 @@ namespace PokeBall
                 return;
 
             PooledParticle particle = GameManager.Pool.Rent<PooledParticle>(targetVfxPrefabKey, position, rotation, parent);
-            particle?.ParticleSystem?.Play();
             if (particle != null)
                 GameManager.Pool.Return(particle, particle.Duration);
         }

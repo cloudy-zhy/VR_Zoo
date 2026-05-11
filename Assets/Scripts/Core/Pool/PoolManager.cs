@@ -65,7 +65,7 @@ namespace Core.Pool
         #region Rent
         
         public GameObject Rent(string poolName,
-            Vector3? position = null, Quaternion? rotation = null, Transform parent = null)
+            Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default)
         {
             if (PoolDict.TryGetValue(poolName, out var pool) && pool.TryRent(out var gameObject, parent))
             {
@@ -78,13 +78,13 @@ namespace Core.Pool
         }
 
         public bool TryRent(string poolName, out GameObject gameObject,
-            Vector3? position = null, Quaternion? rotation = null, Transform parent = null)
+            Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default)
         {
             return (gameObject = Rent(poolName, position, rotation, parent)).IsNotNull();
         }
 
         public T Rent<T>(string poolName,
-            Vector3? position = null, Quaternion? rotation = null, Transform parent = null) where T : Component
+            Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default) where T : Component
         {
             if (TryRent(poolName, out var gameObject, position, rotation, parent) && gameObject.TryGetComponent(out T component))
             {
@@ -94,13 +94,13 @@ namespace Core.Pool
         }
 
         public bool TryRent<T>(string poolName, out T component,
-            Vector3? position = null, Quaternion? rotation = null, Transform parent = null) where T : Component
+            Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default) where T : Component
         {
             return (component = Rent<T>(poolName, position, rotation, parent)) != null;
         }
         
         public async UniTaskVoid Rent(string poolName, float duration,
-            Vector3? position = null, Quaternion? rotation = null, Transform parent = null)
+            Vector3? position = null, Quaternion? rotation = null, PoolParentOverride parent = default)
         {
             if (PoolDict.TryGetValue(poolName, out var pool) && pool.TryRent(out var gameObject, parent))
             {

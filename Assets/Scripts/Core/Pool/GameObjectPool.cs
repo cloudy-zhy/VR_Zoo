@@ -84,7 +84,7 @@ namespace Core.Pool
             gameObject.SetActive(false);
         }
 
-        public GameObject Rent(Transform parent = null)
+        public GameObject Rent(PoolParentOverride parent = default)
         {
             // 如果超限了，还在借，便尝试回收一些
             if (PoolQueue.Count == 0 && Capacity != -1 && Count >= Capacity)
@@ -95,10 +95,14 @@ namespace Core.Pool
                 return null;
             var gameObject = PoolQueue.Dequeue();
             gameObject.SetActive(true);
-            gameObject.transform.SetParent(parent);
-            if (parent == null)
+            // 未指定 parent 时保留池默认层级；显式传 null 时才脱离父级。
+            if (parent.IsSpecified)
             {
-                SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
+                gameObject.transform.SetParent(parent.Value);
+                if (parent.Value == null)
+                {
+                    SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
+                }
             }
             RentSet.Add(gameObject);
             _rentQueue.Enqueue(gameObject);
@@ -127,7 +131,7 @@ namespace Core.Pool
             }
         }
 
-        public bool TryRent(out GameObject gameObject, Transform parent = null)
+        public bool TryRent(out GameObject gameObject, PoolParentOverride parent = default)
         {
             return (gameObject = Rent(parent)).IsNotNull();
         }
