@@ -211,6 +211,8 @@ namespace Entity.Pterosaur
 #if UNITY_EDITOR
         void OnDrawGizmosSelected()
         {
+            if (_hasBecomeGroundGift)
+                return;
             Vector3 origin = transform.position + Vector3.down * 2f;
             Vector3 rayEnd = origin + Vector3.down * 50f;
             Gizmos.color = Color.magenta;

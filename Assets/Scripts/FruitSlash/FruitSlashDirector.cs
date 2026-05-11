@@ -520,6 +520,8 @@ namespace FruitSlash
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
+            if (!enabled)
+                return;
             Gizmos.color = Color.red;
             Vector3 spawn = spawnPoint != null ? spawnPoint.position : transform.position + Vector3.forward * 2f + Vector3.up * 1.4f;
             Gizmos.DrawWireSphere(spawn, 0.15f);

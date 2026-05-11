@@ -110,6 +110,18 @@ namespace Controller
 
         #region Public Methods
 
+        [ContextMenu("OpenCatchZone")]
+        public void OpenCatchZone()
+        {
+            catchZone.SetActive(true);
+        }
+
+        [ContextMenu("CloseCatchZone")]
+        public void CloseCatchZone()
+        {
+            catchZone.SetActive(false);
+        }
+
         [ContextMenu("StartThrowGame")]
         public void StartThrowGame()
         {
