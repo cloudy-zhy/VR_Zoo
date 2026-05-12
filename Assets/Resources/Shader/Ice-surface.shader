@@ -1,198 +1,286 @@
-Shader "Custom/IceSurface_URP"
+Shader "Custom/ice-surface"
 {
     Properties
     {
-        [Header(Base)]
-        _BaseColor ("Base Color", Color) = (0.8, 0.9, 1.0, 1.0)
-        _MainTex ("Main Tex", 2D) = "white" {}
-        _NormalMap ("Normal Map", 2D) = "bump" {}
-        _Smoothness ("Smoothness", Range(0, 1)) = 0.85
-        _FresnelTerm ("Fresnel", Range(0, 5)) = 1.5
-
-        [Header(Multi-Layer Ice Crystals)]
-        _MindTexure ("Ice Crystal Tex", 2D) = "white" {}
-        _MindColor ("Ice Color", Color) = (0.6, 0.7, 1.0, 1.0)
-        _MindDepth ("Parallax Depth", Range(0, 0.1)) = 0.02
-
-        [Header(Deep Layer)]
-        _LowIceColor ("Deep Ice Color", Color) = (0.4, 0.5, 0.7, 1.0)
-
-        [Header(Refraction)]
-        _RefractionStrength ("Refraction Strength", Range(0, 0.2)) = 0.08
-        _WaterDepth ("Refraction Depth", Float) = 1.0
-        _WaterFalloff ("Refraction Falloff", Float) = 2.0
+        [MainColor] _BaseColor("Base Color", Color) = (0.5, 0.8, 1.0, 0.6)
+        [MainTexture] _BaseMap("Albedo (RGB) / Alpha (A)", 2D) = "white" {}
+        _NormalMap("Normal Map", 2D) = "bump" {}
+        _HeightMap("Height Map (R)", 2D) = "gray" {}
+        _SmoothnessMap("Smoothness Map (R)", 2D) = "white" {}
+        _NoiseMap("Noise Map (冰裂纹感)", 2D) = "gray" {}
+        
+        _Glossiness("光滑度", Range(0, 1)) = 0.85
+        _Metallic("金属度", Range(0, 1)) = 0.0
+        _ParallaxScale("视差强度", Range(-0.1, 0.1)) = 0.025
+        _FresnelPower("菲涅尔强度", Range(0, 5)) = 1.8
+        _FresnelColor("菲涅尔颜色", Color) = (1, 1, 1, 1)
+        _SpecularColor("高光颜色", Color) = (0.9, 0.95, 1, 1)
+        _EmissionIntensity("自发光强度", Range(0, 0.5)) = 0.1
+        _NoiseIntensity("冰裂纹强度", Range(0, 0.4)) = 0.15
+        _AlphaFresnelPower("透明度菲涅尔", Range(0, 3)) = 1.2
     }
-
+    
     SubShader
     {
-        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" "Queue" = "Geometry" }
-        LOD 300
-
+        Tags
+        {
+            "RenderPipeline" = "UniversalPipeline"
+            "RenderType" = "Transparent"
+            "Queue" = "Transparent"
+        }
+        
         Pass
         {
             Name "ForwardLit"
             Tags { "LightMode" = "UniversalForward" }
-
+            
+            Blend SrcAlpha OneMinusSrcAlpha
+            ZWrite Off
+            Cull Back
+            
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _SHADOWS_SOFT
-            #pragma multi_compile_fog
-
+            
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl"
-
+            
+            TEXTURE2D(_BaseMap);          SAMPLER(sampler_BaseMap);
+            TEXTURE2D(_NormalMap);        SAMPLER(sampler_NormalMap);
+            TEXTURE2D(_HeightMap);        SAMPLER(sampler_HeightMap);
+            TEXTURE2D(_SmoothnessMap);    SAMPLER(sampler_SmoothnessMap);
+            TEXTURE2D(_NoiseMap);         SAMPLER(sampler_NoiseMap);
+            
+            CBUFFER_START(UnityPerMaterial)
+                float4 _BaseMap_ST;
+                float4 _NormalMap_ST;
+                float4 _HeightMap_ST;
+                float4 _SmoothnessMap_ST;
+                float4 _NoiseMap_ST;
+                half4 _BaseColor;
+                half4 _FresnelColor;
+                half4 _SpecularColor;
+                half _Glossiness;
+                half _Metallic;
+                half _ParallaxScale;
+                half _FresnelPower;
+                half _EmissionIntensity;
+                half _NoiseIntensity;
+                half _AlphaFresnelPower;
+            CBUFFER_END
+            
             struct Attributes
             {
                 float4 positionOS : POSITION;
                 float3 normalOS : NORMAL;
                 float4 tangentOS : TANGENT;
-                float4 uv : TEXCOORD0;
-                float2 uv2 : TEXCOORD1;
+                float2 uv : TEXCOORD0;
             };
-
+            
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
-                float4 uv : TEXCOORD0;
-                float4 shadowCoord : TEXCOORD1;
-                float4 screenPos : TEXCOORD2;
-                float3 positionWS : TEXCOORD3;
-                float3 normalWS : TEXCOORD4;
+                float2 uv : TEXCOORD0;
+                float4 uv_Tex : TEXCOORD1; // xy = base, zw = height
+                float3 positionWS : TEXCOORD2;
+                float3 normalWS : TEXCOORD3;
+                float4 tangentWS : TEXCOORD4;
                 float3 viewDirWS : TEXCOORD5;
-                float4 tangentWS : TEXCOORD6;
-                float fogCoord : TEXCOORD7;
             };
-
-            TEXTURE2D(_MainTex);          SAMPLER(sampler_MainTex);
-            TEXTURE2D(_NormalMap);        SAMPLER(sampler_NormalMap);
-            TEXTURE2D(_MindTexure);       SAMPLER(sampler_MindTexure);
-
-            CBUFFER_START(UnityPerMaterial)
-                half4 _BaseColor;
-                float4 _MainTex_ST;
-                float4 _NormalMap_ST;
-                float4 _MindTexure_ST;
-                half _Smoothness;
-                half _FresnelTerm;
-                half4 _MindColor;
-                half _MindDepth;
-                half4 _LowIceColor;
-                half _RefractionStrength;
-                half _WaterDepth;
-                half _WaterFalloff;
-            CBUFFER_END
-
+            
+            // 切线空间视线偏移（视差映射）
+            float2 ParallaxOffset(half2 uv, half3 viewDirTS, half scale, half height)
+            {
+                float2 offset = viewDirTS.xy * (height * scale);
+                return uv - offset;
+            }
+            
             Varyings vert(Attributes input)
             {
-                Varyings output = (Varyings)0;
+                Varyings output;
+                
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
                 VertexNormalInputs normalInput = GetVertexNormalInputs(input.normalOS, input.tangentOS);
                 
                 output.positionCS = vertexInput.positionCS;
                 output.positionWS = vertexInput.positionWS;
                 output.normalWS = normalInput.normalWS;
-                output.viewDirWS = SafeNormalize(_WorldSpaceCameraPos - output.positionWS);
                 output.tangentWS = float4(normalInput.tangentWS, input.tangentOS.w);
+                output.viewDirWS = GetWorldSpaceNormalizeViewDir(vertexInput.positionWS);
                 
-                output.uv.xy = TRANSFORM_TEX(input.uv.xy, _MainTex);
-                output.uv.zw = TRANSFORM_TEX(input.uv.xy, _MindTexure);
+                output.uv = input.uv;
+                output.uv_Tex.xy = input.uv * _BaseMap_ST.xy + _BaseMap_ST.zw;
+                output.uv_Tex.zw = input.uv * _HeightMap_ST.xy + _HeightMap_ST.zw;
                 
-                output.shadowCoord = GetShadowCoord(vertexInput);
-                output.screenPos = ComputeScreenPos(output.positionCS);
-                output.fogCoord = ComputeFogFactor(vertexInput.positionCS.z);
                 return output;
             }
-
-            half3 ComputeReflection(half3 viewDirWS, half3 normalWS, half3 positionWS, half3 directLighting)
-            {
-                half3 reflectVector = reflect(-viewDirWS, normalWS);
-                half3 envReflection = GlossyEnvironmentReflection(reflectVector, positionWS, 1.0, 1.0);
-                half fresnel = pow(1.0 - saturate(dot(normalWS, viewDirWS)), _FresnelTerm);
-                return lerp(0, envReflection, fresnel) * directLighting;
-            }
-
+            
             half4 frag(Varyings input) : SV_Target
             {
-                half3 viewDirWS = normalize(input.viewDirWS);
+                // 构建 TBN 矩阵
                 half3 normalWS = normalize(input.normalWS);
+                half3 tangentWS = normalize(input.tangentWS.xyz);
+                half3 bitangentWS = cross(normalWS, tangentWS) * input.tangentWS.w;
+                float3x3 TBN = float3x3(tangentWS, bitangentWS, normalWS);
                 
-                half2 parallaxOffset = viewDirWS.xz * _MindDepth;
-                half2 mindUV = input.uv.zw + parallaxOffset;
-                half4 mindIceColor = SAMPLE_TEXTURE2D(_MindTexure, sampler_MindTexure, mindUV) * _MindColor;
+                // 切线空间视线方向
+                half3 viewDirTS = mul(TBN, normalize(input.viewDirWS));
+                viewDirTS = normalize(viewDirTS);
                 
-                half4 normalMap = SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, input.uv.xy);
-                half3 tangentNormal = UnpackNormal(normalMap);
-                half3x3 tangentToWorld = CreateTangentToWorld(normalWS, input.tangentWS.xyz, input.tangentWS.w);
-                half3 normalWS_Detail = normalize(mul(tangentNormal, tangentToWorld));
+                // 采样高度图并偏移 UV
+                half height = SAMPLE_TEXTURE2D(_HeightMap, sampler_HeightMap, input.uv_Tex.zw).r;
+                float2 offsetUV = ParallaxOffset(input.uv_Tex.xy, viewDirTS, _ParallaxScale, height);
+                float2 finalUV = offsetUV;
                 
-                half4 mainTex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv.xy);
-                half3 iceColor = mainTex.rgb * _BaseColor.rgb;
+                // 采样基础贴图
+                half4 albedoAlpha = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, finalUV);
+                half3 albedo = albedoAlpha.rgb * _BaseColor.rgb;
+                half alpha = albedoAlpha.a * _BaseColor.a;
                 
-                Light mainLight = GetMainLight(input.shadowCoord);
-                half3 directLighting = mainLight.color * mainLight.distanceAttenuation;
+                // 法线贴图
+                half3 normalTS = UnpackNormal(SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, finalUV));
+                half3 normalWS_final = normalize(mul(normalTS, TBN));
                 
-                InputData inputData;
-                inputData.positionWS = input.positionWS;
-                inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
-                inputData.viewDirectionWS = viewDirWS;
+                // 光滑度 & 金属度
+                half smoothness = SAMPLE_TEXTURE2D(_SmoothnessMap, sampler_SmoothnessMap, finalUV).r * _Glossiness;
+                half metallic = _Metallic;
                 
-                half3 brdfData, specular;
-                InitializeBRDFData(half3(0,0,0), 0.0, half3(1,1,1), _Smoothness, 1.0, brdfData, specular);
-                half3 spec = LightingPhysicallyBased(brdfData, specular, mainLight.direction, normalWS_Detail, viewDirWS, mainLight.color, 1.0);
+                // 噪声纹理（冰裂纹）
+                half3 noise = SAMPLE_TEXTURE2D(_NoiseMap, sampler_NoiseMap, finalUV * 2.0).rgb;
+                albedo += noise * _NoiseIntensity;
                 
-                half3 GI = SampleSH(normalWS_Detail) * iceColor;
-                half3 reflection = ComputeReflection(viewDirWS, normalWS_Detail, input.positionWS, directLighting);
+                // 主光源计算
+                Light mainLight = GetMainLight();
+                half3 lightDir = normalize(mainLight.direction);
+                half3 lightColor = mainLight.color;
+                half3 viewDirWS_n = normalize(input.viewDirWS);
+                half3 halfDir = normalize(lightDir + viewDirWS_n);
                 
-                half3 finalAlbedo = directLighting * spec + directLighting * (iceColor + GI + mindIceColor.rgb + _LowIceColor.rgb);
+                half NdotL = saturate(dot(normalWS_final, lightDir));
+                half NdotH = saturate(dot(normalWS_final, halfDir));
+                half NdotV = saturate(dot(normalWS_final, viewDirWS_n));
                 
-                float2 screenUV = input.screenPos.xy / input.screenPos.w;
-                #if UNITY_UV_STARTS_AT_TOP
-                screenUV.y = 1.0 - screenUV.y;
+                half3 diffuse = albedo * lightColor * NdotL;
+                half specularIntensity = pow(NdotH, smoothness * 128.0);
+                half3 specular = _SpecularColor.rgb * lightColor * specularIntensity * (1.0 - metallic);
+                
+                // 环境光
+                half3 ambient = SampleSH(normalWS_final) * albedo;
+                
+                half3 finalColor = diffuse + specular + ambient;
+                
+                // 菲涅尔边缘光 & 自发光
+                half fresnel = pow(1.0 - NdotV, _FresnelPower);
+                half3 fresnelGlow = _FresnelColor.rgb * fresnel * _FresnelColor.a;
+                finalColor += fresnelGlow + _EmissionIntensity * albedo;
+                
+                // 透明度菲涅尔（边缘更透）
+                half alphaFresnel = pow(1.0 - NdotV, _AlphaFresnelPower);
+                alpha = alpha * (1.0 - alphaFresnel * 0.8);
+                
+                // 额外光源（点光源、聚光灯等）
+                #ifdef _ADDITIONAL_LIGHTS
+                uint pixelLightCount = GetAdditionalLightsCount();
+                for (uint lightIndex = 0; lightIndex < pixelLightCount; ++lightIndex)
+                {
+                    Light additionalLight = GetAdditionalLight(lightIndex, input.positionWS);
+                    half3 addLightDir = normalize(additionalLight.direction);
+                    half addNdotL = saturate(dot(normalWS_final, addLightDir));
+                    half3 addDiffuse = albedo * additionalLight.color * addNdotL;
+                    finalColor += addDiffuse * 0.5;
+                }
                 #endif
                 
-                half2 bumpOffset = tangentNormal.xy * _RefractionStrength;
-                float2 refractiveUV = screenUV + bumpOffset;
-                
-                half rawDepth = SampleSceneDepth(screenUV);
-                half sceneDepth = LinearEyeDepth(rawDepth, _ZBufferParams);
-                half surfaceDepth = input.screenPos.w;
-                half depthDelta = saturate(pow(abs(sceneDepth - surfaceDepth) * _WaterDepth, _WaterFalloff));
-                half3 opaqueColor = SampleSceneColor(refractiveUV);
-                half3 refractionColor = opaqueColor * (1.0 - depthDelta);
-                
-                half3 finalColor = finalAlbedo + refractionColor;
-                finalColor = MixFog(finalColor, input.fogCoord);
-                return half4(finalColor, 1.0);
+                return half4(finalColor, alpha);
             }
             ENDHLSL
         }
         
+        // ShadowCaster 阴影投射 Pass（修正 LerpWhiteTo 未定义错误）
         Pass
         {
             Name "ShadowCaster"
-            Tags{"LightMode" = "ShadowCaster"}
+            Tags { "LightMode" = "ShadowCaster" }
+            
+            ZWrite On
+            ZTest LEqual
+            ColorMask 0
+            Cull Back
+            
             HLSLPROGRAM
-            #pragma vertex vert_shadow
-            #pragma fragment frag_shadow
-            #pragma multi_compile_shadowcaster
+            // 修复缺失的 LerpWhiteTo 函数
+            #ifndef LerpWhiteTo
+            #define LerpWhiteTo(alpha, color) lerp(color, 1.0, alpha)
+            #endif
+            
+            #pragma vertex ShadowVert
+            #pragma fragment ShadowFrag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
             
-            struct AttributesShadow { float4 positionOS : POSITION; };
-            struct VaryingsShadow { float4 positionCS : SV_POSITION; };
-            
-            VaryingsShadow vert_shadow(AttributesShadow input)
+            struct Attributes
             {
-                VaryingsShadow output;
-                output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
+                float4 positionOS : POSITION;
+                float2 uv : TEXCOORD0;
+            };
+            struct Varyings
+            {
+                float4 positionCS : SV_POSITION;
+            };
+            Varyings ShadowVert(Attributes input)
+            {
+                Varyings output;
+                output.positionCS = TransformWorldToHClip(TransformObjectToWorld(input.positionOS.xyz));
                 return output;
             }
+            half4 ShadowFrag(Varyings input) : SV_TARGET
+            {
+                return 0;
+            }
+            ENDHLSL
+        }
+        
+        // DepthOnly 深度写入 Pass（同样添加宏定义以防万一）
+        Pass
+        {
+            Name "DepthOnly"
+            Tags { "LightMode" = "DepthOnly" }
             
-            half4 frag_shadow(VaryingsShadow input) : SV_TARGET { return 0; }
+            ZWrite On
+            ColorMask 0
+            Cull Back
+            
+            HLSLPROGRAM
+            #ifndef LerpWhiteTo
+            #define LerpWhiteTo(alpha, color) lerp(color, 1.0, alpha)
+            #endif
+            
+            #pragma vertex DepthVert
+            #pragma fragment DepthFrag
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            
+            struct Attributes
+            {
+                float4 positionOS : POSITION;
+            };
+            struct Varyings
+            {
+                float4 positionCS : SV_POSITION;
+            };
+            Varyings DepthVert(Attributes input)
+            {
+                Varyings output;
+                output.positionCS = TransformWorldToHClip(TransformObjectToWorld(input.positionOS.xyz));
+                return output;
+            }
+            half4 DepthFrag(Varyings input) : SV_TARGET
+            {
+                return 0;
+            }
             ENDHLSL
         }
     }

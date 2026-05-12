@@ -23,11 +23,16 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: a85dbdc81d8f5ae46b016cb9f195b46d, type: 3}
+        m_Scale: {x: 10, y: 10}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats: []
     m_Colors:
     - _Color: {r: 0.006941941, g: 0.10647323, b: 0.16981131, a: 1}
+    - _MatcapColor: {r: 0.4136505, g: 0.5597484, b: 0.5185127, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7599579321502387888
 MonoBehaviour:
