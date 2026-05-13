@@ -1,4 +1,5 @@
 using Slingshot;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -51,16 +52,15 @@ public class FruitManager : MonoBehaviour
         }
     }
 
-    //public void AddScore(int value)
-    //{
-    //    currentScore += value;
-    //    if (currentScore >= targetScore)
-    //        NextLevel();
-    //}
-
     public void NextLevel()
     {
         currentLevelIndex++;
+        StartCoroutine(LevelSwitchDelay());
+    }
+
+    private IEnumerator LevelSwitchDelay()
+    {
+        yield return new WaitForSeconds(3.0f);
         LoadLevel(currentLevelIndex);
         DialogueController.Instance.ShowDialogueWithIndex();
     }

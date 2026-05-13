@@ -36,6 +36,10 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private float delayBetweenDialogues = 0.5f; // 对话之间的延迟
     [SerializeField] private float minimumDisplayTime = 2.0f; // 每句话最少显示时间
     [SerializeField] private float timePerCharacter = 0.05f; // 每个字符显示时间（影响自动计算时长）
+    
+    [Header("音频设置")]
+    [SerializeField] private AudioSource audioSource;          // 音频源组件
+    [SerializeField] private AudioClip[] dialogueAudioClips;   // 每个对话对应的音频剪辑
 
     [Header("调试")]
     [SerializeField] private bool showDebugLogs = false; // 是否显示调试日志
@@ -48,6 +52,15 @@ public class DialogueController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        // 确保 AudioSource 存在
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
     }
 
     private void Start()
@@ -151,9 +164,11 @@ public class DialogueController : MonoBehaviour
 
     public void ShowDialogueWithIndex()
     {
+        if (currentDialogueIndex > 8) return;
         var dialogueEntry = dialogueSequence[currentDialogueIndex];
 
         ShowDialogue(dialogueEntry);
+        PlayDialogueAudio(currentDialogueIndex);
         float displayTime = dialogueEntry.displayDuration;
         if (displayTime <= 0)
         {
@@ -164,6 +179,23 @@ public class DialogueController : MonoBehaviour
         if (showDebugLogs) Debug.Log($"显示对话 {currentDialogueIndex + 1}/{dialogueSequence.Count}，时长: {displayTime:F1}秒");
         StartCoroutine(DialogsHideDelay(displayTime));
         currentDialogueIndex++;
+    }
+
+    /// <summary>
+    /// 根据索引播放对话音频
+    /// </summary>
+    private void PlayDialogueAudio(int index)
+    {
+        if (audioSource == null || dialogueAudioClips == null || index < 0 || index >= dialogueAudioClips.Length)
+            return;
+
+        AudioClip clip = dialogueAudioClips[index];
+        if (clip != null)
+        {
+            audioSource.Stop(); // 停止当前播放的音频
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
     }
 
     private IEnumerator DialogsHideDelay(float displayTime)

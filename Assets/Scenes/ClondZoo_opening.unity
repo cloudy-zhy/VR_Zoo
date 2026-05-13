@@ -6227,8 +6227,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6496c2af50169c543a97a60b395d2c09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiceClip: {fileID: 8300000, guid: ec6a2fac1962e27488f7417c71d9aa74, type: 3}
-  delayTime: 8
+  voiceClip: {fileID: 8300000, guid: 628e152a88b61404ea02866de48eb1be, type: 3}
+  delayTime: 7.5
 --- !u!1 &865869502 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2322236303873900521, guid: edcb1c266a7333f4bbab52732c17b6d1,
@@ -7040,6 +7040,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
+      propertyPath: sceneChangeFlag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
+        type: 3}
       propertyPath: sceneChangeflag
       value: 1
       objectReference: {fileID: 0}
@@ -7096,27 +7101,27 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[0].displayDuration
-      value: 5
+      value: 4.2
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[1].displayDuration
-      value: 4
+      value: 4.7
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[2].displayDuration
-      value: 7
+      value: 5.8
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[3].displayDuration
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[4].displayDuration
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8180,6 +8185,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 351803095714826553, guid: e9b56588b5bce02438275de01097f0b3,
+        type: 3}
+      propertyPath: m_CameraYOffset
+      value: 1.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 351803095714826553, guid: e9b56588b5bce02438275de01097f0b3,
+        type: 3}
+      propertyPath: m_RequestedTrackingOriginMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1493562960551366086, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
       propertyPath: m_LocalPosition.x
