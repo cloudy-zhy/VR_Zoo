@@ -74,7 +74,12 @@ public class IceChimeArray : MonoBehaviour
 
     private void Start()
     {
-        BuildCircularArray();
+        // 从场景中找到所有已摆好的冰柱，按 chimeIndex 排序
+        var found = FindObjectsOfType<IceChime>();
+        chimes = new System.Collections.Generic.List<IceChime>(found);
+        chimes.Sort((a, b) => a.chimeIndex.CompareTo(b.chimeIndex));
+
+        // 不再调用 BuildCircularArray()
         RegisterAllChimeEvents();
     }
 
