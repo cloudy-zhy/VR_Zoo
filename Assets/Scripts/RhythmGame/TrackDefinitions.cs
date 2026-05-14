@@ -1,0 +1,63 @@
+// TrackDefinitions.cs
+// 轨道类型定义和谱面数据结构
+
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace RhythmGame
+{
+    // ─────────────────────────────────────────
+    // 四条轨道
+    // ─────────────────────────────────────────
+    public enum TrackType
+    {
+        LeftHigh = 0,
+        RightHigh = 1,
+        LeftLow = 2,
+        RightLow = 3
+    }
+
+    // ─────────────────────────────────────────
+    // 每条轨道属于哪只手
+    // ─────────────────────────────────────────
+    public enum HandSide { Left, Right }
+
+    public static class TrackHelper
+    {
+        public static HandSide GetHand(TrackType track)
+        {
+            return (track == TrackType.LeftHigh || track == TrackType.LeftLow)
+                ? HandSide.Left
+                : HandSide.Right;
+        }
+    }
+
+    // ─────────────────────────────────────────
+    // 单个音符数据
+    // ─────────────────────────────────────────
+    [System.Serializable]
+    public class NoteData
+    {
+        [Tooltip("所属轨道")]
+        public TrackType track;
+
+        [Tooltip("音符应该到达判定线的时刻（距歌曲开始的秒数）")]
+        public float hitTime;
+    }
+
+    // ─────────────────────────────────────────
+    // 谱面 ScriptableObject
+    // ─────────────────────────────────────────
+    [CreateAssetMenu(fileName = "NewBeatmap", menuName = "RhythmGame/Beatmap")]
+    public class BeatmapData : ScriptableObject
+    {
+        [Tooltip("对应的背景音乐")]
+        public AudioClip music;
+
+        [Tooltip("BPM（仅参考，实际节点由 hitTime 决定）")]
+        public float bpm = 120f;
+
+        [Tooltip("音符列表，按 hitTime 升序排列")]
+        public List<NoteData> notes = new List<NoteData>();
+    }
+}
