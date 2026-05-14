@@ -112,69 +112,11 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2754305958685894435, guid: e9b56588b5bce02438275de01097f0b3,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1161929779524519747}
     - targetCorrespondingSourceObject: {fileID: 1493562960732688868, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3196193551603911220}
   m_SourcePrefab: {fileID: 100100000, guid: e9b56588b5bce02438275de01097f0b3, type: 3}
---- !u!1 &81135483645767027 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2754305958685894435, guid: e9b56588b5bce02438275de01097f0b3,
-    type: 3}
-  m_PrefabInstance: {fileID: 2817286236536064592}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1161929779524519747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 81135483645767027}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b5275ca8bc242c6a5d257500c0f4d4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightHandAnchor: {fileID: 3720872137488628532}
-  autoFindRightHandAnchor: 1
-  holdLocalPosition: {x: 0, y: 0, z: 0}
-  holdLocalEulerAngles: {x: 0, y: 0, z: 0}
-  ballPrefab: {fileID: 1000000000000000007, guid: f6dfcfc5611d4a9caf0bc3dd905aa11d,
-    type: 3}
-  equipAction:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Equip
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: dff49c43-f430-474e-ab3d-9ab69e8cc7b5
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  chargeAction:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Charge
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: a376483c-71a5-4429-bc9f-f251c4d9a952
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  enableDeviceFallbackInput: 1
-  throwMultiplier: 1.5
-  minThrowSpeed: 2
-  maxThrowSpeed: 12
-  velocitySampleWindow: 0.15
-  equipCooldown: 0.25
 --- !u!1 &3720872137384483764 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1493562960732688868, guid: e9b56588b5bce02438275de01097f0b3,
@@ -198,12 +140,6 @@ MonoBehaviour:
 --- !u!4 &3720872137384483767 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1493562960732688871, guid: e9b56588b5bce02438275de01097f0b3,
-    type: 3}
-  m_PrefabInstance: {fileID: 2817286236536064592}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3720872137488628532 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1493562960645992804, guid: e9b56588b5bce02438275de01097f0b3,
     type: 3}
   m_PrefabInstance: {fileID: 2817286236536064592}
   m_PrefabAsset: {fileID: 0}

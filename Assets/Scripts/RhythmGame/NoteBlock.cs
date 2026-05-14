@@ -1,8 +1,5 @@
 // NoteBlock.cs
-// 职责：
-//   1. 从生成点匀速滑向判定区
-//   2. 到达判定区时检测手部位置（方案A：手提前放好）
-//   3. 发出成功/失败事件并销毁自身
+// 碰撞检测方案：手部 Collider 碰到 Block 即触发判定
 
 using System.Collections;
 using UnityEngine;
@@ -10,15 +7,15 @@ using UnityEngine.Events;
 
 namespace RhythmGame
 {
-    public enum NoteState { Moving, InJudgment, Caught, Missed }
+    public enum NoteState { Moving, Caught, Missed }
 
     public class NoteBlock : MonoBehaviour
     {
         [Header("移动参数")]
-        [SerializeField] private float moveSpeed = 4f;      // 单位：米/秒
+        [SerializeField] private float moveSpeed = 4f;
 
-        [Header("判定参数")]
-        [SerializeField] private float judgmentWindow = 0.35f;  // 到达后的判定时间窗口（秒）
+        [Header("Miss 判定：Block 超过判定点多远后算 Miss（米）")]
+        [SerializeField] private float missDistance = 0.3f;
 
         [Header("视觉")]
         [SerializeField] private Renderer noteRenderer;
@@ -27,99 +24,68 @@ namespace RhythmGame
         [SerializeField] private Color missedColor = Color.red;
         [SerializeField] private ParticleSystem catchParticles;
 
-        // 事件
         public UnityEvent<NoteBlock> OnCaught = new UnityEvent<NoteBlock>();
         public UnityEvent<NoteBlock> OnMissed = new UnityEvent<NoteBlock>();
 
-        // 运行时状态
         public NoteState State { get; private set; } = NoteState.Moving;
         public TrackType TrackType { get; private set; }
         public HandSide Hand { get; private set; }
 
-        private Vector3 targetPosition;   // 判定区中心
-        private float judgmentRadius;
-        private RhythmTrack parentTrack;
+        private Vector3 targetPosition;
+        private Vector3 moveDirection;
+        private bool passedTarget = false;
 
-        // ─────────────────────────────────────────
-        // 初始化
-        // ─────────────────────────────────────────
-
-        /// <summary>由 RhythmTrack.SpawnNote() 调用</summary>
         public void Initialize(RhythmTrack track)
         {
-            parentTrack = track;
             TrackType = track.TrackType;
             Hand = track.ResponsibleHand;
             targetPosition = track.JudgmentPosition;
-            judgmentRadius = track.JudgmentRadius;
+
+            // 计算移动方向（从生成点到判定点）
+            moveDirection = (targetPosition - transform.position).normalized;
 
             if (noteRenderer != null)
                 noteRenderer.material.color = movingColor;
         }
 
-        // ─────────────────────────────────────────
-        // 移动逻辑
-        // ─────────────────────────────────────────
-
         private void Update()
         {
             if (State != NoteState.Moving) return;
 
-            transform.position = Vector3.MoveTowards(
-                transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            transform.position += moveDirection * moveSpeed * Time.deltaTime;
 
-            // 到达判定区
-            if (Vector3.Distance(transform.position, targetPosition) < 0.05f)
+            // 检查是否越过判定点
+            float distToTarget = Vector3.Distance(transform.position, targetPosition);
+            Vector3 toTarget = targetPosition - transform.position;
+
+            // 当 Block 越过判定点（方向反转）时开始计距
+            if (!passedTarget && Vector3.Dot(toTarget, moveDirection) < 0)
             {
-                transform.position = targetPosition;
-                EnterJudgmentZone();
+                passedTarget = true;
+            }
+
+            // 越过判定点后超出 missDistance → Miss
+            if (passedTarget && distToTarget >= missDistance)
+            {
+                Miss();
             }
         }
 
-        // ─────────────────────────────────────────
-        // 判定逻辑
-        // ─────────────────────────────────────────
-
-        private void EnterJudgmentZone()
+        // ── 碰撞检测 ──────────────────────────────────────
+        // NoteBlock 的 Collider 需勾选 IsTrigger
+        // 手部对象上需挂载 HandIdentifier 组件
+        private void OnTriggerEnter(Collider other)
         {
-            State = NoteState.InJudgment;
+            if (State != NoteState.Moving) return;
 
-            // 立即检测一次（手已提前放好的情况）
-            if (HandPositionTracker.Instance.IsHandInZone(Hand, TrackType))
-            {
-                Catch();
-                return;
-            }
+            if (other.GetComponent<HandIdentifier>() == null) return;
 
-            // 开启时间窗口，持续等待手部进入
-            StartCoroutine(JudgmentWindowRoutine());
+            Catch();
         }
-
-        private IEnumerator JudgmentWindowRoutine()
-        {
-            float elapsed = 0f;
-
-            while (elapsed < judgmentWindow)
-            {
-                if (HandPositionTracker.Instance.IsHandInZone(Hand, TrackType))
-                {
-                    Catch();
-                    yield break;
-                }
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            Miss();
-        }
-
-        // ─────────────────────────────────────────
-        // 结果处理
-        // ─────────────────────────────────────────
 
         private void Catch()
         {
-            if (State == NoteState.Caught || State == NoteState.Missed) return;
+            if (State != NoteState.Moving) return;
             State = NoteState.Caught;
 
             if (noteRenderer != null)
@@ -127,21 +93,19 @@ namespace RhythmGame
 
             catchParticles?.Play();
             OnCaught.Invoke(this);
-
             StartCoroutine(DestroyAfter(0.3f));
         }
 
         private void Miss()
         {
-            if (State == NoteState.Caught || State == NoteState.Missed) return;
+            if (State != NoteState.Moving) return;
             State = NoteState.Missed;
 
             if (noteRenderer != null)
                 noteRenderer.material.color = missedColor;
 
             OnMissed.Invoke(this);
-
-            StartCoroutine(DestroyAfter(0.5f));
+            StartCoroutine(DestroyAfter(0.4f));
         }
 
         private IEnumerator DestroyAfter(float delay)
