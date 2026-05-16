@@ -14,7 +14,7 @@ namespace RhythmGame
     public class RhythmGameManager : MonoBehaviour
     {
         [Header("谱面")]
-        [SerializeField] private BeatmapData beatmap;
+        [SerializeField] private List<BeatmapData> beatmap = new List<BeatmapData>();
 
         [Header("四条轨道（Inspector 中按 LeftHigh/RightHigh/LeftLow/RightLow 顺序赋值）")]
         [SerializeField] private RhythmTrack[] tracks = new RhythmTrack[4];
@@ -37,6 +37,7 @@ namespace RhythmGame
         private int totalNotes;
         private int settledNotes;   // 已判定（成功+失败）的音符数
         private bool isPlaying;
+        private int curLevel = 0;
 
         // ─────────────────────────────────────────
         // 启动
@@ -47,12 +48,13 @@ namespace RhythmGame
         {
             if (isPlaying || beatmap == null) return;
             isPlaying = true;
-            totalNotes = beatmap.notes.Count;
+            totalNotes = beatmap[curLevel].notes.Count;
             settledNotes = 0;
             Combo = 0;
             Score = 0;
 
             StartCoroutine(PlaybackRoutine());
+            curLevel++;
         }
 
         // ─────────────────────────────────────────
@@ -68,12 +70,12 @@ namespace RhythmGame
             float songClock = 0f;
 
             // 用一个队列，按 hitTime 顺序处理
-            var queue = new Queue<NoteData>(beatmap.notes);
+            var queue = new Queue<NoteData>(beatmap[curLevel].notes);
 
             // 启动音乐
-            if (musicSource != null && beatmap.music != null)
+            if (musicSource != null && beatmap[curLevel].music != null)
             {
-                musicSource.clip = beatmap.music;
+                musicSource.clip = beatmap[curLevel].music;
                 musicSource.Play();
             }
 

@@ -5,15 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ClondZoo_opening.unity
     guid: 760a742cf08965348bf4842dce0d4e41
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Scene1.unity
     guid: 406961c15d1c14f4a8ce79fb83633d7c
   - enabled: 0
     path: Assets/Scenes/YunTest.unity
     guid: 811ae3d8ca2edf84b9e964841139e765
+  - enabled: 1
+    path: "Assets/Scenes/Scene2_\u97F3\u6E38.unity"
+    guid: ea3cda63f5d6b8b4e80493ea97519fc9
   m_configObjects:
     Unity.XR.PICO.LivePreview.Settings: {fileID: 11400000, guid: f7f781bc5322c5748bf7c83a664d4bfd,
       type: 2}

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static DialogueController;
@@ -8,6 +10,7 @@ using static DialogueController;
 public class DialogueController : MonoBehaviour
 {
     public static DialogueController Instance;
+    public UnityEvent OnDialogueEnded = new UnityEvent();
     [System.Serializable]
     public class DialogueEntry
     {
@@ -45,7 +48,8 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private bool showDebugLogs = false; // 是否显示调试日志
 
     // 私有变量
-    private int currentDialogueIndex = 0;
+    [Header("对话id")]
+    [SerializeField] private int currentDialogueIndex = 0;
     private bool isDialogueActive = false;
     private Coroutine dialogueCoroutine;
 
@@ -164,7 +168,7 @@ public class DialogueController : MonoBehaviour
 
     public void ShowDialogueWithIndex()
     {
-        if (currentDialogueIndex > 8) return;
+        if (currentDialogueIndex >= dialogueSequence.Count) return;
         var dialogueEntry = dialogueSequence[currentDialogueIndex];
 
         ShowDialogue(dialogueEntry);
@@ -178,6 +182,30 @@ public class DialogueController : MonoBehaviour
 
         if (showDebugLogs) Debug.Log($"显示对话 {currentDialogueIndex + 1}/{dialogueSequence.Count}，时长: {displayTime:F1}秒");
         StartCoroutine(DialogsHideDelay(displayTime));
+        currentDialogueIndex++;
+    }
+
+    public IEnumerator ShowDialogueWithIndexAndWait()
+    {
+        if (currentDialogueIndex >= dialogueSequence.Count) yield break;
+
+        yield return new WaitForSeconds(1.0f);
+        var dialogueEntry = dialogueSequence[currentDialogueIndex];
+        ShowDialogue(dialogueEntry); // 这里会激活对话框GameObject
+        PlayDialogueAudio(currentDialogueIndex);
+
+        // +++ 关键修复：等待一帧，确保被SetActive(true)的UI组件完成本帧渲染更新 +++
+        yield return null;
+
+        float displayTime = dialogueEntry.displayDuration;
+        if (displayTime <= 0)
+        {
+            displayTime = Mathf.Max(minimumDisplayTime, dialogueEntry.dialogueText.Length * timePerCharacter);
+        }
+        if (showDebugLogs) Debug.Log($"显示对话 {currentDialogueIndex + 1}/{dialogueSequence.Count} 时间: {displayTime:F1}");
+
+        // 现在，在对话框确认完成一帧更新、稳定显示后，再开始“多久后隐藏它”的倒计时
+        yield return StartCoroutine(DialogsHideDelay(displayTime));
         currentDialogueIndex++;
     }
 
@@ -202,6 +230,7 @@ public class DialogueController : MonoBehaviour
     {
         yield return new WaitForSeconds(displayTime);
         UIManager.Instance.HideAllDialogs();
+        OnDialogueEnded.Invoke();
     }
     /// <summary>
     /// 显示对话
