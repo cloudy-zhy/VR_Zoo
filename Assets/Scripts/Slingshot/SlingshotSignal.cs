@@ -18,10 +18,11 @@ namespace Slingshot
         [SerializeField] private DodoBird[] otherBirds;
         [SerializeField] private Transform[] slots;
         [SerializeField] private Transform chiefTransform;
-        [SerializeField] private PlayerEnterAreaDetector detector;
+        [SerializeField] private PlayerEnterAreaDetector beginDetector;
         [SerializeField] private float goToPosTime;
         [SerializeField] private GameObject controller;
         [SerializeField] private GameObject chiefBird;
+        [SerializeField] private PlayerEnterAreaDetector endDetector;
 
         #endregion
         
@@ -36,7 +37,8 @@ namespace Slingshot
         void Awake()
         {
             // _director = GetComponent<PlayableDirector>();
-            detector.OnPlayerEnterArea += OnPlayerEnterArea;
+            beginDetector.OnPlayerEnterArea += OnEnterBegin;
+            endDetector.OnPlayerEnterArea += OnEnterEnd;
         }
 
         #endregion
@@ -75,12 +77,12 @@ namespace Slingshot
             facing.enabled = true;
             
             await UniTask.WaitForSeconds(2.5f);
-            detector.gameObject.SetActive(true);
+            beginDetector.gameObject.SetActive(true);
         }
 
-        private async void OnPlayerEnterArea()
+        private async void OnEnterBegin()
         {
-            detector.gameObject.SetActive(false);
+            beginDetector.gameObject.SetActive(false);
             // _director.Play();
             chiefSayGo.SetActive(false);
             facing.enabled = false;
@@ -99,6 +101,9 @@ namespace Slingshot
             await UniTask.WaitForSeconds(goToPosTime);
             // Debug.Log("Over");
             
+            DialogueController.Instance.ShowDialogueWithIndex();
+            FruitManager.Instance.LoadLevel(FruitManager.Instance.currentLevelIndex);
+            
             foreach(var bird in otherBirds)
             {
                 bird.ani.SetBool("Move", false);
@@ -107,6 +112,14 @@ namespace Slingshot
             chief.gameObject.SetActive(false);
             controller.SetActive(true);
             chiefBird.SetActive(true);
+        }
+
+        private async void OnEnterEnd()
+        {
+            endDetector.gameObject.SetActive(false);
+            // 小等一会，也可以不等，后面写跳转逻辑
+            await UniTask.WaitForSeconds(2.5f);
+            
         }
     }
 }

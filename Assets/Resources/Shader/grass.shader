@@ -35,10 +35,12 @@ Shader "Unlit/grass"
           #pragma fragment frag
           #pragma prefer_hlslcc gles
           #pragma multi_compile_fog
+          #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
           #pragma multi_compile_instancing
           #pragma shader_feature USE_WC
 
           #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+          #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
 
           struct appdata
           {
@@ -107,9 +109,30 @@ Shader "Unlit/grass"
 
              col *= colMask;
 
+    #ifdef _DBUFFER
+             ApplyDecalToBaseColor(i.pos, col);
+    #endif
+
              col = MixFog(col, i.fogCoord);
              return half4(col, 1);
           }
+          ENDHLSL
+       }
+
+       // --------------------------- DEPTH NORMALS ---------------------------
+       Pass
+       {
+          Name "DepthNormalsOnly"
+          Tags { "LightMode" = "DepthNormalsOnly" }
+          ZWrite On
+
+          HLSLPROGRAM
+          #pragma vertex DepthNormalsVertex
+          #pragma fragment DepthNormalsFragment
+          #pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
+          #pragma multi_compile_instancing
+          #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+          #include "Packages/com.unity.render-pipelines.universal/Shaders/UnlitDepthNormalsPass.hlsl"
           ENDHLSL
        }
 
