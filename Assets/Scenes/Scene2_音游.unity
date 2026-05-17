@@ -529,12 +529,12 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: 300c4494777bedc4fb0d2156f20ac47e, type: 3}
+      objectReference: {fileID: 8300000, guid: 1700d0a49ed9cf041a41dd8c32472980, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[2]
       value: 
-      objectReference: {fileID: 8300000, guid: e54001c241e66d149aa5941f6e1ffefb, type: 3}
+      objectReference: {fileID: 8300000, guid: e8b872c4f7f43f44c8c2c49c146a8fe5, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[3]
@@ -588,7 +588,7 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[1].displayDuration
-      value: 4.1
+      value: 3.7
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -2578,7 +2578,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -3536,6 +3536,50 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &641135892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 641135894}
+  - component: {fileID: 641135893}
+  m_Layer: 0
+  m_Name: SceneChangeController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &641135893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 641135892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e44b6b4fb8c0b824db90a744b7ea4fd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &641135894
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 641135892}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.965994, y: 1.3271546, z: -8.499491}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &649655322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5062,7 +5106,7 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.size
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -5227,7 +5271,7 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[9].dialogueText
-      value: "\u4E0D\u9519\u561B\uFF01\u51C6\u5907\u597D\u53BB\u6311\u6218\u66F4\u8FDC\u7684\u6811\u679D\u4E86\u5417\uFF1F\r"
+      value: "\u8C22\u8C22\u8BBF\u5BA2\uFF01\u679C\u5B50\u591F\u5566\uFF0C\u6D3E\u5BF9\u89C1\uFF5E"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -8299,7 +8343,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8982,6 +9026,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9e4c9a76ef7c53044a4983c188db9272, type: 2}
   currentLevelIndex: 0
   targetScore: 0
+  endDetector: {fileID: 565622288}
 --- !u!4 &1597899959 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4088069591108843150, guid: 3b54f712a08cae94ab159caac586b719,
@@ -13275,3 +13320,4 @@ SceneRoots:
   - {fileID: 750674045}
   - {fileID: 2075861090}
   - {fileID: 1117323320}
+  - {fileID: 641135894}

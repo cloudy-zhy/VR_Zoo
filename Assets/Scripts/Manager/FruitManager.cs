@@ -1,3 +1,4 @@
+using Core.Utils;
 using Slingshot;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,9 @@ public class FruitManager : MonoBehaviour
 
     [Header("分数")]
     public int targetScore;
+
+    [Header("场景跳转传送门")]
+    public PlayerEnterAreaDetector endDetector;
 
     void Awake()
     {
@@ -62,6 +66,10 @@ public class FruitManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3.0f);
         LoadLevel(currentLevelIndex);
-        DialogueController.Instance.ShowDialogueWithIndex();
+        if (currentLevelIndex <= 3 || currentLevelIndex > 5) DialogueController.Instance.ShowDialogueWithIndex();
+        if (currentLevelIndex > 5)
+        {
+            endDetector.gameObject.SetActive(true);
+        }
     }
 }

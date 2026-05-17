@@ -4,6 +4,7 @@ using Entity.DodoBird;
 //using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 namespace Slingshot
 {
@@ -116,10 +117,11 @@ namespace Slingshot
 
         private async void OnEnterEnd()
         {
+            string targetSceneName = "Scene2_音游";
             endDetector.gameObject.SetActive(false);
             // 小等一会，也可以不等，后面写跳转逻辑
             await UniTask.WaitForSeconds(2.5f);
-            
+            SceneManager.LoadScene(targetSceneName);
         }
     }
 }
