@@ -420,7 +420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beatmap:
   - {fileID: 11400000, guid: 11acbfdeeeab23943985e0dfbcf4706e, type: 2}
-  - {fileID: 11400000, guid: b981628b0d9f9b649a4a3a85e95d144d, type: 2}
+  - {fileID: 11400000, guid: 95f227358a57cdf40ad09ade29baddca, type: 2}
   tracks:
   - {fileID: 1390763407}
   - {fileID: 86219460}
@@ -518,28 +518,28 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.size
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 64a9e4e87b5472a4392f846299f68f53, type: 3}
+      objectReference: {fileID: 8300000, guid: db98cea0ecf069741b77044c40d93575, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: 64a9e4e87b5472a4392f846299f68f53, type: 3}
+      objectReference: {fileID: 8300000, guid: 300c4494777bedc4fb0d2156f20ac47e, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[2]
       value: 
-      objectReference: {fileID: 8300000, guid: 64a9e4e87b5472a4392f846299f68f53, type: 3}
+      objectReference: {fileID: 8300000, guid: e54001c241e66d149aa5941f6e1ffefb, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[3]
       value: 
-      objectReference: {fileID: 8300000, guid: 64a9e4e87b5472a4392f846299f68f53, type: 3}
+      objectReference: {fileID: 8300000, guid: 4f7cf142541a69a4ab12b8bddc458c71, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[0].speakerName
@@ -583,7 +583,22 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[0].displayDuration
-      value: 3
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
+        type: 3}
+      propertyPath: dialogueSequence.Array.data[1].displayDuration
+      value: 4.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
+        type: 3}
+      propertyPath: dialogueSequence.Array.data[2].displayDuration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
+        type: 3}
+      propertyPath: dialogueSequence.Array.data[3].displayDuration
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -3319,6 +3334,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 86219459}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1645681846 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3720872137384483764, guid: c4960a17c70a46941b051e13f03e8f69,
+    type: 3}
+  m_PrefabInstance: {fileID: 3615760279665754672}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1675426984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3720872137384483767, guid: c4960a17c70a46941b051e13f03e8f69,
@@ -3384,6 +3405,20 @@ Camera:
     type: 3}
   m_PrefabInstance: {fileID: 3615760279665754672}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1687449319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645681846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee8dd1042c84fa4fa2411e8c4ebcc01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gradientTime: 5
+  fadeColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &1688805888
 GameObject:
   m_ObjectHideFlags: 0
@@ -4080,7 +4115,7 @@ PrefabInstance:
     - target: {fileID: 4660573188636503875, guid: c4960a17c70a46941b051e13f03e8f69,
         type: 3}
       propertyPath: screenFade
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7410420805984869716, guid: c4960a17c70a46941b051e13f03e8f69,
         type: 3}
@@ -4103,7 +4138,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 872347699}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3720872137384483764, guid: c4960a17c70a46941b051e13f03e8f69,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1687449319}
   m_SourcePrefab: {fileID: 100100000, guid: c4960a17c70a46941b051e13f03e8f69, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
