@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45975843, g: 0.40560502, b: 0.72620785, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -420,7 +420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beatmap:
   - {fileID: 11400000, guid: 11acbfdeeeab23943985e0dfbcf4706e, type: 2}
-  - {fileID: 11400000, guid: 95f227358a57cdf40ad09ade29baddca, type: 2}
+  - {fileID: 11400000, guid: 71ddb4ceade19484cb176d2128e99e48, type: 2}
   tracks:
   - {fileID: 1390763407}
   - {fileID: 86219460}

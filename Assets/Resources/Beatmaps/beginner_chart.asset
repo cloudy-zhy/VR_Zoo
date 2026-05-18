@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b1d5a471393954da21aea94f47c134, type: 3}
   m_Name: beginner_chart
   m_EditorClassIdentifier: 
-  music: {fileID: 0}
+  music: {fileID: 8300000, guid: 60c6dc3ad5eddf94b99da1948a9dafcc, type: 3}
   bpm: 90
   notes:
   - track: 0
