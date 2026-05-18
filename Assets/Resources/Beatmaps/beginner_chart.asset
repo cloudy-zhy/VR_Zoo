@@ -1,0 +1,377 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55b1d5a471393954da21aea94f47c134, type: 3}
+  m_Name: beginner_chart
+  m_EditorClassIdentifier: 
+  music: {fileID: 0}
+  bpm: 90
+  notes:
+  - track: 0
+    hitTime: 1.86
+  - track: 3
+    hitTime: 2.15
+  - track: 0
+    hitTime: 2.53
+  - track: 3
+    hitTime: 2.93
+  - track: 0
+    hitTime: 3.25
+  - track: 3
+    hitTime: 3.62
+  - track: 1
+    hitTime: 3.9
+  - track: 3
+    hitTime: 4.3
+  - track: 0
+    hitTime: 4.64
+  - track: 3
+    hitTime: 5.04
+  - track: 0
+    hitTime: 5.38
+  - track: 3
+    hitTime: 5.76
+  - track: 0
+    hitTime: 6.08
+  - track: 3
+    hitTime: 6.4
+  - track: 3
+    hitTime: 6.69
+  - track: 2
+    hitTime: 7.02
+  - track: 1
+    hitTime: 7.35
+  - track: 3
+    hitTime: 7.7
+  - track: 1
+    hitTime: 8.04
+  - track: 3
+    hitTime: 8.41
+  - track: 1
+    hitTime: 8.71
+  - track: 3
+    hitTime: 9.1
+  - track: 0
+    hitTime: 9.43
+  - track: 3
+    hitTime: 9.77
+  - track: 0
+    hitTime: 10.09
+  - track: 1
+    hitTime: 10.8
+  - track: 2
+    hitTime: 11.48
+  - track: 3
+    hitTime: 12.14
+  - track: 1
+    hitTime: 12.88
+  - track: 3
+    hitTime: 13.25
+  - track: 1
+    hitTime: 13.61
+  - track: 3
+    hitTime: 13.97
+  - track: 1
+    hitTime: 14.31
+  - track: 3
+    hitTime: 14.66
+  - track: 2
+    hitTime: 14.99
+  - track: 3
+    hitTime: 15.72
+  - track: 1
+    hitTime: 16.08
+  - track: 3
+    hitTime: 16.43
+  - track: 1
+    hitTime: 16.8
+  - track: 3
+    hitTime: 17.18
+  - track: 1
+    hitTime: 17.45
+  - track: 0
+    hitTime: 17.78
+  - track: 1
+    hitTime: 18.51
+  - track: 3
+    hitTime: 18.8
+  - track: 2
+    hitTime: 19.1
+  - track: 1
+    hitTime: 19.4
+  - track: 0
+    hitTime: 19.7
+  - track: 1
+    hitTime: 20.04
+  - track: 2
+    hitTime: 20.36
+  - track: 3
+    hitTime: 20.69
+  - track: 2
+    hitTime: 21.08
+  - track: 3
+    hitTime: 21.42
+  - track: 2
+    hitTime: 21.73
+  - track: 1
+    hitTime: 22.1
+  - track: 0
+    hitTime: 22.42
+  - track: 1
+    hitTime: 22.76
+  - track: 2
+    hitTime: 23.08
+  - track: 1
+    hitTime: 23.43
+  - track: 0
+    hitTime: 23.79
+  - track: 3
+    hitTime: 24.23
+  - track: 0
+    hitTime: 24.55
+  - track: 3
+    hitTime: 24.98
+  - track: 0
+    hitTime: 25.26
+  - track: 3
+    hitTime: 25.62
+  - track: 1
+    hitTime: 25.98
+  - track: 0
+    hitTime: 26.33
+  - track: 3
+    hitTime: 26.63
+  - track: 0
+    hitTime: 27.04
+  - track: 3
+    hitTime: 27.35
+  - track: 0
+    hitTime: 27.73
+  - track: 3
+    hitTime: 28.1
+  - track: 0
+    hitTime: 28.38
+  - track: 3
+    hitTime: 28.75
+  - track: 2
+    hitTime: 29.06
+  - track: 1
+    hitTime: 29.41
+  - track: 3
+    hitTime: 29.75
+  - track: 1
+    hitTime: 30.1
+  - track: 3
+    hitTime: 30.49
+  - track: 1
+    hitTime: 30.79
+  - track: 3
+    hitTime: 31.16
+  - track: 1
+    hitTime: 31.46
+  - track: 2
+    hitTime: 31.78
+  - track: 3
+    hitTime: 32.16
+  - track: 0
+    hitTime: 32.9
+  - track: 3
+    hitTime: 33.57
+  - track: 2
+    hitTime: 33.85
+  - track: 1
+    hitTime: 34.14
+  - track: 2
+    hitTime: 34.42
+  - track: 3
+    hitTime: 34.8
+  - track: 1
+    hitTime: 35.2
+  - track: 3
+    hitTime: 35.56
+  - track: 1
+    hitTime: 35.91
+  - track: 1
+    hitTime: 36.12
+  - track: 3
+    hitTime: 36.28
+  - track: 0
+    hitTime: 36.94
+  - track: 2
+    hitTime: 36.95
+  - track: 3
+    hitTime: 37.68
+  - track: 0
+    hitTime: 38.25
+  - track: 1
+    hitTime: 38.63
+  - track: 2
+    hitTime: 38.91
+  - track: 3
+    hitTime: 39.28
+  - track: 2
+    hitTime: 39.61
+  - track: 3
+    hitTime: 39.96
+  - track: 0
+    hitTime: 40.28
+  - track: 3
+    hitTime: 40.61
+  - track: 2
+    hitTime: 40.93
+  - track: 1
+    hitTime: 41.3
+  - track: 0
+    hitTime: 41.61
+  - track: 1
+    hitTime: 41.9
+  - track: 2
+    hitTime: 42.16
+  - track: 3
+    hitTime: 42.55
+  - track: 2
+    hitTime: 42.95
+  - track: 3
+    hitTime: 43.38
+  - track: 2
+    hitTime: 43.71
+  - track: 0
+    hitTime: 44.05
+  - track: 1
+    hitTime: 44.37
+  - track: 2
+    hitTime: 44.71
+  - track: 3
+    hitTime: 45.09
+  - track: 0
+    hitTime: 45.95
+  - track: 3
+    hitTime: 46.47
+  - track: 0
+    hitTime: 46.82
+  - track: 3
+    hitTime: 47.19
+  - track: 0
+    hitTime: 47.52
+  - track: 3
+    hitTime: 47.86
+  - track: 1
+    hitTime: 48.19
+  - track: 0
+    hitTime: 48.83
+  - track: 3
+    hitTime: 49.26
+  - track: 0
+    hitTime: 49.57
+  - track: 3
+    hitTime: 49.93
+  - track: 0
+    hitTime: 50.21
+  - track: 3
+    hitTime: 50.56
+  - track: 3
+    hitTime: 50.91
+  - track: 2
+    hitTime: 51.22
+  - track: 1
+    hitTime: 51.56
+  - track: 3
+    hitTime: 51.91
+  - track: 1
+    hitTime: 52.3
+  - track: 3
+    hitTime: 52.6
+  - track: 1
+    hitTime: 52.92
+  - track: 3
+    hitTime: 53.29
+  - track: 3
+    hitTime: 53.63
+  - track: 2
+    hitTime: 53.96
+  - track: 1
+    hitTime: 54.26
+  - track: 0
+    hitTime: 54.95
+  - track: 0
+    hitTime: 55.59
+  - track: 1
+    hitTime: 55.94
+  - track: 2
+    hitTime: 56.24
+  - track: 3
+    hitTime: 56.57
+  - track: 2
+    hitTime: 56.93
+  - track: 3
+    hitTime: 57.4
+  - track: 2
+    hitTime: 57.76
+  - track: 3
+    hitTime: 58.11
+  - track: 2
+    hitTime: 58.41
+  - track: 2
+    hitTime: 58.61
+  - track: 0
+    hitTime: 59.06
+  - track: 3
+    hitTime: 59.72
+  - track: 0
+    hitTime: 59.74
+  - track: 0
+    hitTime: 60.42
+  - track: 1
+    hitTime: 60.76
+  - track: 2
+    hitTime: 61.07
+  - track: 3
+    hitTime: 61.4
+  - track: 2
+    hitTime: 61.71
+  - track: 3
+    hitTime: 62.08
+  - track: 2
+    hitTime: 62.4
+  - track: 3
+    hitTime: 62.75
+  - track: 2
+    hitTime: 63.08
+  - track: 1
+    hitTime: 63.42
+  - track: 0
+    hitTime: 63.74
+  - track: 1
+    hitTime: 64.11
+  - track: 2
+    hitTime: 64.51
+  - track: 3
+    hitTime: 64.93
+  - track: 2
+    hitTime: 65.24
+  - track: 3
+    hitTime: 65.64
+  - track: 2
+    hitTime: 66.01
+  - track: 0
+    hitTime: 66.41
+  - track: 1
+    hitTime: 66.88
+  - track: 2
+    hitTime: 67.29
+  - track: 3
+    hitTime: 67.86
+  - track: 3
+    hitTime: 68.32
+  - track: 3
+    hitTime: 69.06
+  - track: 0
+    hitTime: 69.08
