@@ -22,9 +22,9 @@ namespace FruitSlash
             CancelInvoke();
             if (_rb != null)
             {
+                _rb.isKinematic = false;
                 _rb.velocity = Vector3.zero;
                 _rb.angularVelocity = Vector3.zero;
-                _rb.isKinematic = false;
             }
 
             for (int i = 0; i < _particles.Length; i++)

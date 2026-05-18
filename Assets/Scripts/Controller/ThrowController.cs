@@ -57,7 +57,6 @@ namespace Controller
         [SerializeField] private int missTriggerCount = 3;
         [SerializeField] private int recoverCatchCount = 3;
         [SerializeField] private float missCheckWindow = 10f;
-        [SerializeField] private float comfortSlowMultiplier = 1.3f;
         [SerializeField] private float comfortFrequencyMultiplier = 1.3f;
 
         #endregion
