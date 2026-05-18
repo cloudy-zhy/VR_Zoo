@@ -1,3 +1,4 @@
+using Core.Event;
 using Core.Fsm;
 using Manager;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace Entity.DodoBird.State
         {
             base.OnEnter();
             owner.PlayParticle(DodoBirdParticleType.Shock);
-            GameManager.Event.Broadcast("DodoBird.Grabbed");
+            owner.Broadcast("DodoBird.Grabbed");
         }
 
         public override void OnUpdate()

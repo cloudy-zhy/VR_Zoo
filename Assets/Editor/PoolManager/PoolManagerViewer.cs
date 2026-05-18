@@ -9,11 +9,11 @@ using UnityEngine.UIElements;
 
 namespace Core.Pool.EditorTools
 {
-    public sealed class PoolSystemViewer : EditorWindow
+    public sealed class PoolManagerViewer : EditorWindow
     {
-        private const string WindowUxmlPath = "Assets/Editor/PoolSystem/PoolSystemViewer.uxml";
-        private const string ItemUxmlPath = "Assets/Editor/PoolSystem/PoolSystemViewerItem.uxml";
-        private const string UssPath = "Assets/Editor/PoolSystem/PoolSystemViewer.uss";
+        private const string WindowUxmlPath = "Assets/Editor/PoolManager/PoolManagerViewer.uxml";
+        private const string ItemUxmlPath = "Assets/Editor/PoolManager/PoolManagerViewerItem.uxml";
+        private const string UssPath = "Assets/Editor/PoolManager/PoolManagerViewer.uss";
 
         private readonly List<PoolRowData> _rows = new();
         private readonly Dictionary<string, int> _rowIndexByPoolName = new();
@@ -24,11 +24,11 @@ namespace Core.Pool.EditorTools
         private Label _statusLabel;
         private bool _eventsRegistered;
 
-        [MenuItem("Tools/Pool System Viewer")]
+        [MenuItem("Tools/Pool Manager Viewer")]
         public static void ShowWindow()
         {
-            PoolSystemViewer window = GetWindow<PoolSystemViewer>();
-            window.titleContent = new GUIContent("Pool System Viewer");
+            PoolManagerViewer window = GetWindow<PoolManagerViewer>();
+            window.titleContent = new GUIContent("Pool Manager Viewer");
             window.minSize = new Vector2(760, 320);
         }
 

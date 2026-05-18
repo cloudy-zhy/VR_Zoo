@@ -1,4 +1,5 @@
 using Core.Pool.PoolObjects;
+using Core.Event;
 using DG.Tweening;
 using Manager;
 using UnityEngine;
@@ -83,7 +84,7 @@ namespace PokeBall
             if (shrinkDuration <= 0f)
             {
                 root.localScale = finalScale;
-                GameManager.Event.Broadcast("PokeBall.Caught", this);
+                this.Broadcast("PokeBall.Caught", this);
                 DeactivateRootIfNeeded(root);
                 return;
             }
@@ -99,7 +100,7 @@ namespace PokeBall
                     .SetEase(Ease.InBack))
                 .OnComplete(() =>
                 {
-                    GameManager.Event.Broadcast("PokeBall.Caught", this);
+                    this.Broadcast("PokeBall.Caught", this);
                     DeactivateRootIfNeeded(root);
                 })
                 .SetLink(root.gameObject, LinkBehaviour.KillOnDestroy);

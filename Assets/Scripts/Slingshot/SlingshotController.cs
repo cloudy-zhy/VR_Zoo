@@ -340,7 +340,7 @@ namespace Slingshot
 
             UpdateLockedTrajectoryLine(previewResult);
             if (isNewTarget)
-                GameManager.Event.Broadcast("DodoBird.FruitLocked");
+                this.Broadcast("DodoBird.FruitLocked");
         }
 
         /// <summary>

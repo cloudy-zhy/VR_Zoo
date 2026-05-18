@@ -1,4 +1,5 @@
 using Core.Utils;
+using Core.Event;
 using Manager;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -124,7 +125,7 @@ namespace Entity.Pterosaur
 
             _caught = true;
             _it.enabled = false;
-            GameManager.Event.Broadcast("Gift.Caught", _type);
+            this.Broadcast("Gift.Caught", _type);
             GameManager.Pool.Return(this);
             groundMark.SetActive(false);
         }
@@ -139,7 +140,7 @@ namespace Entity.Pterosaur
 
             _missed = true;
             _it.enabled = false;
-            GameManager.Event.Broadcast("Gift.Missed", _type);
+            this.Broadcast("Gift.Missed", _type);
             BecomeGroundGift();
             groundMark.SetActive(false);
         }

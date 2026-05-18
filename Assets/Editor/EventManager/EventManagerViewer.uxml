@@ -1,0 +1,83 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement class="event-viewer">
+        <uie:Toolbar class="event-toolbar">
+            <ui:Label text="Event Manager Viewer" class="toolbar-title" />
+            <ui:VisualElement class="toolbar-spacer" />
+            <uie:ToolbarToggle name="ShowRegisterToggle" text="Register" />
+            <uie:ToolbarToggle name="ShowUnregisterToggle" text="Unregister" />
+            <uie:ToolbarToggle name="ShowBroadcastToggle" text="Broadcast" />
+            <uie:ToolbarButton name="RefreshButton" text="刷新" />
+        </uie:Toolbar>
+
+        <ui:Label name="NoticeLabel" class="notice-label" />
+        <ui:Label name="StatusLabel" class="status-label" />
+
+        <ui:VisualElement class="main-layout">
+            <ui:VisualElement class="left-pane">
+                <ui:ScrollView name="EventTableScroll" class="event-table-scroll" mode="Horizontal">
+                    <ui:VisualElement class="event-table-content">
+                        <ui:VisualElement class="list-header event-header">
+                            <ui:Button name="EventNameFilterButton" text="EventName ▾" class="cell event-name event-filter-button" />
+                            <ui:Label text="Category" class="cell small-text-cell" />
+                            <ui:Label text="Payload" class="cell small-text-cell" />
+                            <ui:Label text="No" class="cell number-cell" />
+                            <ui:Label text="Payload" class="cell number-cell" />
+                            <ui:Label text="Total" class="cell number-cell" />
+                            <ui:Label text="Reg" class="cell number-cell" />
+                            <ui:Label text="Unreg" class="cell number-cell" />
+                            <ui:Label text="Calls" class="cell number-cell" />
+                            <ui:Label text="Last" class="cell log-cell" />
+                        </ui:VisualElement>
+                        <ui:ListView name="EventList" class="viewer-list event-list" />
+                    </ui:VisualElement>
+                </ui:ScrollView>
+            </ui:VisualElement>
+
+            <ui:VisualElement class="right-pane">
+                <ui:ScrollView class="right-scroll" mode="VerticalAndHorizontal">
+                    <ui:VisualElement class="right-content">
+                    <ui:VisualElement class="detail-box">
+                        <ui:Label text="事件详情" class="pane-title" />
+                        <ui:Label name="EventDetailLabel" class="detail-label" />
+                        <uie:ToolbarButton name="SelectLastCallButton" text="定位 LastCall" class="small-button" />
+                    </ui:VisualElement>
+
+                    <ui:Label text="Listeners" class="pane-title section-title" />
+                    <ui:VisualElement class="list-header listener-header">
+                        <ui:Label text="Status" class="cell status-cell" />
+                        <ui:Label text="GameObject" class="cell target-cell" />
+                        <ui:Label text="Class/Component" class="cell small-text-cell" />
+                        <ui:Label text="Method" class="cell method-cell" />
+                        <ui:Label text="RegLog" class="cell log-cell" />
+                        <ui:Label text="Invokes" class="cell number-cell" />
+                        <ui:Label text="Last" class="cell log-cell" />
+                    </ui:VisualElement>
+                    <ui:ListView name="ListenerList" class="viewer-list compact-list" />
+
+                    <ui:Label text="History Log" class="pane-title section-title" />
+                    <ui:VisualElement class="list-header log-header">
+                        <ui:Label text="Id" class="cell log-cell" />
+                        <ui:Label text="Time" class="cell time-cell" />
+                        <ui:Label text="Type" class="cell status-cell" />
+                        <ui:Label text="EventName" class="cell event-name" />
+                        <ui:Label text="Source" class="cell target-cell" />
+                        <ui:Label text="Caller" class="cell method-cell" />
+                        <ui:Label text="Payload" class="cell payload-cell" />
+                        <ui:Label text="Affected" class="cell number-cell" />
+                    </ui:VisualElement>
+                    <ui:ListView name="LogList" class="viewer-list log-list" />
+
+                    <ui:Label text="Affected List" class="pane-title section-title" />
+                    <ui:VisualElement class="list-header affected-header">
+                        <ui:Label text="#" class="cell number-cell" />
+                        <ui:Label text="GameObject" class="cell target-cell" />
+                        <ui:Label text="Class/Component" class="cell small-text-cell" />
+                        <ui:Label text="Method" class="cell method-cell" />
+                    </ui:VisualElement>
+                    <ui:ListView name="AffectedList" class="viewer-list compact-list" />
+                    </ui:VisualElement>
+                </ui:ScrollView>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

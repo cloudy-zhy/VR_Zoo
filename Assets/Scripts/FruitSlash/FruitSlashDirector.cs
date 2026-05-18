@@ -109,7 +109,7 @@ namespace FruitSlash
 
             if (scoreController != null)
                 scoreController.ResetScore();
-            GameManager.Event.Broadcast(FruitSlashEvents.Started, this);
+            this.Broadcast(FruitSlashEvents.Started, this);
             if (debugLog)
                 Debug.Log("[FruitSlashDirector] Started");
             BroadcastStageChanged(CurrentStage);
@@ -189,14 +189,14 @@ namespace FruitSlash
                     Debug.Log($"[FruitSlashDirector] Rainbow completed, totalScore={(scoreController != null ? scoreController.TotalScore : 0)}");
                 _completed = true;
                 StopGame();
-                GameManager.Event.Broadcast(FruitSlashEvents.Completed, scoreController != null ? scoreController.TotalScore : 0);
+                this.Broadcast(FruitSlashEvents.Completed, scoreController != null ? scoreController.TotalScore : 0);
                 return;
             }
 
             CutFruitCount += 1;
             if (scoreController != null)
                 scoreController.AddFruitScore(fruit, sameSwingCutCount);
-            GameManager.Event.Broadcast(FruitSlashEvents.FruitCut, fruit);
+            this.Broadcast(FruitSlashEvents.FruitCut, fruit);
             if (debugLog)
                 Debug.Log($"[FruitSlashDirector] Fruit cut: type={fruit.FruitType}, count={CutFruitCount}, sameSwing={sameSwingCutCount}, stage={CurrentStage}");
 
@@ -317,7 +317,6 @@ namespace FruitSlash
                 config,
                 type,
                 type == FruitSlashFruitType.Rare,
-                type == FruitSlashFruitType.Fast,
                 type == FruitSlashFruitType.RainbowBunch,
                 velocity,
                 placeholderHalfPoolKey
@@ -496,7 +495,7 @@ namespace FruitSlash
         {
             if (debugLog)
                 Debug.Log($"[FruitSlashDirector] Stage changed: {stage}");
-            GameManager.Event.Broadcast(FruitSlashEvents.StageChanged, stage);
+            this.Broadcast(FruitSlashEvents.StageChanged, stage);
         }
 
         private void RequestSlowDown()

@@ -1,5 +1,6 @@
 using Core.Utils;
 using Core.Pool.PoolObjects;
+using Core.Event;
 using Manager;
 using UnityEngine;
 
@@ -33,8 +34,8 @@ namespace Slingshot
                 _rb.isKinematic = false;
                 _rb.useGravity = true;
                 // 广播消息被撞到了，只有在树上的有资格被撞
-                GameManager.Event.Broadcast("DodoBird.HitFruit", slingshotFruitType);
-                GameManager.Event.Broadcast("DodoBird.FruitHit");
+                this.Broadcast("DodoBird.HitFruit", slingshotFruitType);
+                this.Broadcast("DodoBird.FruitHit");
                 GetComponent<AudioSource>().Play();
                 // 播放击中vfx
                 if (GameManager.Pool.TryRent<PooledParticle>("VFX.Hit", out var particle, position : transform.position))

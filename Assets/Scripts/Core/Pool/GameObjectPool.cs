@@ -140,8 +140,12 @@ namespace Core.Pool
         {
             IsDestroyed = true;
             foreach (var gameObject in RentSet)
-                Object.Destroy(gameObject);
-            Object.Destroy(RootTransform.gameObject);
+            {
+                if (gameObject != null)
+                    Object.Destroy(gameObject);
+            }
+            if (RootTransform != null)
+                Object.Destroy(RootTransform.gameObject);
             PoolQueue.Clear();
             RentSet.Clear();
             _rentQueue.Clear();

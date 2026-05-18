@@ -14,8 +14,8 @@ namespace Entity.DodoBird.State
         public override void OnEnter()
         {
             base.OnEnter();
-            GameManager.Event.Broadcast("DodoBird.OnPulling", owner);
-            GameManager.Event.Broadcast("DodoBird.Aimed");
+            owner.Broadcast("DodoBird.OnPulling", owner);
+            owner.Broadcast("DodoBird.Aimed");
         }
 
         public override void OnUpdate()
@@ -30,7 +30,7 @@ namespace Entity.DodoBird.State
             base.OnExit();
             owner.IsBeReleased = false;
             owner.GrabInteractable.enabled = false;
-            GameManager.Event.Broadcast("DodoBird.OnRelease", owner);
+            owner.Broadcast("DodoBird.OnRelease", owner);
         }
     }
 }

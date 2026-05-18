@@ -70,7 +70,7 @@ namespace FruitSlash
 
             TotalScore += added;
             RefreshLabels(added, sameSwingCutCount > 1);
-            GameManager.Event.Broadcast(FruitSlashEvents.ComboChanged, ComboCount);
+            this.Broadcast(FruitSlashEvents.ComboChanged, ComboCount);
             return added;
         }
 

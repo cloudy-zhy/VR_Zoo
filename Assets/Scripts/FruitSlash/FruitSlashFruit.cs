@@ -1,3 +1,4 @@
+using Core.Event;
 using Manager;
 using UnityEngine;
 
@@ -14,7 +15,6 @@ namespace FruitSlash
         [SerializeField] private FruitSlashFruitType fruitType = FruitSlashFruitType.FlameEgg;
         [SerializeField] private int baseScore = 15;
         [SerializeField] private bool isRare;
-        [SerializeField] private bool isFast;
         [SerializeField] private bool isRainbowBunch;
 
         [Header("七彩巨大果串")]
@@ -36,12 +36,8 @@ namespace FruitSlash
         public FruitSlashFruitType FruitType => fruitType;
         public int BaseScore => baseScore;
         public bool IsRare => isRare;
-        public bool IsFast => isFast;
         public bool IsRainbowBunch => isRainbowBunch;
         public int RainbowReward => rainbowReward;
-        public bool IsFinished => _cutFinished || _missed;
-        /// <summary>本次切中该果实的光刃。</summary>
-        public FruitSlashBlade LastCutBlade { get; private set; }
         /// <summary>本次挥刀连续切中的果实数量。</summary>
         public int LastSameSwingCutCount { get; private set; }
 
@@ -73,7 +69,6 @@ namespace FruitSlash
             FruitSlashFruitConfigSO config,
             FruitSlashFruitType type,
             bool rare,
-            bool fast,
             bool rainbow,
             Vector3 velocity,
             string fallbackHalfPoolKey)
@@ -82,12 +77,10 @@ namespace FruitSlash
 
             fruitType = type;
             isRare = rare;
-            isFast = fast;
             isRainbowBunch = rainbow;
             _cutFinished = false;
             _missed = false;
             _rainbowHitCount = 0;
-            LastCutBlade = null;
             LastSameSwingCutCount = 0;
 
             if (config != null)
@@ -128,7 +121,7 @@ namespace FruitSlash
         /// <summary>
         /// 由光刃调用。返回 true 表示这次挥刀已命中该果实，应计入当前挥刀命中集合。
         /// </summary>
-        public bool TryCut(FruitSlashBlade blade, Vector3 segmentStart, Vector3 segmentEnd, int sameSwingCutCount)
+        public bool TryCut(Vector3 segmentStart, Vector3 segmentEnd, int sameSwingCutCount)
         {
             if (_cutFinished || _missed)
                 return false;
@@ -142,18 +135,17 @@ namespace FruitSlash
                     return true;
             }
 
-            FinishCut(blade, segmentStart, segmentEnd, sameSwingCutCount);
+            FinishCut(segmentStart, segmentEnd, sameSwingCutCount);
             return true;
         }
 
-        private void FinishCut(FruitSlashBlade blade, Vector3 segmentStart, Vector3 segmentEnd, int sameSwingCutCount)
+        private void FinishCut(Vector3 segmentStart, Vector3 segmentEnd, int sameSwingCutCount)
         {
             _cutFinished = true;
             _collider.enabled = false;
             _rb.velocity = Vector3.zero;
             _rb.angularVelocity = Vector3.zero;
             _rb.isKinematic = true;
-            LastCutBlade = blade;
             LastSameSwingCutCount = sameSwingCutCount;
 
             Vector3 splitDirection = CalculateSplitDirection(segmentStart, segmentEnd);
@@ -164,7 +156,7 @@ namespace FruitSlash
             if (cutAudio != null)
                 AudioSource.PlayClipAtPoint(cutAudio, transform.position);
 
-            GameManager.Event.Broadcast(FruitSlashEvents.InternalFruitCut, this);
+            this.Broadcast(FruitSlashEvents.InternalFruitCut, this);
             GameManager.Pool.Return(this);
         }
 
@@ -185,7 +177,7 @@ namespace FruitSlash
                 return;
 
             _missed = true;
-            GameManager.Event.Broadcast(FruitSlashEvents.InternalFruitMissed, this);
+            this.Broadcast(FruitSlashEvents.InternalFruitMissed, this);
             GameManager.Pool.Return(this);
         }
 
@@ -249,8 +241,8 @@ namespace FruitSlash
         private void SpawnHitFeedback(Vector3 segmentStart, Vector3 segmentEnd)
         {
             Quaternion rotation = Quaternion.LookRotation((segmentEnd - segmentStart).normalized, Vector3.up);
-            SpawnTimedPoolObject(juiceVfxPoolKey, transform.position, rotation, 3f);
-            SpawnTimedPoolObject(sparkVfxPoolKey, transform.position, rotation, 3f);
+            GameManager.Pool.Rent(juiceVfxPoolKey, 3f, transform.position, rotation).Forget();
+            GameManager.Pool.Rent(sparkVfxPoolKey, 3f, transform.position, rotation).Forget();
         }
 
         private Vector3 CalculateSplitDirection(Vector3 segmentStart, Vector3 segmentEnd)
@@ -305,14 +297,9 @@ namespace FruitSlash
             }
         }
 
-        private static void SpawnTimedPoolObject(string key, Vector3 position, Quaternion rotation, float lifetime)
-        {
-            GameManager.Pool.Rent(key, lifetime, position, rotation).Forget();
-        }
-
         public void OnDisable()
         {
-            if (_rb != null)
+            if (_rb != null && !_rb.isKinematic)
             {
                 _rb.velocity = Vector3.zero;
                 _rb.angularVelocity = Vector3.zero;

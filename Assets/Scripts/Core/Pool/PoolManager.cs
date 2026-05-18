@@ -27,8 +27,8 @@ namespace Core.Pool
             var pool = new GameObjectPool();
             await pool.Initialize(poolName, _poolRootTransform, step, capacity, prewarm, prefab);
             PoolDict.Add(poolName, pool);
-#if Unity_Editor
-            GameManager.Event.Broadcast(PoolEvents.Registered, poolName);
+#if UNITY_EDITOR
+            GameManager.Event.Broadcast(this, PoolEvents.Registered, poolName);
 #endif
         }
 
@@ -48,8 +48,8 @@ namespace Core.Pool
             {
                 pool.Destroy();
                 PoolDict.Remove(poolName);
-#if Unity_Editor
-                GameManager.Event.Broadcast(PoolEvents.Unregistered, poolName);
+#if UNITY_EDITOR
+                GameManager.Event.Broadcast(this, PoolEvents.Unregistered, poolName);
 #endif
             }
         }
@@ -61,8 +61,8 @@ namespace Core.Pool
                 pool.Destroy();
             }
             PoolDict.Clear();
-#if Unity_Editor
-            GameManager.Event.Broadcast(PoolEvents.Cleared);
+#if UNITY_EDITOR
+            GameManager.Event.Broadcast(this, PoolEvents.Cleared);
 #endif
         }
 
@@ -76,8 +76,8 @@ namespace Core.Pool
             gameObject = null;
             if (!PoolDict.TryGetValue(poolName, out pool) || !pool.TryRent(out gameObject, parent))
                 return false;
-#if Unity_Editor
-                GameManager.Event.Broadcast(PoolEvents.Rented, poolName);
+#if UNITY_EDITOR
+                GameManager.Event.Broadcast(this, PoolEvents.Rented, poolName);
 #endif
             if (position.HasValue) gameObject.transform.position = position.Value;
             if (rotation.HasValue) gameObject.transform.rotation = rotation.Value;
@@ -97,8 +97,8 @@ namespace Core.Pool
                 // 等待的这会，可能池/物体被销毁了，物体不会无端销毁，关心池因为场景切换注销的问题
                 if (!pool.IsDestroyed && pool.Return(gameObject))
                 {
-#if Unity_Editor
-                    GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+#if UNITY_EDITOR
+                    GameManager.Event.Broadcast(this, PoolEvents.Returned, poolName);
 #endif
                 }
             }
@@ -133,8 +133,8 @@ namespace Core.Pool
             poolName ??= gameObject.name;
             if (gameObject.IsNotNull() && PoolDict.TryGetValue(poolName, out var pool) && pool.Return(gameObject))
             {
-#if Unity_Editor
-                GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+#if UNITY_EDITOR
+                GameManager.Event.Broadcast(this, PoolEvents.Returned, poolName);
 #endif
             }
         }
@@ -148,8 +148,8 @@ namespace Core.Pool
                 // 等待的这会，可能池/物体被销毁了，物体不会无端销毁，关心池因为场景切换注销的问题
                 if (!pool.IsDestroyed && pool.Return(gameObject))
                 {
-#if Unity_Editor
-                    GameManager.Event.Broadcast(PoolEvents.Returned, poolName);
+#if UNITY_EDITOR
+                    GameManager.Event.Broadcast(this, PoolEvents.Returned, poolName);
 #endif
                 }
             }

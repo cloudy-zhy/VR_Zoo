@@ -135,7 +135,7 @@ namespace FruitSlash
                     continue;
 
                 _sameSwingCutCount += 1;
-                if (fruit.TryCut(this, segmentStart, segmentEnd, _sameSwingCutCount))
+                if (fruit.TryCut(segmentStart, segmentEnd, _sameSwingCutCount))
                 {
                     _currentSwingHits.Add(fruit);
                     if (debugLogHits)

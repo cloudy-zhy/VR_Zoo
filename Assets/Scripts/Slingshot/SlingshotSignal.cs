@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using Entity.DodoBird;
 //using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 namespace Slingshot

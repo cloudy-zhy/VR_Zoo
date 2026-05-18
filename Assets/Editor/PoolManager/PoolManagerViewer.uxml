@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement class="pool-viewer">
         <uie:Toolbar class="pool-toolbar">
-            <ui:Label text="Pool System Viewer" class="pool-toolbar-title" />
+            <ui:Label text="Pool Manager Viewer" class="pool-toolbar-title" />
             <ui:VisualElement class="toolbar-spacer" />
             <uie:ToolbarButton name="RefreshButton" text="刷新" />
         </uie:Toolbar>

@@ -17,7 +17,7 @@ namespace Entity.Pterosaur.State
 
         public override async void OnEnter()
         {
-            GameManager.Event.Broadcast("Pterosaur.Throw", owner.transform.position);
+            owner.Broadcast("Pterosaur.Throw", owner.transform.position);
             owner.ani.SetTrigger(animBoolName);
             // _finished = false;
             // 测试阶段没有动画
