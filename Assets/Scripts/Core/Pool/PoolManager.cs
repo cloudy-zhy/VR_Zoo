@@ -130,8 +130,10 @@ namespace Core.Pool
 
         public void Return(GameObject gameObject, string poolName = null)
         {
+            if (gameObject.IsNull())
+                return;
             poolName ??= gameObject.name;
-            if (gameObject.IsNotNull() && PoolDict.TryGetValue(poolName, out var pool) && pool.Return(gameObject))
+            if (PoolDict.TryGetValue(poolName, out var pool) && pool.Return(gameObject))
             {
 #if UNITY_EDITOR
                 GameManager.Event.Broadcast(this, PoolEvents.Returned, poolName);
@@ -141,8 +143,10 @@ namespace Core.Pool
 
         public async UniTaskVoid Return(GameObject gameObject, float duration, string poolName = null)
         {
+            if (gameObject.IsNull())
+                return;
             poolName ??= gameObject.name;
-            if (gameObject.IsNotNull() && PoolDict.TryGetValue(poolName, out var pool))
+            if (PoolDict.TryGetValue(poolName, out var pool))
             {
                 await UniTask.WaitForSeconds(duration);
                 // 等待的这会，可能池/物体被销毁了，物体不会无端销毁，关心池因为场景切换注销的问题
@@ -156,10 +160,18 @@ namespace Core.Pool
         }
         
         #region 语法糖
-        public void Return<T>(T component, string poolName = null) where T : Component 
-            => Return(component.gameObject, poolName ?? component.gameObject.name);
-        public void Return<T>(T component, float duration, string poolName = null) where T : Component 
-            => Return(component.gameObject, duration, poolName ?? component.gameObject.name).Forget();
+        public void Return<T>(T component, string poolName = null) where T : Component
+        {
+            if (component == null)
+                return;
+            Return(component.gameObject, poolName ?? component.gameObject.name);
+        }
+        public void Return<T>(T component, float duration, string poolName = null) where T : Component
+        {
+            if (component == null)
+                return;
+            Return(component.gameObject, duration, poolName ?? component.gameObject.name).Forget();
+        }
         #endregion
         
         #endregion

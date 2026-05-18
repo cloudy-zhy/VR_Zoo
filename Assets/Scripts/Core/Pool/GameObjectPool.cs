@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Core.Utils;
 using Cysharp.Threading.Tasks;
 using Manager;
@@ -139,12 +140,11 @@ namespace Core.Pool
         public void Destroy()
         {
             IsDestroyed = true;
-            foreach (var gameObject in RentSet)
+            foreach (var gameObject in RentSet.Where(gameObject => gameObject != null))
             {
-                if (gameObject != null)
-                    Object.Destroy(gameObject);
+                Object.Destroy(gameObject);
             }
-            if (RootTransform != null)
+            if (RootTransform.IsNotNull())
                 Object.Destroy(RootTransform.gameObject);
             PoolQueue.Clear();
             RentSet.Clear();
