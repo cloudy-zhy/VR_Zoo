@@ -15,7 +15,7 @@ public class Scene1To2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        string targetSceneName = "Scene2_“Ù”Œ";
+        string targetSceneName = "Scene1-2";
         if (Input.GetKeyDown(KeyCode.K)) SceneManager.LoadScene(targetSceneName);
     }
 }

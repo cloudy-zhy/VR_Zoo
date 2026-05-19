@@ -142,6 +142,16 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1076965767}
+    - target: {fileID: 2439403244244997673, guid: de538a67480dc97429ee214374464a28,
+        type: 3}
+      propertyPath: enableFadeIn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2439403244244997673, guid: de538a67480dc97429ee214374464a28,
+        type: 3}
+      propertyPath: enableFadeOut
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3656347338073992375, guid: de538a67480dc97429ee214374464a28,
         type: 3}
       propertyPath: m_IsActive
@@ -3993,7 +4003,7 @@ PrefabInstance:
     - target: {fileID: 2311623757411137490, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.71046644
+      value: 0.99722725
       objectReference: {fileID: 0}
     - target: {fileID: 2311623757411137490, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
@@ -4003,7 +4013,7 @@ PrefabInstance:
     - target: {fileID: 2311623757411137490, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7037311
+      value: -0.074417055
       objectReference: {fileID: 0}
     - target: {fileID: 2311623757411137490, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
@@ -4018,7 +4028,7 @@ PrefabInstance:
     - target: {fileID: 2311623757411137490, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -89.454
+      value: -8.535
       objectReference: {fileID: 0}
     - target: {fileID: 2311623757411137490, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
@@ -5111,7 +5121,7 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.size
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -5158,6 +5168,11 @@ PrefabInstance:
       propertyPath: dialogueAudioClips.Array.data[8]
       value: 
       objectReference: {fileID: 8300000, guid: b4c5ea804d8ba754f8adcb7d8b19e544, type: 3}
+    - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
+        type: 3}
+      propertyPath: dialogueAudioClips.Array.data[9]
+      value: 
+      objectReference: {fileID: 8300000, guid: eab3a56926d16be46a00a2abb94baf52, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[0].speakerName
@@ -5271,7 +5286,7 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[9].dialogueText
-      value: "\u8C22\u8C22\u8BBF\u5BA2\uFF01\u679C\u5B50\u591F\u5566\uFF0C\u6D3E\u5BF9\u89C1\uFF5E"
+      value: "\u8C22\u8C22\u8BBF\u5BA2\uFF01\u679C\u5B50\u591F\u5566\uFF0C\u8BF7\u7ACB\u523B\u8FD4\u56DE\u5217\u8F66\u51C6\u5907\u51FA\u53D1\uFF0C\u6D3E\u5BF9\u89C1\uFF5E"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -5336,7 +5351,7 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[9].displayDuration
-      value: 3
+      value: 6.5
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}

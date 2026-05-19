@@ -116,7 +116,7 @@ namespace Slingshot
 
         private async void OnEnterEnd()
         {
-            string targetSceneName = "Scene2_音游";
+            string targetSceneName = "Scene1-2";
             endDetector.gameObject.SetActive(false);
             // 小等一会，也可以不等，后面写跳转逻辑
             await UniTask.WaitForSeconds(2.5f);

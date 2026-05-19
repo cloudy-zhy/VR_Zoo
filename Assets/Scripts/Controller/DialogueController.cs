@@ -39,7 +39,8 @@ public class DialogueController : MonoBehaviour
     [SerializeField] private float delayBetweenDialogues = 0.5f; // 对话之间的延迟
     [SerializeField] private float minimumDisplayTime = 2.0f; // 每句话最少显示时间
     [SerializeField] private float timePerCharacter = 0.05f; // 每个字符显示时间（影响自动计算时长）
-    
+    [SerializeField] private bool enableLastDialogue = false; // 最后一个对话是否一直显示
+
     [Header("音频设置")]
     [SerializeField] private AudioSource audioSource;          // 音频源组件
     [SerializeField] private AudioClip[] dialogueAudioClips;   // 每个对话对应的音频剪辑
@@ -141,7 +142,7 @@ public class DialogueController : MonoBehaviour
         if (showDebugLogs) Debug.Log("所有对话结束");
 
         // 隐藏所有对话框
-        if (UIManager.Instance != null)
+        if (UIManager.Instance != null && !enableLastDialogue)
         {
             UIManager.Instance.HideAllDialogs();
         }
