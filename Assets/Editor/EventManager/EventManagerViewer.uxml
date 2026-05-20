@@ -1,83 +1,78 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement class="event-viewer">
+        <!-- 统一主工具栏 -->
         <uie:Toolbar class="event-toolbar">
             <ui:Label text="Event Manager Viewer" class="toolbar-title" />
+            <uie:ToolbarButton name="CategoryFilterButton" text="Category: All ▾" />
             <ui:VisualElement class="toolbar-spacer" />
             <uie:ToolbarToggle name="ShowRegisterToggle" text="Register" />
             <uie:ToolbarToggle name="ShowUnregisterToggle" text="Unregister" />
             <uie:ToolbarToggle name="ShowBroadcastToggle" text="Broadcast" />
-            <uie:ToolbarButton name="RefreshButton" text="刷新" />
+            <uie:ToolbarButton name="ColumnsButton" text="Columns ▾" />
+            <uie:ToolbarButton name="RefreshButton" text="Refresh" />
         </uie:Toolbar>
 
+        <!-- 提示和状态区域 -->
         <ui:Label name="NoticeLabel" class="notice-label" />
         <ui:Label name="StatusLabel" class="status-label" />
 
-        <ui:VisualElement class="main-layout">
+        <!-- 采用 TwoPaneSplitView 支持交互式拖拽 -->
+        <ui:TwoPaneSplitView name="SplitView" class="main-layout" orientation="horizontal" fixed-pane-index="0" fixed-pane-initial-dimension="560">
+            <!-- 左侧面板：事件总表 -->
             <ui:VisualElement class="left-pane">
-                <ui:ScrollView name="EventTableScroll" class="event-table-scroll" mode="Horizontal">
-                    <ui:VisualElement class="event-table-content">
-                        <ui:VisualElement class="list-header event-header">
-                            <ui:Button name="EventNameFilterButton" text="EventName ▾" class="cell event-name event-filter-button" />
-                            <ui:Label text="Category" class="cell small-text-cell" />
-                            <ui:Label text="Payload" class="cell small-text-cell" />
-                            <ui:Label text="No" class="cell number-cell" />
-                            <ui:Label text="Payload" class="cell number-cell" />
-                            <ui:Label text="Total" class="cell number-cell" />
-                            <ui:Label text="Reg" class="cell number-cell" />
-                            <ui:Label text="Unreg" class="cell number-cell" />
-                            <ui:Label text="Calls" class="cell number-cell" />
-                            <ui:Label text="Last" class="cell log-cell" />
-                        </ui:VisualElement>
-                        <ui:ListView name="EventList" class="viewer-list event-list" />
-                    </ui:VisualElement>
-                </ui:ScrollView>
+                <ui:MultiColumnListView name="EventList" class="table-view" />
             </ui:VisualElement>
 
+            <!-- 右侧面板：双 Tab 面板 -->
             <ui:VisualElement class="right-pane">
-                <ui:ScrollView class="right-scroll" mode="VerticalAndHorizontal">
-                    <ui:VisualElement class="right-content">
-                    <ui:VisualElement class="detail-box">
-                        <ui:Label text="事件详情" class="pane-title" />
-                        <ui:Label name="EventDetailLabel" class="detail-label" />
-                        <uie:ToolbarButton name="SelectLastCallButton" text="定位 LastCall" class="small-button" />
+                <!-- Tab 控制头部 -->
+                <ui:VisualElement class="tabs-container">
+                    <ui:Button name="ListenersTabButton" text="Listeners &amp; Details" class="tab-button tab-button--active" />
+                    <ui:Button name="HistoryTabButton" text="Broadcast History" class="tab-button" />
+                </ui:VisualElement>
+
+                <!-- Tab 1 内容：当前选中事件的监听器与详情 -->
+                <ui:VisualElement name="ListenersTabContent" class="tab-content tab-content--active">
+                    <!-- 事件详情卡片 -->
+                    <ui:VisualElement class="detail-card">
+                        <ui:Label text="Selected Event Details" class="detail-title" />
+                        <ui:Label name="EventDetailLabel" class="detail-text" />
                     </ui:VisualElement>
 
-                    <ui:Label text="Listeners" class="pane-title section-title" />
-                    <ui:VisualElement class="list-header listener-header">
-                        <ui:Label text="Status" class="cell status-cell" />
-                        <ui:Label text="GameObject" class="cell target-cell" />
-                        <ui:Label text="Class/Component" class="cell small-text-cell" />
-                        <ui:Label text="Method" class="cell method-cell" />
-                        <ui:Label text="RegLog" class="cell log-cell" />
-                        <ui:Label text="Invokes" class="cell number-cell" />
-                        <ui:Label text="Last" class="cell log-cell" />
+                    <!-- 监听者列表标题与角标 -->
+                    <ui:VisualElement class="sublist-header">
+                        <ui:Label text="Active Listeners" class="sublist-title" />
+                        <ui:Label name="ListenersCountBadge" text="0" class="sublist-badge" />
                     </ui:VisualElement>
-                    <ui:ListView name="ListenerList" class="viewer-list compact-list" />
+                    
+                    <!-- 监听者多列列表 -->
+                    <ui:MultiColumnListView name="ListenerList" class="table-view" />
+                </ui:VisualElement>
 
-                    <ui:Label text="History Log" class="pane-title section-title" />
-                    <ui:VisualElement class="list-header log-header">
-                        <ui:Label text="Id" class="cell log-cell" />
-                        <ui:Label text="Time" class="cell time-cell" />
-                        <ui:Label text="Type" class="cell status-cell" />
-                        <ui:Label text="EventName" class="cell event-name" />
-                        <ui:Label text="Source" class="cell target-cell" />
-                        <ui:Label text="Caller" class="cell method-cell" />
-                        <ui:Label text="Payload" class="cell payload-cell" />
-                        <ui:Label text="Affected" class="cell number-cell" />
+                <!-- Tab 2 内容：历史广播记录与受影响监听者 -->
+                <ui:VisualElement name="HistoryTabContent" class="tab-content">
+                    <!-- 历史日志头部 -->
+                    <ui:VisualElement class="sublist-header">
+                        <ui:Label text="Broadcast Logs" class="sublist-title" />
+                        <ui:Label name="LogsCountBadge" text="0" class="sublist-badge" />
+                        <ui:VisualElement class="toolbar-spacer" />
+                        <ui:Toggle name="SelectedEventOnlyToggle" text="Selected Event Only" style="margin-right: 8px; font-size: 10px;" />
+                        <ui:Button name="SelectLastCallButton" text="Locate Last Call" class="small-button" />
                     </ui:VisualElement>
-                    <ui:ListView name="LogList" class="viewer-list log-list" />
+                    
+                    <!-- 历史日志列表 -->
+                    <ui:MultiColumnListView name="LogList" class="table-view" style="flex-grow: 1; min-height: 180px;" />
 
-                    <ui:Label text="Affected List" class="pane-title section-title" />
-                    <ui:VisualElement class="list-header affected-header">
-                        <ui:Label text="#" class="cell number-cell" />
-                        <ui:Label text="GameObject" class="cell target-cell" />
-                        <ui:Label text="Class/Component" class="cell small-text-cell" />
-                        <ui:Label text="Method" class="cell method-cell" />
+                    <!-- 受影响监听器头部 -->
+                    <ui:VisualElement class="sublist-header" style="margin-top: 8px;">
+                        <ui:Label text="Affected Listeners (Selected Log)" class="sublist-title" />
+                        <ui:Label name="AffectedCountBadge" text="0" class="sublist-badge" />
                     </ui:VisualElement>
-                    <ui:ListView name="AffectedList" class="viewer-list compact-list" />
-                    </ui:VisualElement>
-                </ui:ScrollView>
+                    
+                    <!-- 受影响监听器列表 -->
+                    <ui:MultiColumnListView name="AffectedList" class="table-view" style="flex-grow: 0; height: 130px;" />
+                </ui:VisualElement>
             </ui:VisualElement>
-        </ui:VisualElement>
+        </ui:TwoPaneSplitView>
     </ui:VisualElement>
 </ui:UXML>
