@@ -22,9 +22,9 @@ namespace Manager
         {
             _assetLoader = null;
             _mAudioManager = null;
-            _poolManager.Unregister();
+            _poolManager?.Unregister();
             _poolManager = null;
-            _eventManager.Unregister();
+            _eventManager?.Unregister();
             _eventManager = null;
         }
     }
