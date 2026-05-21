@@ -50,6 +50,7 @@ namespace Entity.Pterosaur
         
         private StateMachine<PterosaurStateType> _fsm;
         private int _remainReqs;
+        public PterosaurStateType CurrentStateType => _fsm != null ? _fsm.CurrentKey : PterosaurStateType.Idle;
         
         #endregion
 

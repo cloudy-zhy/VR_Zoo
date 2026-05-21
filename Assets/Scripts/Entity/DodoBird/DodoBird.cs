@@ -71,6 +71,7 @@ namespace Entity.DodoBird
         
         private static int _landLayer;
         private StateMachine<DodoBirdStateType> _fsm;
+        public DodoBirdStateType CurrentStateType => _fsm != null ? _fsm.CurrentKey : DodoBirdStateType.Idle;
 
         #endregion
 
@@ -104,9 +105,9 @@ namespace Entity.DodoBird
             GrabInteractable.selectExited.AddListener(RegisterRelease);
             _fsm.Initialize(DodoBirdStateType.Idle);
         }
- 
-        private void Update()       => _fsm.OnUpdate();
-        
+
+        private void Update() => _fsm.OnUpdate();
+
         #endregion
 
         #region PrivateMethods

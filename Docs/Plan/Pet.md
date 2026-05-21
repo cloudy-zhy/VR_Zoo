@@ -50,7 +50,7 @@ public interface IPettable
 - 挂在 `PetZone.prefab` 上的核心检测组件。
 - 只负责“是否构成一次摸头”的判断，不负责具体动物反馈。
 - 组件依赖：
-  - `Collider`：建议使用 `SphereCollider` 或 `CapsuleCollider`，开启 `isTrigger`。
+  - `Collider`：建议使用 `SphereCollider` 或 `CapsuleCollider`，默认不要开启 `isTrigger`。
   - `XRSimpleInteractable`：负责接入 XR Interaction Toolkit 的 hover 生命周期。
 - 序列化配置：
   - `Transform pettableRoot`：可选，指定向父级查找 `IPettable` 的根。
@@ -58,13 +58,14 @@ public interface IPettable
   - `float minStrokeDistance = 0.12f`：手在区域内累计移动达到该距离后触发。
   - `float minHoverDuration = 0.15f`：最短停留时间，过滤瞬间擦过。
   - `float cooldown = 0.8f`：同一 `PetZone` 的触发冷却。
-  - `bool triggerOncePerHover = true`：一次进入区域最多触发一次。
+  - `bool triggerOncePerHover = false`：默认关闭，让 `cooldown` 控制同一次接触内的重复触发；只有剧情节点需要“一次进入只触发一次”时才开启。
   - `LayerMask` 或 `InteractionLayerMask`：限制只有玩家手/控制器可以触发。
 - 工作方式：
   - 在 `hoverEntered` 中记录 interactor、初始位置和时间。
   - 在 `hoverExited` 中清理本次记录。
   - 在 `Update` 中读取 active interactor 的当前位置，累计移动距离。
   - 当 `IPettable.CanBePetted` 为 true，且距离、时间、冷却均满足时，调用 `IPettable.OnPetted(context)`。
+  - 触发后重置本轮累计移动距离和停留计时；玩家不需要把手拿出 `PetZone`，冷却结束后重新摸动即可再次触发。
 
 ## `PetZone` Prefab 方案
 
@@ -81,7 +82,7 @@ PetZone
 
 推荐配置：
 
-- `Collider.isTrigger = true`。
+- `Collider.isTrigger = false`。`XRDirectInteractor` 在启用 Sphere Collider 精度优化时会使用物理 overlap/sphere cast，默认忽略 trigger collider；如果 `PetZone` 设为 trigger，Direct hover 可能完全不会触发。
 - Collider 尺寸按常见动物头部设置一个较小默认值，例如半径 `0.18m`，具体动物 prefab 内可覆盖缩放。
 - `XRSimpleInteractable` 不需要 grab，仅用于 hover 检测。
 - `Interaction Layer Mask` 只包含玩家手部/控制器所在交互层，避免环境物件参与检测。
