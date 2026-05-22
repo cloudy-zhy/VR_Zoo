@@ -1,4 +1,5 @@
 using System;
+using Core.Event;
 using Core.Fsm;
 using Entity.Pterosaur.State;
 using UnityEngine;
@@ -42,6 +43,15 @@ namespace Entity.Pterosaur
         public bool HadRequest => _remainReqs != 0;
 
         public Vector3 Destination { get; private set; }
+        public PterosaurGift GiftCatchTarget { get; private set; }
+        public Vector3 GiftCatchReturnPosition { get; private set; }
+        public float GiftChaseSpeed => giftChaseSpeed;
+        public float GiftCatchReturnSpeed => giftCatchReturnSpeed;
+        public float GiftCatchDistance => giftCatchDistance;
+        public float GiftCatchReturnDistance => giftCatchReturnDistance;
+        public bool HasGiftCatchTask => GiftCatchTarget != null ||
+                                        CurrentStateType == PterosaurStateType.GiftChase ||
+                                        CurrentStateType == PterosaurStateType.ReturnToPlayer;
 
         
         #endregion
@@ -50,6 +60,7 @@ namespace Entity.Pterosaur
         
         private StateMachine<PterosaurStateType> _fsm;
         private int _remainReqs;
+        private bool _isFsmInitialized;
         public PterosaurStateType CurrentStateType => _fsm != null ? _fsm.CurrentKey : PterosaurStateType.Idle;
         Enum ICurStateType.CurrentStateTypeEnum => CurrentStateType;
 
@@ -62,6 +73,14 @@ namespace Entity.Pterosaur
         [SerializeField] private float randomRadius = 20f;
         [Tooltip("随机选取最大次数，次数过小可能导致选取失败，不进行随机飞行")]
         [SerializeField] private int randomRetryTimes = 20;
+
+        [Header("接礼物")]
+        [SerializeField] private float giftChaseSpeed = 6f;
+        [SerializeField] private float giftCatchReturnSpeed = 5f;
+        [SerializeField] private float giftCatchRotateSpeed = 540f;
+        [SerializeField] private float giftCatchDistance = 0.35f;
+        [SerializeField] private float giftCatchReturnDistance = 0.4f;
+        [SerializeField] private float giftCatchReturnRadius = 2f;
 
         #endregion
         
@@ -96,6 +115,7 @@ namespace Entity.Pterosaur
         {
             RegisterXR();
             _fsm.Initialize(PterosaurStateType.Idle);
+            _isFsmInitialized = true;
             SetRandomDestination();
         }
         
@@ -119,6 +139,8 @@ namespace Entity.Pterosaur
             _fsm.AddState(PterosaurStateType.Idle, new IdleState(this, _fsm, "Idle"));
             _fsm.AddState(PterosaurStateType.Move, new MoveState(this, _fsm, "Move"));
             _fsm.AddState(PterosaurStateType.Throw, new ThrowState(this, _fsm, "Throw"));
+            _fsm.AddState(PterosaurStateType.GiftChase, new GiftChaseState(this, _fsm, "Move"));
+            _fsm.AddState(PterosaurStateType.ReturnToPlayer, new ReturnToPlayerState(this, _fsm, "Move"));
             // _fsm.OnStateChanged += (from, to) =>
             //     Debug.Log($"[Pterosaur:{name}] {from} → {to}");
         }
@@ -173,6 +195,85 @@ namespace Entity.Pterosaur
         public void CutRequest()
         {
             _remainReqs = Math.Max(0, _remainReqs - 1);
+        }
+
+        /// <summary>
+        /// 尝试让翼龙进入射击锁定礼物的追取任务。
+        /// </summary>
+        public bool TryStartGiftCatchTask(PterosaurGift gift)
+        {
+            if (gift == null || _fsm == null || !_isFsmInitialized || HasGiftCatchTask)
+                return false;
+
+            GiftCatchTarget = gift;
+            _fsm.ChangeState(PterosaurStateType.GiftChase);
+            return true;
+        }
+
+        /// <summary>
+        /// 清理当前射击接礼物任务目标。
+        /// </summary>
+        public void ClearGiftCatchTask()
+        {
+            GiftCatchTarget = null;
+        }
+
+        /// <summary>
+        /// 生成玩家同高度附近的任务返回点。
+        /// </summary>
+        public void CreateGiftCatchReturnPosition()
+        {
+            Transform player = Camera.main != null ? Camera.main.transform : transform;
+            Vector2 offset = Random.insideUnitCircle * giftCatchReturnRadius;
+            Vector3 playerPosition = player.position;
+
+            GiftCatchReturnPosition = new Vector3(
+                playerPosition.x + offset.x,
+                playerPosition.y,
+                playerPosition.z + offset.y
+            );
+        }
+
+        /// <summary>
+        /// 用非 NavMesh 的方式直接朝目标点飞行。
+        /// </summary>
+        public void MoveDirectlyTowards(Vector3 targetPosition, float speed)
+        {
+            Transform self = transform;
+            Vector3 currentPosition = self.position;
+            Vector3 direction = targetPosition - currentPosition;
+
+            self.position = Vector3.MoveTowards(
+                currentPosition,
+                targetPosition,
+                speed * Time.deltaTime
+            );
+
+            if (direction.sqrMagnitude <= 0.0001f)
+                return;
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
+            self.rotation = Quaternion.RotateTowards(
+                self.rotation,
+                targetRotation,
+                giftCatchRotateSpeed * Time.deltaTime
+            );
+        }
+
+        /// <summary>
+        /// 判断翼龙是否已经进入目标点指定半径。
+        /// </summary>
+        public bool IsNearPosition(Vector3 position, float distance)
+        {
+            return (transform.position - position).sqrMagnitude <= distance * distance;
+        }
+
+        /// <summary>
+        /// 通知射击接礼物 Controller 该翼龙已回到可用位置。
+        /// </summary>
+        public void BroadcastGiftCatchReturn()
+        {
+            this.Broadcast("Pterosaur.GiftCatchReturn", this);
         }
 
         #endregion

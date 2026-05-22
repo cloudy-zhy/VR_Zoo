@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2687788150795491441}
   - component: {fileID: 4752237802742485530}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Gift
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,6 +50,8 @@ MonoBehaviour:
   groundBounceForce: 2.5
   groundDrag: 0.8
   onlyDirectInteract: 0
+  useCatchZoneCatch: 0
+  lockedColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!1 &3188299890785110683
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,7 +67,7 @@ GameObject:
   - component: {fileID: 5388315695850529609}
   - component: {fileID: 4055807367236043022}
   - component: {fileID: 106244672309533245}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Gift
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -311,7 +313,7 @@ GameObject:
   - component: {fileID: 2100499867252578295}
   - component: {fileID: 7344027992597024287}
   - component: {fileID: 2954868294792953910}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mark
   m_TagString: Untagged
   m_Icon: {fileID: 0}

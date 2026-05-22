@@ -1,12 +1,13 @@
 using Core.Utils;
 using Core.Event;
+using GiftCatch.Shot;
 using Manager;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Entity.Pterosaur
 {
-    public class PterosaurGift : MonoBehaviour, IRigidbodyRelayReceiver
+    public class PterosaurGift : MonoBehaviour, IRigidbodyRelayReceiver, IShottable
     {
         #region SerializedFieldVariables
 
@@ -17,6 +18,9 @@ namespace Entity.Pterosaur
         [SerializeField] private bool onlyDirectInteract = true;
         [SerializeField] private bool useCatchZoneCatch;
 
+        [Header("Shot Lock")]
+        [SerializeField] private Color lockedColor = Color.cyan;
+
         #endregion
 
         #region Properties
@@ -24,6 +28,8 @@ namespace Entity.Pterosaur
         private RigidbodyRelay _bodyRelay;
         private XRSimpleInteractable _it;
         private Rigidbody _rb;
+        private Renderer _giftRenderer;
+        private MaterialPropertyBlock _materialPropertyBlock;
         private PterosaurGiftType _type;
 
         #endregion
@@ -34,6 +40,8 @@ namespace Entity.Pterosaur
         private bool _caught;
         private bool _missed;
         private bool _hasBecomeGroundGift;
+        private bool _isShotLocked;
+        private Pterosaur _lockedPterosaur;
         private LayerMask _layerMask;
 
         #endregion
@@ -46,6 +54,8 @@ namespace Entity.Pterosaur
             _bodyRelay.Init(this);
             _rb = GetComponentInChildren<Rigidbody>();
             _it = GetComponentInChildren<XRSimpleInteractable>();
+            _giftRenderer = _bodyRelay.GetComponentInChildren<Renderer>();
+            _materialPropertyBlock = new MaterialPropertyBlock();
             _it.firstHoverEntered.AddListener(OnFirstHoverEntered);
             _layerMask = LayerMask.GetMask("Land");
         }
@@ -78,6 +88,7 @@ namespace Entity.Pterosaur
             _caught = false;
             _missed = false;
             _hasBecomeGroundGift = false;
+            ClearShotLock();
             
             _it.enabled = !useCatchZoneCatch;
             _rb.isKinematic = false;
@@ -98,6 +109,69 @@ namespace Entity.Pterosaur
             {
                 groundMark.SetActive(false);
             }
+        }
+
+        public bool CanBeShotLocked => _initialized &&
+                                       !_caught &&
+                                       !_missed &&
+                                       !_hasBecomeGroundGift &&
+                                       !_isShotLocked;
+
+        /// <summary>
+        /// 判断当前礼物是否仍由指定翼龙锁定。
+        /// </summary>
+        public bool IsLockedByPterosaur(Pterosaur pterosaur)
+        {
+            return _isShotLocked && _lockedPterosaur == pterosaur;
+        }
+
+        /// <summary>
+        /// 响应 Shotter 的射击命中，并请求接礼物 Controller 分配翼龙。
+        /// </summary>
+        public void OnShot(RaycastHit hit)
+        {
+            // ApplyShotLockedVisual();
+            if (!CanBeShotLocked)
+                return;
+
+            this.Broadcast("Gift.Shot", this);
+        }
+
+        /// <summary>
+        /// 尝试将礼物锁定给指定翼龙，并切换锁定表现。
+        /// </summary>
+        public bool TryLockByPterosaur(Pterosaur pterosaur)
+        {
+            if (pterosaur == null || !CanBeShotLocked)
+                return false;
+
+            _isShotLocked = true;
+            _lockedPterosaur = pterosaur;
+            ApplyShotLockedVisual();
+            return true;
+        }
+
+        /// <summary>
+        /// 在翼龙任务启动失败等场景下释放指定翼龙的锁定。
+        /// </summary>
+        public bool TryReleaseShotLock(Pterosaur pterosaur)
+        {
+            if (!IsLockedByPterosaur(pterosaur))
+                return false;
+
+            ClearShotLock();
+            return true;
+        }
+
+        /// <summary>
+        /// 由锁定翼龙抵达礼物位置后调用，结算为接住。
+        /// </summary>
+        public void ResolveLockedCatch(Pterosaur pterosaur)
+        {
+            if (!IsLockedByPterosaur(pterosaur))
+                return;
+
+            Catch();
         }
 
         #endregion
@@ -123,6 +197,8 @@ namespace Entity.Pterosaur
             if (!_initialized || _caught || _missed || _hasBecomeGroundGift)
                 return;
 
+            ClearShotLock();
+
             _caught = true;
             _it.enabled = false;
             this.Broadcast("Gift.Caught", _type);
@@ -137,6 +213,8 @@ namespace Entity.Pterosaur
 
             if (collision.gameObject.layer != LayerMask.NameToLayer("Land"))
                 return;
+
+            ClearShotLock();
 
             _missed = true;
             _it.enabled = false;
@@ -187,6 +265,29 @@ namespace Entity.Pterosaur
                 default:
                     break;
             }
+        }
+
+        private void ApplyShotLockedVisual()
+        {
+            if (_giftRenderer == null)
+                return;
+
+            _giftRenderer.GetPropertyBlock(_materialPropertyBlock);
+            _materialPropertyBlock.SetColor("_BaseColor", lockedColor);
+            _materialPropertyBlock.SetColor("_Color", lockedColor);
+            _giftRenderer.SetPropertyBlock(_materialPropertyBlock);
+        }
+
+        private void ClearShotLock()
+        {
+            _isShotLocked = false;
+            _lockedPterosaur = null;
+
+            if (_giftRenderer == null || _materialPropertyBlock == null)
+                return;
+
+            _materialPropertyBlock.Clear();
+            _giftRenderer.SetPropertyBlock(_materialPropertyBlock);
         }
 
         public void OnRelayCollisionExit(Collision collision)

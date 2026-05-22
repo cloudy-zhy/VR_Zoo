@@ -144,8 +144,8 @@ namespace Core.Pool
             {
                 Object.Destroy(gameObject);
             }
-            if (RootTransform.IsNotNull())
-                Object.Destroy(RootTransform.gameObject);
+            // if (RootTransform.IsNotNull())
+            //     Object.Destroy(RootTransform.gameObject);
             PoolQueue.Clear();
             RentSet.Clear();
             _rentQueue.Clear();
