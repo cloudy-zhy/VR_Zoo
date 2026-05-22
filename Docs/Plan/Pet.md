@@ -45,6 +45,22 @@ public interface IPettable
   - `float StrokeDistance`：本次在摸头区域内累计移动距离。
   - `float HoldDuration`：本次 hover 持续时间。
 
+### `PetResponderBase`
+
+- 动物摸头响应基类，继承 `MonoBehaviour` 并实现 `IPettable`。
+- 负责复用所有动物通用的摸头反馈流程：
+  - 检查当前是否允许响应摸头。
+  - 播放 Animator Trigger。
+  - 播放反馈粒子。
+  - 通过 `GameManager.mAudio` 播放音效。
+  - 输出可选 Debug 日志。
+  - 广播通用事件 `"Animal.Petted"`。
+  - 调用子类广播具体动物事件，例如 `"DodoBird.Petted"`。
+- 子类只需要实现：
+  - 状态判断，例如 `Idle / Wait` 是否允许摸头。
+  - 反馈所需的 `Animator` 和 `AudioSource` 来源。
+  - 具体动物事件广播。
+
 ### `PetZone`
 
 - 挂在 `PetZone.prefab` 上的核心检测组件。

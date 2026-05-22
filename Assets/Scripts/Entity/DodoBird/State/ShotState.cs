@@ -15,7 +15,7 @@ namespace Entity.DodoBird.State
             base.OnEnter();
             owner.Rb.isKinematic = false;
             owner.Rb.velocity = owner.LaunchVelocity;
-            GameManager.mAudio.PlayEffect(owner.AS, "DodoBirdEffect", "Flap", loop:true);
+            GameManager.mAudio.PlayEffect(owner.aus, "DodoBirdEffect", "Flap", loop:true);
         }
 
         public override void OnUpdate()
@@ -32,7 +32,7 @@ namespace Entity.DodoBird.State
             owner.Rb.isKinematic = true;
             owner.Collider.enabled = false;
             owner.PlayParticle(DodoBirdParticleType.Smog);
-            owner.AS.Stop();
+            owner.aus.Stop();
         }
     }
 }

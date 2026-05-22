@@ -1,3 +1,4 @@
+using System;
 using Core.Fsm;
 using Entity.DodoBird.State;
 using UnityEngine;
@@ -22,7 +23,7 @@ namespace Entity.DodoBird
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(XRGrabInteractable))]
-    public class DodoBird : MonoBehaviour, IAnimator
+    public class DodoBird : MonoBehaviour, IAnimator, IAudioSource, ICurStateType<DodoBirdStateType>
     {
         # region Components
         // ─── 组件引用（各状态通过属性访问）─────────────────────────────────
@@ -32,7 +33,7 @@ namespace Entity.DodoBird
         public Animator          ani        { get; private set; }
         public XRGrabInteractable GrabInteractable { get; private set; }
         public Collider         Collider     { get; private set; }
-        public AudioSource       AS          { get; private set; }
+        public AudioSource       aus          { get; private set; }
         
         #endregion
         
@@ -72,6 +73,7 @@ namespace Entity.DodoBird
         private static int _landLayer;
         private StateMachine<DodoBirdStateType> _fsm;
         public DodoBirdStateType CurrentStateType => _fsm != null ? _fsm.CurrentKey : DodoBirdStateType.Idle;
+        Enum ICurStateType.CurrentStateTypeEnum => CurrentStateType;
 
         #endregion
 
@@ -126,7 +128,7 @@ namespace Entity.DodoBird
             ani             = GetComponent<Animator>();
             GrabInteractable = GetComponent<XRGrabInteractable>();
             Collider         = GetComponent<Collider>();
-            AS               = GetComponent<AudioSource>();
+            aus               = GetComponent<AudioSource>();
         }
  
         private void BuildFsm()

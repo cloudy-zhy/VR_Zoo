@@ -12,7 +12,7 @@ namespace Entity.Pterosaur
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(XRSimpleInteractable))]
-    public class Pterosaur : MonoBehaviour, IAnimator
+    public class Pterosaur : MonoBehaviour, IAnimator, IAudioSource, ICurStateType<PterosaurStateType>
     {
         #region Components
         
@@ -51,11 +51,12 @@ namespace Entity.Pterosaur
         private StateMachine<PterosaurStateType> _fsm;
         private int _remainReqs;
         public PterosaurStateType CurrentStateType => _fsm != null ? _fsm.CurrentKey : PterosaurStateType.Idle;
-        
+        Enum ICurStateType.CurrentStateTypeEnum => CurrentStateType;
+
         #endregion
 
         #region SerializeFieldVariables
-        
+
         [Header("随机飞行")]
         [Tooltip("随机飞行选取半径")]
         [SerializeField] private float randomRadius = 20f;
