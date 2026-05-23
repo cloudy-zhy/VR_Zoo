@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4158922661666556322}
   - component: {fileID: 8978330066455675011}
   - component: {fileID: 1755398696719035028}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b776e79210a8294db2087d6e63118dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
+  moveSpeed: 2
   missDistance: 0.3
   noteRenderer: {fileID: 8534490557548616494}
   movingColor: {r: 0.3, g: 0.8, b: 1, a: 1}

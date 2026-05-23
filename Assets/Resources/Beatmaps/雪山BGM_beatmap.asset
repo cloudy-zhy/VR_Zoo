@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b1d5a471393954da21aea94f47c134, type: 3}
   m_Name: "\u96EA\u5C71BGM_beatmap"
   m_EditorClassIdentifier: Assembly-CSharp:RhythmGame:BeatmapData
-  music: {fileID: 0}
+  music: {fileID: 8300000, guid: cc67b369dcf8cae4a9d3aeae8fefe69d, type: 3}
   bpm: 120
   notes: []
