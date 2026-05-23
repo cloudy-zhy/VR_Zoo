@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_tutorial_01
   m_EditorClassIdentifier: 
   levelName: tutorial1
-  targetScore: 10
+  targetScore: 30
   fruits:
   - position: {x: -16.95, y: 6.31, z: 4.59}
     rotationEuler: {x: -90, y: 0, z: 0}

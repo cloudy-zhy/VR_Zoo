@@ -1997,6 +1997,62 @@ PhysicMaterial:
   bounciness: 0
   frictionCombine: 0
   bounceCombine: 0
+--- !u!1 &381095875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 381095877}
+  - component: {fileID: 381095876}
+  m_Layer: 0
+  m_Name: FruitManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &381095876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381095875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc587b525d6083f4f912c86b9866ab95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fruitPrefabs:
+  - {fileID: 3742611200088615988, guid: 3b54f712a08cae94ab159caac586b719, type: 3}
+  - {fileID: 3353753012527717460, guid: 7ae33277224af334f97325eaf587fc4c, type: 3}
+  - {fileID: 3755547120815452995, guid: 9e312d3e2378dbf48a4e1fd3960f83e2, type: 3}
+  levels:
+  - {fileID: 11400000, guid: 26441a0478144c64b80db76ae42f642c, type: 2}
+  - {fileID: 11400000, guid: 3d1a3ced748b87f4dbe38e7ca27a0b94, type: 2}
+  - {fileID: 11400000, guid: 91c64c86f26218847b9e09902c7a09f5, type: 2}
+  - {fileID: 11400000, guid: 9e4c9a76ef7c53044a4983c188db9272, type: 2}
+  currentLevelIndex: 0
+  targetScore: 0
+  endDetector: {fileID: 565622288}
+--- !u!4 &381095877
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381095875}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.7579999, y: 1.3044398, z: -7.16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &387647548 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8124886330488974130, guid: 6cd6b3df35a299a46a03220e5e4c5804,
@@ -3410,7 +3466,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1, y: 1}
+  m_SizeDelta: {x: 2, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &619049497
 MonoBehaviour:
@@ -3575,6 +3631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44b6b4fb8c0b824db90a744b7ea4fd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetSceneName: Scene1-2
 --- !u!4 &641135894
 Transform:
   m_ObjectHideFlags: 0
@@ -3998,7 +4055,7 @@ PrefabInstance:
     - target: {fileID: 2311623757411137490, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7
+      value: 5.26
       objectReference: {fileID: 0}
     - target: {fileID: 2311623757411137490, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
@@ -5226,7 +5283,7 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[0].dialogueText
-      value: "\u5C06\u5C04\u7EBF\u7784\u51C6\u6E21\u6E21\u9E1F\uFF0C\u62C7\u6307\u98DF\u6307\u634F\u5408\u6293\u4F4F\u5B83"
+      value: "\u7528\u5C04\u7EBF\u7784\u51C6\u6E21\u6E21\u9E1F\uFF0C\u63E1\u4F4F\u63E1\u628A\u952E\u6293\u4F4F\u5B83\u3002"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -5246,22 +5303,22 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[1].dialogueText
-      value: "\u5C06\u6E21\u6E21\u9E1F\u653E\u5230\u5F39\u5F13\u4E0A\u677E\u624B"
+      value: "\u628A\u5B83\u653E\u5230\u5F39\u5F13\u4E0A\uFF0C\u677E\u5F00\u63E1\u628A\u952E\u653E\u4E0A\u53BB\u3002"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[2].dialogueText
-      value: "\u518D\u6B21\u6293\u4F4F\u5B83"
+      value: "\u518D\u6B21\u6309\u4F4F\u63E1\u628A\u952E\u6293\u4F4F\u5B83\uFF0C\u7528\u529B\u5411\u540E\u62C9\uFF01"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[3].dialogueText
-      value: "\u5F80\u540E\u62C9\uFF0C\u522B\u677E\u624B\uFF0C\u5BF9\u51C6\u90A3\u9897\u5927\u679C\u5B50\uFF01\r"
+      value: "\u4ED4\u7EC6\u7784\u51C6\u90A3\u9897\u5927\u679C\u5B50\uFF0C\u5343\u4E07\u522B\u677E\u624B\u3002"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[4].dialogueText
-      value: "\u597D\uFF01\u73B0\u5728\u677E\u5F00\u624B"
+      value: "\u597D\uFF01\u73B0\u5728\u677E\u5F00\u63E1\u628A\u952E\uFF0C\u53D1\u5C04\uFF01"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -8358,7 +8415,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8981,7 +9038,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1578588425}
   - component: {fileID: 1578588424}
-  - component: {fileID: 1578588427}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -9016,32 +9072,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1578588427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578588423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc587b525d6083f4f912c86b9866ab95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fruitPrefabs:
-  - {fileID: 3742611200088615988, guid: 3b54f712a08cae94ab159caac586b719, type: 3}
-  - {fileID: 3353753012527717460, guid: 7ae33277224af334f97325eaf587fc4c, type: 3}
-  - {fileID: 3755547120815452995, guid: 9e312d3e2378dbf48a4e1fd3960f83e2, type: 3}
-  levels:
-  - {fileID: 11400000, guid: 26441a0478144c64b80db76ae42f642c, type: 2}
-  - {fileID: 11400000, guid: 3d1a3ced748b87f4dbe38e7ca27a0b94, type: 2}
-  - {fileID: 11400000, guid: 91c64c86f26218847b9e09902c7a09f5, type: 2}
-  - {fileID: 11400000, guid: c89c69f6723ed7f4590b197d4215c354, type: 2}
-  - {fileID: 11400000, guid: 3c091a144f8c55347a5fdae46f9da2d2, type: 2}
-  - {fileID: 11400000, guid: 9e4c9a76ef7c53044a4983c188db9272, type: 2}
-  currentLevelIndex: 0
-  targetScore: 0
-  endDetector: {fileID: 565622288}
 --- !u!4 &1597899959 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4088069591108843150, guid: 3b54f712a08cae94ab159caac586b719,
@@ -13336,3 +13366,4 @@ SceneRoots:
   - {fileID: 2075861090}
   - {fileID: 1117323320}
   - {fileID: 641135894}
+  - {fileID: 381095877}

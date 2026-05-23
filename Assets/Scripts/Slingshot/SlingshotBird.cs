@@ -126,7 +126,7 @@ namespace Slingshot
         {
             yield return new WaitForSeconds(3f);
             _totalScore = 0;
-            ui.ShowScore(_totalScore, isGolden);
+            //ui.ShowScore(_totalScore, isGolden);
             fruitManager.NextLevel();
         }
 

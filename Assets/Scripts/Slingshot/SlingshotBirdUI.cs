@@ -97,7 +97,7 @@ namespace Slingshot
         /// <param name="isGolden">是否为金果得分（触发金色主题）</param>
         public void ShowScore(int totalScore, bool isGolden = false)
         {
-            scoreLabel.text  = totalScore.ToString();
+            scoreLabel.text  = totalScore.ToString()+"/"+FruitManager.Instance.targetScore.ToString();
             scoreLabel.color = isGolden ? colorGolden : colorNormal;
 
             // 打断上一次动画后重新播放弹性冲击
@@ -106,6 +106,12 @@ namespace Slingshot
             _scorePunchTween = scoreLabel.transform
                 .DOPunchScale(Vector3.one * scorePunchScale, scorePunchDuration, vibrato: 6, elasticity: 0.5f)
                 .SetLink(gameObject);
+        }
+
+        public void InitialScore()
+        {
+            scoreLabel.text = "0/" + FruitManager.Instance.targetScore.ToString();
+
         }
 
         /// <summary>

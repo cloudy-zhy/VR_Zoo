@@ -54,6 +54,7 @@ public class FruitManager : MonoBehaviour
             Quaternion rot = Quaternion.Euler(f.rotationEuler);
             GameObject go = Instantiate(prefab, f.position, rot, transform);
         }
+        if(index>0) GameObject.Find("DodoBird_Chief_UI").GetComponent<SlingshotBirdUI>().InitialScore();
     }
 
     public void NextLevel()
@@ -66,8 +67,8 @@ public class FruitManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3.0f);
         LoadLevel(currentLevelIndex);
-        if (currentLevelIndex <= 3 || currentLevelIndex > 5) DialogueController.Instance.ShowDialogueWithIndex();
-        if (currentLevelIndex > 5)
+        DialogueController.Instance.ShowDialogueWithIndex();
+        if (currentLevelIndex > 3)
         {
             endDetector.gameObject.SetActive(true);
         }

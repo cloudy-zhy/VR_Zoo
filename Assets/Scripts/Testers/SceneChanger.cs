@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Scene1To2 : MonoBehaviour
+public class SceneChanger : MonoBehaviour
 {
     // Start is called before the first frame update
-    
+    [Header("Ìø×ª³¡¾°")]
+    [SerializeField] private string targetSceneName = "Scene1-2";
     void Start()
     {
         
@@ -15,7 +16,6 @@ public class Scene1To2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        string targetSceneName = "Scene1-2";
         if (Input.GetKeyDown(KeyCode.K)) SceneManager.LoadScene(targetSceneName);
     }
 }

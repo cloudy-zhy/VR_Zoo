@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -184,6 +183,22 @@ public class DialogueController : MonoBehaviour
         if (showDebugLogs) Debug.Log($"显示对话 {currentDialogueIndex + 1}/{dialogueSequence.Count}，时长: {displayTime:F1}秒");
         StartCoroutine(DialogsHideDelay(displayTime));
         currentDialogueIndex++;
+
+        // 跳转到目标场景
+        if (!string.IsNullOrEmpty(targetSceneName) && sceneChangeFlag && currentDialogueIndex==dialogueSequence.Count)
+        {
+            if (showDebugLogs) Debug.Log($"跳转到场景: {targetSceneName}");
+            SceneManager.LoadScene(targetSceneName);
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(targetSceneName))
+                Debug.LogWarning("目标场景名称为空，无法跳转");
+            else if (sceneChangeFlag)
+                Debug.Log("对话结束后不跳转");
+            else
+                Debug.Log("对话未结束");
+        }
     }
 
     public IEnumerator ShowDialogueWithIndexAndWait()
@@ -208,6 +223,24 @@ public class DialogueController : MonoBehaviour
         // 现在，在对话框确认完成一帧更新、稳定显示后，再开始“多久后隐藏它”的倒计时
         yield return StartCoroutine(DialogsHideDelay(displayTime));
         currentDialogueIndex++;
+
+        // 跳转到目标场景
+        if (!string.IsNullOrEmpty(targetSceneName) && sceneChangeFlag && currentDialogueIndex==dialogueSequence.Count)
+        {
+            // 延迟后跳转场景
+            yield return new WaitForSeconds(delayBeforeSceneChange);
+            if (showDebugLogs) Debug.Log($"跳转到场景: {targetSceneName}");
+            SceneManager.LoadScene(targetSceneName);
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(targetSceneName))
+                Debug.LogWarning("目标场景名称为空，无法跳转");
+            else if (sceneChangeFlag)
+                Debug.Log("对话结束后不跳转");
+            else
+                Debug.Log("对话未结束");
+        }
     }
 
     /// <summary>
