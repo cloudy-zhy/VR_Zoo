@@ -38,7 +38,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CloudHeight: 0.0004
+    - _CloudHeight: 0.0003
     - _CloudSpeed: 0.02
     - _EdgeLightWidth: 2.24
     - _QueueControl: 0
