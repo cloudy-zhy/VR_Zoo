@@ -62,10 +62,6 @@ namespace GiftCatch.Shot
             shottable?.OnShot(hit);
         }
 
-        protected override void OnDeactivated(DeactivateEventArgs args)
-        {
-        }
-
         private void OnDestroy()
         {
             if (_runtimeShotLineMaterial != null)

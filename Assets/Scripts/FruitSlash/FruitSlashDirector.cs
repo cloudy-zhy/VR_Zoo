@@ -13,7 +13,6 @@ namespace FruitSlash
     {
         [Header("引用")]
         [SerializeField] private FruitSlashScoreController scoreController;
-        [SerializeField] private List<FruitSlashBlade> blades = new();
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private Transform targetCenter;
         [SerializeField] private Animator longNeckAnimator;
@@ -92,8 +91,6 @@ namespace FruitSlash
             if (IsRunning)
                 return;
             IsRunning = true;
-            foreach (var blade in blades)
-                blade.gameObject.SetActive(true);
 
             _completed = false;
             _rainbowSpawned = false;
@@ -126,8 +123,6 @@ namespace FruitSlash
         public void StopGame()
         {
             IsRunning = false;
-            foreach (var blade in blades)
-                blade.gameObject.SetActive(false);
             if (_spawnRoutine != null)
             {
                 StopCoroutine(_spawnRoutine);
@@ -202,7 +197,7 @@ namespace FruitSlash
 
             if (fruit.IsRare)
             {
-                EmpowerBlades(5f);
+                this.Broadcast(FruitSlashEvents.BladeEmpowered, 5f);
             }
             else
             {
@@ -505,15 +500,6 @@ namespace FruitSlash
                 longNeckAnimator.SetTrigger("ScratchHead");
             if (debugLog)
                 Debug.Log("[FruitSlashDirector] Slow down next wave");
-        }
-
-        private void EmpowerBlades(float duration)
-        {
-            for (int i = 0; i < blades.Count; i++)
-            {
-                if (blades[i] != null)
-                    blades[i].SetEmpowered(true, duration);
-            }
         }
 
 #if UNITY_EDITOR

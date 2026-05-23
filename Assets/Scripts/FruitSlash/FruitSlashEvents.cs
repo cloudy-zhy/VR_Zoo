@@ -10,6 +10,7 @@ namespace FruitSlash
         public const string FruitCut = "FruitSlash.FruitCut";
         public const string ComboChanged = "FruitSlash.ComboChanged";
         public const string Completed = "FruitSlash.Completed";
+        public const string BladeEmpowered = "FruitSlash.BladeEmpowered";
 
         public const string InternalFruitCut = "FruitSlash.Internal.FruitCut";
         public const string InternalFruitMissed = "FruitSlash.Internal.FruitMissed";

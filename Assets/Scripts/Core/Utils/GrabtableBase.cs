@@ -3,7 +3,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Core.Utils
 {
-    public abstract class GrabtableBase : MonoBehaviour
+    [RequireComponent(typeof(XRGrabInteractable))]
+    public class GrabtableBase : MonoBehaviour
     {
         protected virtual void Start()
         {
@@ -12,7 +13,7 @@ namespace Core.Utils
             grab.deactivated.AddListener(OnDeactivated);
         }
 
-        protected abstract void OnActivated(ActivateEventArgs args);
-        protected abstract void OnDeactivated(DeactivateEventArgs args);
+        protected virtual void OnActivated(ActivateEventArgs args) { }
+        protected virtual void OnDeactivated(DeactivateEventArgs args) { }
     }
 }

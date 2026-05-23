@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core.Event;
+using Manager;
 using UnityEngine;
 
 namespace FruitSlash
@@ -16,10 +18,10 @@ namespace FruitSlash
         [SerializeField] private float swingResetDelay = 0.18f;
 
         [Header("表现")]
-        [SerializeField] private LineRenderer bladeLine;
+        [Tooltip("刀尾/刀光采样点")]
+        [SerializeField] private Transform tailTransform;
         [SerializeField] private TrailRenderer trail;
         [SerializeField] private Renderer bladeRenderer;
-        [SerializeField] private Material bladeMaterial;
         [SerializeField] private ParticleSystem empoweredParticles;
         [SerializeField] private Color normalColor = new Color(0.4f, 1f, 0.65f);
         [SerializeField] private Color empoweredColor = new Color(1f, 0.95f, 0.35f);
@@ -36,17 +38,23 @@ namespace FruitSlash
         private float _hitRadiusMultiplier = 1f;
         private int _sameSwingCutCount;
         private Coroutine _empoweredRoutine;
+        private MaterialPropertyBlock _bladePropertyBlock;
 
         private void Awake()
         {
-            _lastPosition = transform.position;
-            EnsureVisualMaterial();
+            _lastPosition = tailTransform.position;
             ApplyEmpoweredVisual(false);
+            GameManager.Event.Register<float>(FruitSlashEvents.BladeEmpowered, OnEmpowered);
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Event.Unregister<float>(FruitSlashEvents.BladeEmpowered, OnEmpowered);
         }
 
         private void Update()
         {
-            Vector3 currentPosition = transform.position;
+            Vector3 currentPosition = tailTransform.position;
             Vector3 delta = currentPosition - _lastPosition;
 
             if (delta.magnitude >= minSegmentDistance)
@@ -63,32 +71,15 @@ namespace FruitSlash
         }
 
         /// <summary>
-        /// 运行时配置光刃表现引用，供 LanTest 自举使用。
-        /// </summary>
-        public void ConfigureVisuals(Renderer visualRenderer, LineRenderer line, TrailRenderer trailRenderer)
-        {
-            bladeRenderer = visualRenderer;
-            bladeLine = line;
-            trail = trailRenderer;
-            ApplyEmpoweredVisual(false);
-        }
-
-        /// <summary>
         /// 临时强化刀光。
         /// </summary>
-        public void SetEmpowered(bool empowered, float duration)
+        private void OnEmpowered(EventContext<float> context)
         {
+            float duration = context.Payload;
             if (_empoweredRoutine != null)
             {
                 StopCoroutine(_empoweredRoutine);
                 _empoweredRoutine = null;
-            }
-
-            if (!empowered)
-            {
-                SetHitRadiusMultiplier(1f);
-                ApplyEmpoweredVisual(false);
-                return;
             }
 
             _empoweredRoutine = StartCoroutine(EmpoweredRoutine(duration));
@@ -156,17 +147,10 @@ namespace FruitSlash
 
         private void ApplyEmpoweredVisual(bool empowered)
         {
-            EnsureVisualMaterial();
             Color targetColor = empowered ? empoweredColor : normalColor;
 
             if (bladeRenderer != null)
-                bladeRenderer.material.color = targetColor;
-
-            if (bladeLine != null)
-            {
-                bladeLine.startColor = targetColor;
-                bladeLine.endColor = targetColor;
-            }
+                ApplyRendererColor(targetColor);
 
             if (trail != null)
             {
@@ -185,44 +169,18 @@ namespace FruitSlash
             ApplyLineWidth();
         }
 
-        private void EnsureVisualMaterial()
+        private void ApplyRendererColor(Color targetColor)
         {
-            if (bladeMaterial == null)
-            {
-                Shader shader = Shader.Find("Universal Render Pipeline/Unlit");
-                if (shader == null)
-                    shader = Shader.Find("Sprites/Default");
-                if (shader == null)
-                    shader = Shader.Find("Unlit/Color");
-
-                if (shader != null)
-                {
-                    bladeMaterial = new Material(shader)
-                    {
-                        name = "FruitSlash_Blade_Runtime"
-                    };
-                }
-            }
-
-            if (bladeMaterial == null)
-                return;
-
-            if (bladeRenderer != null)
-                bladeRenderer.material = bladeMaterial;
-            if (trail != null)
-                trail.material = bladeMaterial;
-            if (bladeLine != null)
-                bladeLine.material = bladeMaterial;
+            _bladePropertyBlock ??= new MaterialPropertyBlock();
+            bladeRenderer.GetPropertyBlock(_bladePropertyBlock);
+            _bladePropertyBlock.SetColor("_BaseColor", targetColor);
+            _bladePropertyBlock.SetColor("_Color", targetColor);
+            bladeRenderer.SetPropertyBlock(_bladePropertyBlock);
         }
 
         private void ApplyLineWidth()
         {
             float width = CurrentHitRadius * 0.7f;
-            if (bladeLine != null)
-            {
-                bladeLine.startWidth = width;
-                bladeLine.endWidth = width;
-            }
 
             if (trail != null)
                 trail.widthMultiplier = width;
@@ -232,7 +190,7 @@ namespace FruitSlash
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, CurrentHitRadius);
+            Gizmos.DrawWireSphere(tailTransform.position, CurrentHitRadius);
         }
 #endif
     }
