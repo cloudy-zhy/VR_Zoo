@@ -18,14 +18,18 @@ namespace Core.Utils
         [Header("淡入淡出设置")]
         [Tooltip("是否开始时淡入。")]
         [SerializeField] private bool fadeInOnStart = false;
-        [Tooltip("淡入淡出持续时间。")]
-        [SerializeField] private float fadeDuration = 5.0f;
+        [Tooltip("淡入持续时间。")]
+        [SerializeField] private float fadeInDuration = 1.0f;
+        [Tooltip("淡出持续时间。")]
+        [SerializeField] private float fadeOutDuration = 1.0f;
 
         [Tooltip("遮罩基础颜色。")]
         [SerializeField] private Color fadeColor = Color.black;
 
-        [Tooltip("淡入淡出曲线。")]
-        public AnimationCurve fadeCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+        [Tooltip("淡入曲线。")]
+        [SerializeField] private AnimationCurve fadeInCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+        [Tooltip("淡出曲线。")]
+        [SerializeField] private AnimationCurve fadeOutCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
         #endregion
 
@@ -57,7 +61,7 @@ namespace Core.Utils
         [ContextMenu("Fade In")]
         public void FadeIn()
         {
-            Fade(1f, 0f);
+            Fade(1f, 0f, fadeInDuration, fadeInCurve);
         }
 
         /// <summary>
@@ -66,34 +70,38 @@ namespace Core.Utils
         [ContextMenu("Fade Out")]
         public void FadeOut()
         {
-            Fade(0f, 1f);
+            Fade(0f, 1f, fadeOutDuration, fadeOutCurve);
         }
 
+        #endregion
+
+        #region Private Methods
+
         /// <summary>
-        /// 从指定透明度淡入淡出到目标透明度。
+        /// 使用指定持续时间和曲线执行淡入淡出。
         /// </summary>
-        public void Fade(float from, float to)
+        private void Fade(float from, float to, float duration, AnimationCurve curve)
         {
             if (m_corou != null)
             {
                 StopCoroutine(m_corou);
             }
 
-            m_corou = StartCoroutine(FadeRoutine(from, to));
+            m_corou = StartCoroutine(FadeRoutine(from, to, duration, curve));
         }
 
         /// <summary>
-        /// 按淡入淡出曲线执行屏幕遮罩透明度变化。
+        /// 按指定曲线执行屏幕遮罩透明度变化。
         /// </summary>
-        public IEnumerator FadeRoutine(float from, float to)
+        private IEnumerator FadeRoutine(float from, float to, float duration, AnimationCurve curve)
         {
             m_rend.enabled = true;
 
             float timer = 0f;
-            while (timer <= fadeDuration)
+            while (timer <= duration)
             {
                 Color color = fadeColor;
-                color.a = Mathf.Lerp(from, to, fadeCurve.Evaluate(timer / fadeDuration));
+                color.a = Mathf.Lerp(from, to, curve.Evaluate(timer / duration));
 
                 m_rend.material.color = color;
 
