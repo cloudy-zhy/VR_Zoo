@@ -2,57 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace Core.Utils
 {
     /// <summary>
-    /// 基于主相机的全屏淡入淡出遮罩。
+    /// 基于当前 Renderer 的全屏淡入淡出遮罩。
     /// </summary>
     public class ScreenFader : MonoBehaviour
     {
         #region Inspector
 
         [Header("淡入淡出设置")]
+        [Tooltip("是否开始时淡入。")]
+        [SerializeField] private bool fadeInOnStart = false;
         [Tooltip("淡入淡出持续时间。")]
-        [SerializeField] private float gradientTime = 5.0f;
+        [SerializeField] private float fadeDuration = 5.0f;
 
         [Tooltip("遮罩基础颜色。")]
         [SerializeField] private Color fadeColor = Color.black;
 
-        [Tooltip("遮罩材质渲染队列。")]
-        [SerializeField] private int renderQueue = 4000;
+        [Tooltip("淡入淡出曲线。")]
+        public AnimationCurve fadeCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
         #endregion
 
         #region Fields
 
-        private const int MeshSegments = 5;
-        private const float MeshRadius = 0.7f;
-
-        private GameObject fadeGameObject;
-        private MeshRenderer gradientMeshRenderer;
-        private MeshFilter gradientMeshFilter;
-        private Material gradientMaterial;
-        private Coroutine fadeCoroutine;
-        private bool isGradient;
-        private float currentAlpha;
-        private float nowFadeAlpha;
-        private List<Vector3> verts;
-        private List<int> indices;
+        private Renderer m_rend;
+        private Coroutine m_corou;
 
         #endregion
 
         #region Unity Lifecycle
 
-        private void Awake()
+        private void Start()
         {
-            fadeGameObject = Camera.main.gameObject;
-            CreateFadeMesh();
-            SetCurrentAlpha(0f);
-        }
+            m_rend = GetComponent<Renderer>();
+            m_rend.enabled = false;
 
-        private void OnDestroy()
-        {
-            DestroyGradientMesh();
+            if (fadeInOnStart)
+                FadeIn();
         }
 
         #endregion
@@ -65,8 +57,7 @@ namespace Core.Utils
         [ContextMenu("Fade In")]
         public void FadeIn()
         {
-            StopFadeRoutine();
-            fadeCoroutine = StartCoroutine(ScreenFadeRoutine(1f, 0f));
+            Fade(1f, 0f);
         }
 
         /// <summary>
@@ -75,83 +66,67 @@ namespace Core.Utils
         [ContextMenu("Fade Out")]
         public void FadeOut()
         {
-            StopFadeRoutine();
-            fadeCoroutine = StartCoroutine(ScreenFadeRoutine(0f, 1f));
+            Fade(0f, 1f);
         }
 
         /// <summary>
-        /// 立即设置当前屏幕遮罩透明度。
+        /// 从指定透明度淡入淡出到目标透明度。
         /// </summary>
-        public void SetCurrentAlpha(float alpha)
+        public void Fade(float from, float to)
         {
-            StopFadeRoutine();
-            currentAlpha = Mathf.Clamp01(alpha);
-            nowFadeAlpha = 0f;
-            SetAlpha(currentAlpha);
-        }
-
-        #endregion
-
-        #region Fade
-
-        private void StopFadeRoutine()
-        {
-            if (fadeCoroutine != null)
+            if (m_corou != null)
             {
-                StopCoroutine(fadeCoroutine);
+                StopCoroutine(m_corou);
             }
+
+            m_corou = StartCoroutine(FadeRoutine(from, to));
         }
 
-        private IEnumerator ScreenFadeRoutine(float from, float to)
+        /// <summary>
+        /// 按淡入淡出曲线执行屏幕遮罩透明度变化。
+        /// </summary>
+        public IEnumerator FadeRoutine(float from, float to)
         {
-            float elapsedTime = 0f;
-            from = Mathf.Clamp01(from);
-            to = Mathf.Clamp01(to);
+            m_rend.enabled = true;
 
-            while (elapsedTime < gradientTime)
+            float timer = 0f;
+            while (timer <= fadeDuration)
             {
-                elapsedTime += Time.deltaTime;
-                nowFadeAlpha = Mathf.Lerp(from, to, Mathf.Clamp01(elapsedTime / gradientTime));
-                SetAlpha(nowFadeAlpha);
+                Color color = fadeColor;
+                color.a = Mathf.Lerp(from, to, fadeCurve.Evaluate(timer / fadeDuration));
+
+                m_rend.material.color = color;
+
+                timer += Time.deltaTime;
                 yield return null;
             }
 
-            nowFadeAlpha = to;
-            currentAlpha = to;
-            SetAlpha(to);
-            fadeCoroutine = null;
-        }
+            Color finalColor = fadeColor;
+            finalColor.a = to;
+            m_rend.material.color = finalColor;
 
-        private void SetAlpha(float alpha)
-        {
-            Color color = fadeColor;
-            color.a = Mathf.Clamp01(alpha);
-            isGradient = color.a > 0f;
-
-            gradientMaterial.color = color;
-            gradientMaterial.renderQueue = renderQueue;
-            gradientMeshRenderer.enabled = isGradient;
+            m_rend.enabled = to > 0f;
+            m_corou = null;
         }
 
         #endregion
 
-        #region Mesh
+        #region Editor
+#if UNITY_EDITOR
+        
+        private const int renderQueue = 4000;
+        private const int MeshSegments = 5;
+        private const float MeshRadius = 0.7f;
+        private const string FaderAssetFolder = "Assets/Prefabs/ScreenFader";
+        private const string FaderMeshPath = FaderAssetFolder + "/Msh_Fader.asset";
+        private const string FaderMaterialPath = FaderAssetFolder + "/Mat_Fader.mat";
 
-        private void CreateFadeMesh()
+        [ContextMenu("Create/Overwrite Msh_Fader")]
+        private void CreateOrOverwriteFaderMesh()
         {
-            verts = new List<Vector3>();
-            indices = new List<int>();
-            gradientMaterial = new Material(Shader.Find("PXR_SDK/PXR_Fade"));
-            if (!fadeGameObject.TryGetComponent<MeshFilter>(out gradientMeshFilter))
-                gradientMeshFilter = fadeGameObject.AddComponent<MeshFilter>();
-            if (!fadeGameObject.TryGetComponent<MeshRenderer>(out gradientMeshRenderer))
-                gradientMeshRenderer = fadeGameObject.AddComponent<MeshRenderer>();
+            List<Vector3> verts = new();
+            List<int> indices = new();
 
-            CreateModel();
-        }
-
-        private void CreateModel()
-        {
             for (float i = -MeshSegments / 2f; i <= MeshSegments / 2f; i++)
             {
                 for (float j = -MeshSegments / 2f; j <= MeshSegments / 2f; j++)
@@ -212,9 +187,9 @@ namespace Core.Utils
             OtherMakePos(4);
             OtherMakePos(5);
 
-            Mesh mesh = new Mesh
+            Mesh mesh = new()
             {
-                name = "Screen Fade Mesh",
+                name = "Msh_Fader",
                 vertices = verts.ToArray(),
                 triangles = indices.ToArray()
             };
@@ -237,59 +212,80 @@ namespace Core.Utils
             }
 
             mesh.triangles = triangles;
-            gradientMeshFilter.sharedMesh = mesh;
-            gradientMeshRenderer.sharedMaterial = gradientMaterial;
-        }
 
-        private void CreateMakePos(int num)
-        {
-            for (int i = 0; i < MeshSegments; i++)
+            if (!AssetDatabase.IsValidFolder(FaderAssetFolder))
             {
-                for (int j = 0; j < MeshSegments; j++)
-                {
-                    int index = j * (MeshSegments + 1) + (MeshSegments + 1) * (MeshSegments + 1) * num + i;
-                    int up = (j + 1) * (MeshSegments + 1) + (MeshSegments + 1) * (MeshSegments + 1) * num + i;
-                    indices.AddRange(new[] { index, index + 1, up + 1 });
-                    indices.AddRange(new[] { index, up + 1, up });
-                }
+                AssetDatabase.CreateFolder("Assets/Prefabs", "ScreenFader");
             }
-        }
 
-        private void OtherMakePos(int num)
-        {
-            for (int i = 0; i < MeshSegments + 1; i++)
+            AssetDatabase.DeleteAsset(FaderMeshPath);
+            AssetDatabase.CreateAsset(mesh, FaderMeshPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            void CreateMakePos(int num)
             {
-                for (int j = 0; j < MeshSegments + 1; j++)
+                for (int i = 0; i < MeshSegments; i++)
                 {
-                    if (i == MeshSegments || j == MeshSegments)
+                    for (int j = 0; j < MeshSegments; j++)
                     {
-                        continue;
+                        int index = j * (MeshSegments + 1) + (MeshSegments + 1) * (MeshSegments + 1) * num + i;
+                        int up = (j + 1) * (MeshSegments + 1) + (MeshSegments + 1) * (MeshSegments + 1) * num + i;
+                        indices.AddRange(new[] { index, index + 1, up + 1 });
+                        indices.AddRange(new[] { index, up + 1, up });
                     }
+                }
+            }
 
-                    int index = j * (MeshSegments + 1) + (MeshSegments + 1) * (MeshSegments + 1) * num + i;
-                    int up = (j + 1) * (MeshSegments + 1) + (MeshSegments + 1) * (MeshSegments + 1) * num + i;
-                    indices.AddRange(new[] { index, up + 1, index + 1 });
-                    indices.AddRange(new[] { index, up, up + 1 });
+            void OtherMakePos(int num)
+            {
+                for (int i = 0; i < MeshSegments + 1; i++)
+                {
+                    for (int j = 0; j < MeshSegments + 1; j++)
+                    {
+                        if (i == MeshSegments || j == MeshSegments)
+                        {
+                            continue;
+                        }
+
+                        int index = j * (MeshSegments + 1) + (MeshSegments + 1) * (MeshSegments + 1) * num + i;
+                        int up = (j + 1) * (MeshSegments + 1) + (MeshSegments + 1) * (MeshSegments + 1) * num + i;
+                        indices.AddRange(new[] { index, up + 1, index + 1 });
+                        indices.AddRange(new[] { index, up, up + 1 });
+                    }
                 }
             }
         }
 
-        private void DestroyGradientMesh()
+        [ContextMenu("Create/Overwrite Mat_Fader")]
+        private void CreateOrOverwriteFaderMaterial()
         {
-            if (gradientMeshRenderer != null)
-                Destroy(gradientMeshRenderer);
-
-            if (gradientMaterial != null)
+            if (!AssetDatabase.IsValidFolder(FaderAssetFolder))
             {
-                if (gradientMeshFilter.sharedMesh != null)
-                    Destroy(gradientMeshFilter.sharedMesh);
-                Destroy(gradientMaterial);
+                AssetDatabase.CreateFolder("Assets/Prefabs", "ScreenFader");
             }
 
-            if (gradientMeshFilter != null)
-                Destroy(gradientMeshFilter);
+            Shader shader = Shader.Find("PXR_SDK/PXR_Fade");
+            if (shader == null)
+            {
+                Debug.LogError("未找到 Shader：PXR_SDK/PXR_Fade。", this);
+                return;
+            }
+
+            Material material = new(shader)
+            {
+                name = "Mat_Fader",
+                color = fadeColor,
+                renderQueue = renderQueue
+            };
+
+            AssetDatabase.DeleteAsset(FaderMaterialPath);
+            AssetDatabase.CreateAsset(material, FaderMaterialPath);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
+#endif
         #endregion
     }
 }
