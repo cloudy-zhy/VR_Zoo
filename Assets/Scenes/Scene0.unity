@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.64150083, g: 0.52913356, b: 0.6005158, a: 1}
+  m_IndirectSpecularColor: {r: 0.36353326, g: 0.23833507, b: 0.31430185, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8197,100 +8197,6 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!1 &882770849
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 882770851}
-  - component: {fileID: 882770850}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &882770850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 882770849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba0f6b6f051f400796930bc2e03acf75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AudioTypes:
-  - Source: {fileID: 0}
-    Clip: {fileID: 8300000, guid: f9ab632bb8c98e147858484c8950fabd, type: 3}
-    Group: {fileID: 858282182195662505, guid: 62c8dcdb4823a8c468a8f1ad2af6d2d4, type: 2}
-    Name: 
-    Volume: 1
-    Pitch: 1
-    Loop: 0
-    SpatialBlend: 1
-  - Source: {fileID: 0}
-    Clip: {fileID: 8300000, guid: ecb5c1c4022511c47ae8e00ba234816a, type: 3}
-    Group: {fileID: 858282182195662505, guid: 62c8dcdb4823a8c468a8f1ad2af6d2d4, type: 2}
-    Name: 
-    Volume: 1
-    Pitch: 1
-    Loop: 0
-    SpatialBlend: 1
-  - Source: {fileID: 0}
-    Clip: {fileID: 8300000, guid: 63b7f321521813e43b27a415083bfbb0, type: 3}
-    Group: {fileID: 858282182195662505, guid: 62c8dcdb4823a8c468a8f1ad2af6d2d4, type: 2}
-    Name: 
-    Volume: 1
-    Pitch: 1
-    Loop: 0
-    SpatialBlend: 1
-  - Source: {fileID: 0}
-    Clip: {fileID: 8300000, guid: ec549a10855a7da43804aac452981c58, type: 3}
-    Group: {fileID: 4098852774680489397, guid: 62c8dcdb4823a8c468a8f1ad2af6d2d4, type: 2}
-    Name: 
-    Volume: 1
-    Pitch: 1
-    Loop: 1
-    SpatialBlend: 0
-  - Source: {fileID: 0}
-    Clip: {fileID: 8300000, guid: ee97628e738633b488365f5b85f71be5, type: 3}
-    Group: {fileID: 858282182195662505, guid: 62c8dcdb4823a8c468a8f1ad2af6d2d4, type: 2}
-    Name: collider
-    Volume: 1
-    Pitch: 1
-    Loop: 0
-    SpatialBlend: 1
-  - Source: {fileID: 0}
-    Clip: {fileID: 8300000, guid: 60c6dc3ad5eddf94b99da1948a9dafcc, type: 3}
-    Group: {fileID: -8926324504974551430, guid: 62c8dcdb4823a8c468a8f1ad2af6d2d4,
-      type: 2}
-    Name: music
-    Volume: 1
-    Pitch: 1
-    Loop: 0
-    SpatialBlend: 0
---- !u!4 &882770851
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 882770849}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.5749526, y: 12.9588785, z: -10.176914}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &903694989 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5400831063580975248, guid: de538a67480dc97429ee214374464a28,
@@ -9905,7 +9811,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1483735143}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 0}
+  m_PlayableAsset: {fileID: 11400000, guid: d392d74f030ad4c49b64c41629d6a223, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -11995,4 +11901,3 @@ SceneRoots:
   - {fileID: 1713005912}
   - {fileID: 1898795399}
   - {fileID: 622768006}
-  - {fileID: 882770851}
