@@ -311,6 +311,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3544199237213830642, guid: de538a67480dc97429ee214374464a28,
         type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: dc2fccb4da82f604e977c1ca12e0f648, type: 2}
+    - target: {fileID: 3544199237213830642, guid: de538a67480dc97429ee214374464a28,
+        type: 3}
       propertyPath: m_PreserveAspect
       value: 0
       objectReference: {fileID: 0}
