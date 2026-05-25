@@ -43,7 +43,7 @@ public class BillboardProgressBar : MonoBehaviour
             if (progress >= 1f)
             {
                 isRunning = false;
-                if (label) label.text = "Íê³É£¡";
+                if (label) label.text = "Finished!";
             }
         }
     }
