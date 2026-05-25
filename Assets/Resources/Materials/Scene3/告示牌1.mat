@@ -65,7 +65,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: a456a3d7a0885b246a501d14c8f97800, type: 3}
+        m_Texture: {fileID: 2800000, guid: a85dbdc81d8f5ae46b016cb9f195b46d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCap:
@@ -184,7 +184,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Basecolor: {r: 0.46331227, g: 0.5844595, b: 0.66666657, a: 1}
-    - _Color: {r: 0.8490566, g: 0.8170876, b: 0.5206478, a: 1}
+    - _Color: {r: 0.19496846, g: 0.18255301, b: 0.07909096, a: 1}
     - _Color_1: {r: 0.5737114, g: 0.69252145, b: 0.70440245, a: 0}
     - _Color_2: {r: 0.8596832, g: 0.9433962, b: 0.5369644, a: 0}
     - _Color_3: {r: 0.15699527, g: 0.6483366, b: 0.7924528, a: 0}
