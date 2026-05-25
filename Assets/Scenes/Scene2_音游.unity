@@ -546,7 +546,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: 1700d0a49ed9cf041a41dd8c32472980, type: 3}
+      objectReference: {fileID: 8300000, guid: 2d221f28044c63e49aaeebf690b717d9, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[2]
@@ -605,7 +605,7 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[1].displayDuration
-      value: 3.7
+      value: 4.02
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
