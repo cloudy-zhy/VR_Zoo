@@ -1,0 +1,310 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!244 &-9216964071380263162
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: ec125bec9602908439f5193b62ef808e
+  m_EffectName: Attenuation
+  m_MixLevel: 153916f869e8abb48aaa8af48d2d1968
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &-7077821806747168117
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 22ea99de2ab0ecd439c49d4825b03f51
+  m_EffectName: Attenuation
+  m_MixLevel: e5698a5fcc0c36941a91cbb1aa04040b
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &-4205932492125697284
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 7c771aa2d902bd149bcb454857343de1
+  m_EffectName: Pico Spatial Audio Listener
+  m_MixLevel: fba7166629a755f4883889f366cacb9c
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &-3117622370474267060
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ambient
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 768abe648055a5c47a7b39ae487ddfb1
+  m_Children: []
+  m_Volume: b7891d8c8fd3ec14897cfb0609f5da26
+  m_Pitch: 66fc5569b87e79b4288c59c317cb5e36
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 5625478924487847442}
+  - {fileID: 6674912723819087800}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &-2586673226397301383
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 3402ea1a0f09dc24ea40f59466b87c3b
+  m_EffectName: Pico Spatial Audio Listener
+  m_MixLevel: 9a843483c0881504ab8775efb58c4d81
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &-737599633395567625
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Effect
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 07b78df8933e28f428a634db5cb4883b
+  m_Children: []
+  m_Volume: c8b6404fa9f1a9d449cf9b941e85f6f5
+  m_Pitch: 08c752822d094c748ab7b0a3ea741519
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -9216964071380263162}
+  - {fileID: 6849098337700301249}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!241 &24100000
+AudioMixerController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Default
+  m_OutputGroup: {fileID: 0}
+  m_MasterGroup: {fileID: 24300002}
+  m_Snapshots:
+  - {fileID: 24500006}
+  m_StartSnapshot: {fileID: 24500006}
+  m_SuspendThreshold: -80
+  m_EnableSuspend: 1
+  m_UpdateMode: 0
+  m_ExposedParameters: []
+  m_AudioMixerGroupViews:
+  - guids:
+    - 8e7ba756a55479f47a67c7a6ba140c5e
+    - 768abe648055a5c47a7b39ae487ddfb1
+    - 005054d9bc712e049b725722d5c808dc
+    - 07b78df8933e28f428a634db5cb4883b
+    - 5d55393605eb34546b7c996661e369ea
+    name: View
+  m_CurrentViewIndex: 0
+  m_TargetSnapshot: {fileID: 24500006}
+--- !u!243 &24300002
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Master
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 8e7ba756a55479f47a67c7a6ba140c5e
+  m_Children:
+  - {fileID: -3117622370474267060}
+  - {fileID: 7089733265328690309}
+  - {fileID: -737599633395567625}
+  - {fileID: 7812596682055953328}
+  m_Volume: aca49572e9689564c9e8e132c9815b26
+  m_Pitch: 1697b2e7f8c678e46b88749ea9e0cabc
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 24400004}
+  - {fileID: -2586673226397301383}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &24400004
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: e4722949319fec540bc8192931239868
+  m_EffectName: Attenuation
+  m_MixLevel: 115dfb4c4ec002040aa067bf3204cb75
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!245 &24500006
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Snapshot
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: b9f7c2863aa725a4a8856a27400ef538
+  m_FloatValues:
+    d8446368700ac984f9826c411cc9ad61: -10.345207
+  m_TransitionOverrides: {}
+--- !u!244 &874103788309513187
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 53a8c0f4f75bcec449372b66eaaaef05
+  m_EffectName: Attenuation
+  m_MixLevel: 99f492a56841baf4ca34188e3c8782a6
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &2023511563742404590
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 3ec1ea286fee566419311e26d4f0a7ac
+  m_EffectName: Pico Spatial Audio Listener
+  m_MixLevel: 2ccf0b8e350a8d04d94056374ce1f4cc
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &5625478924487847442
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 9e63af2853a64fb4a9f29fc0835508dc
+  m_EffectName: Attenuation
+  m_MixLevel: a43b6d296fb873945aab5336c26eadc3
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &6674912723819087800
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 07de85524679eb446a0945b5647e35d0
+  m_EffectName: Pico Ambisonic Renderer
+  m_MixLevel: a38866ab4175c58499fe0ce11e1ce6a8
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &6849098337700301249
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 2f85d255aa687b14c8a8867bf6e6e229
+  m_EffectName: SFX Reverb
+  m_MixLevel: fc964c603cc77bb479862f65168faa90
+  m_Parameters:
+  - m_ParameterName: Dry Level
+    m_GUID: 489016247b4c2ab429978df28471c873
+  - m_ParameterName: Room
+    m_GUID: c788b15372726cc49a9bf55b1d144182
+  - m_ParameterName: Room HF
+    m_GUID: b5a6d1801fb74484fb0ffa8d45891888
+  - m_ParameterName: Decay Time
+    m_GUID: 82e6c45b7fa21c548bbcdda13ac1e5cc
+  - m_ParameterName: Decay HF Ratio
+    m_GUID: 0aee036eef19f034a966720396b39fbc
+  - m_ParameterName: Reflections
+    m_GUID: 12f79cf9ab083d04380fba4a99cbbe90
+  - m_ParameterName: Reflect Delay
+    m_GUID: 51a11c10f03ccc04b8d26e13e986f4cc
+  - m_ParameterName: Reverb
+    m_GUID: 9382e23054f8c3d4a946d0d4d1e1d76c
+  - m_ParameterName: Reverb Delay
+    m_GUID: 3858fda5742b0b64392305134ce43f99
+  - m_ParameterName: Diffusion
+    m_GUID: c51dd807bf527164c99d45851d136dc6
+  - m_ParameterName: Density
+    m_GUID: 949a85a96e70a324a9888450abc2c5ed
+  - m_ParameterName: HF Reference
+    m_GUID: e8fbf2faf9963c349affc0f988281d4d
+  - m_ParameterName: Room LF
+    m_GUID: 56b7fbb83712f9640a1823c9bde1bfb3
+  - m_ParameterName: LF Reference
+    m_GUID: aa48f168847b83e40adc6346e1ea3547
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &7089733265328690309
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Music
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 005054d9bc712e049b725722d5c808dc
+  m_Children: []
+  m_Volume: 36cc98d6d744b344d808cc0791f28769
+  m_Pitch: 3f39142a1458a3f4db1cd71f1c1b4720
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 874103788309513187}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!243 &7812596682055953328
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hit
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 5d55393605eb34546b7c996661e369ea
+  m_Children: []
+  m_Volume: d8446368700ac984f9826c411cc9ad61
+  m_Pitch: 3a870e6217d779f45b4e3595bdb96ba9
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -7077821806747168117}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0

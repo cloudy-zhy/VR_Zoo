@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.36353326, g: 0.23833507, b: 0.31430185, a: 1}
+  m_IndirectSpecularColor: {r: 0.64150083, g: 0.52913356, b: 0.6005158, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7643,13 +7643,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AudioTypes:
   - Source: {fileID: 0}
-    Clip: {fileID: 0}
-    Group: {fileID: 0}
-    Name: 
-    Volume: 0
-    Pitch: 0
+    Clip: {fileID: 8300000, guid: 125827b50ccd9ca4b8925324df07e758, type: 3}
+    Group: {fileID: 7812596682055953328, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: hit
+    Volume: 1
+    Pitch: 1
     Loop: 0
-    SpatialBlend: 0
+    SpatialBlend: 1
 --- !u!4 &702955758
 Transform:
   m_ObjectHideFlags: 0
@@ -9864,7 +9864,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1483735143}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: d392d74f030ad4c49b64c41629d6a223, type: 2}
+  m_PlayableAsset: {fileID: 0}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
