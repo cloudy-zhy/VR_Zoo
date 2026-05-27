@@ -11,7 +11,7 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 # 忽略Packages文件夹下的所有内容
-Packages/*
+# Packages/*
 # 重新包含特定的PICO SDK文件夹本身
 !Packages/PICO Unity Integration SDK-3.4.0-20260226/
 # 重新包含该文件夹下的所有文件和子文件夹
