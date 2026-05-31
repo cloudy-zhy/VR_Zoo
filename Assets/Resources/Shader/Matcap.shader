@@ -1,4 +1,4 @@
-﻿Shader "Universal Render Pipeline/Custom/ToonBasic"
+﻿Shader "Universal Render Pipeline/Custom/Matcap"
 {
     Properties
     {
