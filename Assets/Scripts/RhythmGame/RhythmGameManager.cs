@@ -111,11 +111,20 @@ namespace RhythmGame
 
         private void SpawnNote(RhythmTrack track, NoteData data)
         {
-            NoteBlock note = track.SpawnNote();
-            if (note == null) return;
-
-            note.OnCaught.AddListener(OnNoteCaught);
-            note.OnMissed.AddListener(OnNoteMissed);
+            if (data.isHold)
+            {
+                HoldNote hold = track.SpawnHoldNote(data.holdDuration, noteSpeed);
+                if (hold == null) return;
+                hold.OnCompleted.AddListener(OnHoldCompleted);
+                hold.OnFailed.AddListener(OnHoldFailed);
+            }
+            else
+            {
+                NoteBlock note = track.SpawnNote();
+                if (note == null) return;
+                note.OnCaught.AddListener(OnNoteCaught);
+                note.OnMissed.AddListener(OnNoteMissed);
+            }
         }
 
         private float GetTravelTime(RhythmTrack track)
@@ -143,6 +152,22 @@ namespace RhythmGame
             Combo = 0;
             settledNotes++;
 
+            OnComboChanged.Invoke(0);
+        }
+
+        private void OnHoldCompleted(HoldNote hold)
+        {
+            Combo++;
+            Score += CalculateScore(Combo) * 2;  // 长音双倍分
+            settledNotes++;
+            OnComboChanged.Invoke(Combo);
+            OnScoreChanged.Invoke(Score);
+        }
+
+        private void OnHoldFailed(HoldNote hold)
+        {
+            Combo = 0;
+            settledNotes++;
             OnComboChanged.Invoke(0);
         }
 

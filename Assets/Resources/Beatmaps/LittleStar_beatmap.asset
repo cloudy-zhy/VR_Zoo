@@ -17,15 +17,29 @@ MonoBehaviour:
   notes:
   - track: 0
     hitTime: 0.7
+    isHold: 0
+    holdDuration: 0
   - track: 1
     hitTime: 1.35
+    isHold: 0
+    holdDuration: 0
   - track: 2
     hitTime: 2
+    isHold: 1
+    holdDuration: 1
   - track: 3
     hitTime: 2.65
+    isHold: 0
+    holdDuration: 0
   - track: 0
     hitTime: 3.35
+    isHold: 0
+    holdDuration: 0
   - track: 1
     hitTime: 4
+    isHold: 0
+    holdDuration: 0
   - track: 2
     hitTime: 4.65
+    isHold: 0
+    holdDuration: 0

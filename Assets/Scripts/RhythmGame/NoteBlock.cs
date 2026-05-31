@@ -27,6 +27,9 @@ namespace RhythmGame
         public UnityEvent<NoteBlock> OnCaught = new UnityEvent<NoteBlock>();
         public UnityEvent<NoteBlock> OnMissed = new UnityEvent<NoteBlock>();
 
+        public bool DisableCollisionCatch = false;
+        public UnityEvent<NoteBlock> OnArrived = new UnityEvent<NoteBlock>();
+
         public NoteState State { get; private set; } = NoteState.Moving;
         public TrackType TrackType { get; private set; }
         public HandSide Hand { get; private set; }
@@ -35,17 +38,17 @@ namespace RhythmGame
         private Vector3 moveDirection;
         private bool passedTarget = false;
 
-        public void Initialize(RhythmTrack track)
+        public void Initialize(RhythmTrack track, bool isHold = false)
         {
-            TrackType = track.TrackType;
-            Hand = track.ResponsibleHand;
+            TrackType      = track.TrackType;
+            Hand           = track.ResponsibleHand;
             targetPosition = track.JudgmentPosition;
-
-            // 计算移动方向（从生成点到判定点）
-            moveDirection = (targetPosition - transform.position).normalized;
+            moveDirection  = (targetPosition - transform.position).normalized;
 
             if (noteRenderer != null)
-                noteRenderer.material.color = movingColor;
+                noteRenderer.material.color = isHold
+                    ? new Color(0.6f, 0.9f, 1f)  // 长音：浅蓝
+                    : movingColor;                // 普通：正常蓝
         }
 
         private void Update()
@@ -59,9 +62,10 @@ namespace RhythmGame
             Vector3 toTarget = targetPosition - transform.position;
 
             // 当 Block 越过判定点（方向反转）时开始计距
-            if (!passedTarget && Vector3.Dot(toTarget, moveDirection) < 0)
+            if (!passedTarget && Vector3.Distance(transform.position, targetPosition) < 0.05f)
             {
                 passedTarget = true;
+                OnArrived.Invoke(this);   // ← 新增
             }
 
             // 越过判定点后超出 missDistance → Miss
@@ -75,7 +79,9 @@ namespace RhythmGame
         // NoteBlock 的 Collider 需勾选 IsTrigger
         // 手部对象上需挂载 HandIdentifier 组件
         private void OnTriggerEnter(Collider other)
-        {
+        {   
+            if (DisableCollisionCatch) return;   // ← 长音头部跳过碰撞检测
+
             if (State != NoteState.Moving) return;
 
             if (other.GetComponent<HandIdentifier>() == null) return;

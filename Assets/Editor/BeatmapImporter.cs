@@ -66,7 +66,13 @@ public class BeatmapImporter : EditorWindow
                 default: track = TrackType.RightLow; break;
             }
 
-            asset.notes.Add(new NoteData { track = track, hitTime = n.hitTime });
+            asset.notes.Add(new NoteData
+            {
+                track        = track,
+                hitTime      = n.hitTime,
+                isHold       = n.isHold,        // ← 新增
+                holdDuration = n.holdDuration   // ← 新增
+            });
         }
 
         // 保存到 Assets/Resources/Beatmaps/
@@ -101,5 +107,7 @@ public class BeatmapImporter : EditorWindow
     {
         public string track;
         public float hitTime;
+        public bool   isHold       = false;   // ← 新增
+        public float  holdDuration = 0f;      // ← 新增
     }
 }

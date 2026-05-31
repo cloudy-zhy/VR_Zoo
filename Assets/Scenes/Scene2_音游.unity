@@ -149,8 +149,7 @@ AudioSource:
   m_GameObject: {fileID: 7851499}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 7089733265328690309, guid: 0250116c199135a4486867393bf38824,
-    type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -376,6 +375,7 @@ MonoBehaviour:
   judgmentRadius: 0.25
   noteBlockPrefab: {fileID: 8624834758037603942, guid: 70f101b346de1314d956e79182c5c3ab,
     type: 3}
+  judgmentZoneTrigger: {fileID: 2107261632}
 --- !u!4 &100820865 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 508215614398823810, guid: c4960a17c70a46941b051e13f03e8f69,
@@ -462,7 +462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beatmap:
   - {fileID: 11400000, guid: 11acbfdeeeab23943985e0dfbcf4706e, type: 2}
-  - {fileID: 11400000, guid: 1047ea244d7f45144884a2709b56aabe, type: 2}
+  - {fileID: 11400000, guid: b1ec9d6f4a9077b49868e7a1aa461660, type: 2}
   tracks:
   - {fileID: 1390763407}
   - {fileID: 86219460}
@@ -1432,10 +1432,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1267280820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ecc2af88ba1d64fb0870c0c3c0cfc2, type: 3}
+  m_Script: {fileID: 11500000, guid: 9abc193486712394385cbf2d194b260f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handsInZone: 0
 --- !u!1 &1350397773
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,6 +1488,7 @@ MonoBehaviour:
   judgmentRadius: 0.25
   noteBlockPrefab: {fileID: 8624834758037603942, guid: 70f101b346de1314d956e79182c5c3ab,
     type: 3}
+  judgmentZoneTrigger: {fileID: 1851523069}
 --- !u!1001 &1366221297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1649,6 +1649,7 @@ MonoBehaviour:
   judgmentRadius: 0.25
   noteBlockPrefab: {fileID: 8624834758037603942, guid: 70f101b346de1314d956e79182c5c3ab,
     type: 3}
+  judgmentZoneTrigger: {fileID: 1267280825}
 --- !u!1 &1475731083
 GameObject:
   m_ObjectHideFlags: 0
@@ -1869,10 +1870,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1489992975}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ecc2af88ba1d64fb0870c0c3c0cfc2, type: 3}
+  m_Script: {fileID: 11500000, guid: 9abc193486712394385cbf2d194b260f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handsInZone: 0
 --- !u!1001 &1502788887
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2248,6 +2248,7 @@ MonoBehaviour:
   judgmentRadius: 0.25
   noteBlockPrefab: {fileID: 8624834758037603942, guid: 70f101b346de1314d956e79182c5c3ab,
     type: 3}
+  judgmentZoneTrigger: {fileID: 1489992980}
 --- !u!20 &1687449315 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 3720872137384483762, guid: c4960a17c70a46941b051e13f03e8f69,
@@ -2665,10 +2666,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1851523064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ecc2af88ba1d64fb0870c0c3c0cfc2, type: 3}
+  m_Script: {fileID: 11500000, guid: 9abc193486712394385cbf2d194b260f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handsInZone: 0
 --- !u!1 &2001907120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2829,10 +2829,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2107261627}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ecc2af88ba1d64fb0870c0c3c0cfc2, type: 3}
+  m_Script: {fileID: 11500000, guid: 9abc193486712394385cbf2d194b260f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handsInZone: 0
 --- !u!1001 &1391678624471031187
 PrefabInstance:
   m_ObjectHideFlags: 0

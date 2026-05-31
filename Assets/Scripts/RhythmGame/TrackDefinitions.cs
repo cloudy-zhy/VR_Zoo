@@ -43,6 +43,10 @@ namespace RhythmGame
 
         [Tooltip("音符应该到达判定线的时刻（距歌曲开始的秒数）")]
         public float hitTime;
+
+        // ↓ 新增
+        public bool  isHold       = false;
+        public float holdDuration = 0f;   // 仅 isHold=true 时有效（秒）
     }
 
     // ─────────────────────────────────────────
