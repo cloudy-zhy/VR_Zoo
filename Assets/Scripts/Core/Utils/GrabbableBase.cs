@@ -4,7 +4,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Core.Utils
 {
     [RequireComponent(typeof(XRGrabInteractable))]
-    public class GrabtableBase : MonoBehaviour
+    public class GrabbableBase : MonoBehaviour
     {
         protected virtual void Start()
         {

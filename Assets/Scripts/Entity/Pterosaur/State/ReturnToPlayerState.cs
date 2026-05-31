@@ -1,4 +1,6 @@
+using Core.Event;
 using Core.Fsm;
+using StarlightCollect;
 
 namespace Entity.Pterosaur.State
 {
@@ -13,20 +15,22 @@ namespace Entity.Pterosaur.State
         {
             base.OnEnter();
             owner.nav.enabled = false;
-            owner.CreateGiftCatchReturnPosition();
+            owner.CreateStarLightReturnPosition();
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
 
-            owner.MoveDirectlyTowards(owner.GiftCatchReturnPosition, owner.GiftCatchReturnSpeed);
+            owner.MoveDirectlyTowards(owner.StarLightReturnPosition, owner.StarLightReturnSpeed);
 
-            if (!owner.IsNearPosition(owner.GiftCatchReturnPosition, owner.GiftCatchReturnDistance))
+            if (!owner.IsNearPosition(owner.StarLightReturnPosition, owner.StarLightReturnDistance))
                 return;
 
-            owner.ClearGiftCatchTask();
-            owner.BroadcastGiftCatchReturn();
+            if (owner.IsCarryingStarLight)
+                owner.Broadcast(StarlightConstant.PterosaurArrived, owner);
+
+            owner.ClearStarLightTask();
             stateMachine.ChangeState(PterosaurStateType.Idle);
         }
 

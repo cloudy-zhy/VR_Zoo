@@ -1,5 +1,5 @@
-using Core.Pool.PoolObjects;
 using Core.Event;
+using Core.Pool.PooledObject;
 using DG.Tweening;
 using Manager;
 using UnityEngine;
@@ -133,9 +133,7 @@ namespace PokeBall
             if (string.IsNullOrEmpty(targetVfxPrefabKey))
                 return;
 
-            PooledParticle particle = GameManager.Pool.Rent<PooledParticle>(targetVfxPrefabKey, position, rotation, parent);
-            if (particle != null)
-                GameManager.Pool.Return(particle, particle.Duration);
+            GameManager.Pool.Rent(targetVfxPrefabKey, position, rotation, parent);
         }
     }
 }

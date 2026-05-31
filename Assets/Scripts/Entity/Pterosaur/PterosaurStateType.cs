@@ -8,7 +8,7 @@ namespace Entity.Pterosaur
         Fly,
         Stay,
         Touched,
-        GiftChase,
-        ReturnToPlayer,
+        Chase,
+        Return,
     }
 }

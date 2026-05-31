@@ -1,7 +1,7 @@
 using Core.Event;
 using Core.Fsm;
 using Cysharp.Threading.Tasks;
-using Manager;
+using StarlightCollect;
 using UnityEngine;
 
 namespace Entity.Pterosaur.State
@@ -17,7 +17,7 @@ namespace Entity.Pterosaur.State
 
         public override async void OnEnter()
         {
-            owner.Broadcast("Pterosaur.Throw", owner.transform.position);
+            owner.Broadcast(StarlightConstant.PterosaurThrow, owner.transform.position);
             owner.ani.SetTrigger(animBoolName);
             // _finished = false;
             // 测试阶段没有动画

@@ -1,6 +1,6 @@
 using Core.Utils;
-using Core.Pool.PoolObjects;
 using Core.Event;
+using Core.Pool.PooledObject;
 using Manager;
 using UnityEngine;
 
@@ -38,8 +38,7 @@ namespace Slingshot
                 this.Broadcast("DodoBird.FruitHit");
                 GetComponent<AudioSource>().Play();
                 // 播放击中vfx
-                if (GameManager.Pool.TryRent<PooledParticle>("VFX.Hit", out var particle, position : transform.position))
-                    particle?.Return(particle.Duration);
+                GameManager.Pool.Rent("VFX.Hit", position : transform.position);
                 return;
             }
 

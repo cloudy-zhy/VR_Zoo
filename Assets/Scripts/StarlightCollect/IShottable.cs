@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace GiftCatch.Shot
+namespace StarlightCollect
 {
     /// <summary>
-    /// 可响应射击命中的对象接口。
+    /// 可响应星光法杖射击命中的对象接口。
     /// </summary>
     public interface IShottable
     {
