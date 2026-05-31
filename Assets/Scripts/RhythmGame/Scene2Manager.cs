@@ -40,7 +40,7 @@ public class Scene2Manager : MonoBehaviour
         rhythmGameManager.StartGame();
         yield return new WaitUntil(() => gameEnded);
         rhythmGameManager.OnSongCompleted.RemoveListener(OnGameEnded);
-                
+
 
         // 第三次对话
         yield return StartCoroutine(dialogueController.ShowDialogueWithIndexAndWait());

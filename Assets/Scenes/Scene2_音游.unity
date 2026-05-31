@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.68399566, g: 0.6732123, b: 0.8735753, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -197,7 +197,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -462,7 +462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   beatmap:
   - {fileID: 11400000, guid: 11acbfdeeeab23943985e0dfbcf4706e, type: 2}
-  - {fileID: 11400000, guid: 63ac89c7a021e554a8f36e905aa7b15a, type: 2}
+  - {fileID: 11400000, guid: 1047ea244d7f45144884a2709b56aabe, type: 2}
   tracks:
   - {fileID: 1390763407}
   - {fileID: 86219460}
@@ -1329,6 +1329,7 @@ GameObject:
   - component: {fileID: 1267280824}
   - component: {fileID: 1267280823}
   - component: {fileID: 1267280822}
+  - component: {fileID: 1267280825}
   m_Layer: 1
   m_Name: JudgePoint
   m_TagString: Untagged
@@ -1422,6 +1423,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1267280820}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1267280825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267280820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ecc2af88ba1d64fb0870c0c3c0cfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handsInZone: 0
 --- !u!1 &1350397773
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,7 +1561,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1752,6 +1766,7 @@ GameObject:
   - component: {fileID: 1489992979}
   - component: {fileID: 1489992978}
   - component: {fileID: 1489992977}
+  - component: {fileID: 1489992980}
   m_Layer: 1
   m_Name: JudgePoint
   m_TagString: Untagged
@@ -1845,6 +1860,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1489992975}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1489992980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489992975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ecc2af88ba1d64fb0870c0c3c0cfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handsInZone: 0
 --- !u!1001 &1502788887
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2534,6 +2562,7 @@ GameObject:
   - component: {fileID: 1851523068}
   - component: {fileID: 1851523067}
   - component: {fileID: 1851523066}
+  - component: {fileID: 1851523069}
   m_Layer: 1
   m_Name: JudgePoint
   m_TagString: Untagged
@@ -2627,6 +2656,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1851523064}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1851523069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851523064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ecc2af88ba1d64fb0870c0c3c0cfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handsInZone: 0
 --- !u!1 &2001907120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2684,6 +2726,7 @@ GameObject:
   - component: {fileID: 2107261631}
   - component: {fileID: 2107261630}
   - component: {fileID: 2107261629}
+  - component: {fileID: 2107261632}
   m_Layer: 1
   m_Name: JudgePoint
   m_TagString: Untagged
@@ -2777,6 +2820,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2107261627}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2107261632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107261627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ecc2af88ba1d64fb0870c0c3c0cfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handsInZone: 0
 --- !u!1001 &1391678624471031187
 PrefabInstance:
   m_ObjectHideFlags: 0
