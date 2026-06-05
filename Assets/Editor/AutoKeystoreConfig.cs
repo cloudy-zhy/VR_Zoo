@@ -6,10 +6,10 @@ public class AutoKeystoreConfig
 {
     static AutoKeystoreConfig()
     {
-        // 密钥库文件名（请根据实际文件名修改）
+        // 瀵嗛挜搴撴枃浠跺悕锛堣鏍规嵁瀹為檯鏂囦欢鍚嶄慨鏀癸級
         string keystoreName = "user.keystore";
 
-        // 组合完整路径
+        // 缁勫悎瀹屾暣璺緞
         string keystorePath = Path.Combine(Directory.GetCurrentDirectory(), keystoreName);
 
         if (File.Exists(keystorePath))
@@ -19,11 +19,11 @@ public class AutoKeystoreConfig
             PlayerSettings.Android.keyaliasName = "key0";
             PlayerSettings.Android.keyaliasPass = "123456";
 
-            UnityEngine.Debug.Log($"已自动设置密钥库: {keystorePath}");
+            UnityEngine.Debug.Log($"宸茶嚜鍔ㄨ缃瘑閽ュ簱: {keystorePath}");
         }
         else
         {
-            // 可以尝试在项目内搜索
+            // 鍙互灏濊瘯鍦ㄩ」鐩唴鎼滅储
             string[] foundFiles = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.keystore", SearchOption.AllDirectories);
             if (foundFiles.Length > 0)
             {
@@ -32,7 +32,7 @@ public class AutoKeystoreConfig
                 PlayerSettings.Android.keyaliasName = "key0";
                 PlayerSettings.Android.keyaliasPass = "123456";
 
-                UnityEngine.Debug.Log($"已自动设置密钥库: {foundFiles[0]}");
+                UnityEngine.Debug.Log($"宸茶嚜鍔ㄨ缃瘑閽ュ簱: {foundFiles[0]}");
             }
         }
     }

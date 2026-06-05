@@ -1,36 +1,36 @@
-using System.Collections.Generic; // Èç¹ûĞèÒªÊ¹ÓÃList
+using System.Collections.Generic; // å¦‚æœéœ€è¦ä½¿ç”¨List
 using UnityEngine;
 
 /// <summary>
-/// µ¥AudioSource¶àÒôĞ§¹ÜÀíÆ÷
-/// Ê¹ÓÃ·½·¨£º½«´Ë½Å±¾¹ÒÔØµ½´øÓĞAudioSource×é¼şµÄÎïÌåÉÏ
-/// ÔÚInspectorÖĞÅäÖÃÒôĞ§ÎÄ¼ş£¬È»ºóÔÚÆäËû½Å±¾ÖĞµ÷ÓÃÏàÓ¦µÄ·½·¨
+/// å•AudioSourceå¤šéŸ³æ•ˆç®¡ç†å™¨
+/// ä½¿ç”¨æ–¹æ³•ï¼šå°†æ­¤è„šæœ¬æŒ‚è½½åˆ°å¸¦æœ‰AudioSourceç»„ä»¶çš„ç‰©ä½“ä¸Š
+/// åœ¨Inspectorä¸­é…ç½®éŸ³æ•ˆæ–‡ä»¶ï¼Œç„¶ååœ¨å…¶ä»–è„šæœ¬ä¸­è°ƒç”¨ç›¸åº”çš„æ–¹æ³•
 /// </summary>
-[RequireComponent(typeof(AudioSource))] // ×Ô¶¯Ìí¼ÓAudioSource×é¼ş
+[RequireComponent(typeof(AudioSource))] // è‡ªåŠ¨æ·»åŠ AudioSourceç»„ä»¶
 public class SoundManager : MonoBehaviour
 {
-    [Header("ÒôÆµÔ´ÅäÖÃ")]
-    [SerializeField] private AudioSource audioSource; // Ö÷ÒôÆµÔ´
+    [Header("éŸ³é¢‘æºé…ç½®")]
+    [SerializeField] private AudioSource audioSource; // ä¸»éŸ³é¢‘æº
 
-    [Header("ÒôĞ§ÁĞ±í")]
+    [Header("éŸ³æ•ˆåˆ—è¡¨")]
     [SerializeField] private List<SoundEntry> sounds = new List<SoundEntry>();
 
     [System.Serializable]
     public class SoundEntry
     {
-        public string soundName;     // ÒôĞ§Ãû³Æ
-        public AudioClip audioClip;  // ÒôÆµÆ¬¶Î
-        [Range(0f, 1f)] public float volume = 1f; // ÒôÁ¿
+        public string soundName;     // éŸ³æ•ˆåç§°
+        public AudioClip audioClip;  // éŸ³é¢‘ç‰‡æ®µ
+        [Range(0f, 1f)] public float volume = 1f; // éŸ³é‡
     }
 
-    [Header("µ÷ÊÔÉèÖÃ")]
-    [SerializeField] private bool enableLogging = true; // ÊÇ·ñÆôÓÃµ÷ÊÔÈÕÖ¾
+    [Header("è°ƒè¯•è®¾ç½®")]
+    [SerializeField] private bool enableLogging = true; // æ˜¯å¦å¯ç”¨è°ƒè¯•æ—¥å¿—
 
-    private Dictionary<string, SoundEntry> soundDictionary; // ÒôĞ§×Öµä£¬¿ìËÙ²éÕÒ
+    private Dictionary<string, SoundEntry> soundDictionary; // éŸ³æ•ˆå­—å…¸ï¼Œå¿«é€ŸæŸ¥æ‰¾
 
     private void Awake()
     {
-        // ×Ô¶¯»ñÈ¡AudioSource×é¼ş
+        // è‡ªåŠ¨è·å–AudioSourceç»„ä»¶
         if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
@@ -38,16 +38,16 @@ public class SoundManager : MonoBehaviour
             if (audioSource == null)
             {
                 audioSource = gameObject.AddComponent<AudioSource>();
-                if (enableLogging) Debug.Log($"{gameObject.name}: Ìí¼ÓÁËAudioSource×é¼ş");
+                if (enableLogging) Debug.Log($"{gameObject.name}: æ·»åŠ äº†AudioSourceç»„ä»¶");
             }
         }
 
-        // ³õÊ¼»¯ÒôĞ§×Öµä
+        // åˆå§‹åŒ–éŸ³æ•ˆå­—å…¸
         InitializeSoundDictionary();
     }
 
     /// <summary>
-    /// ³õÊ¼»¯ÒôĞ§×Öµä
+    /// åˆå§‹åŒ–éŸ³æ•ˆå­—å…¸
     /// </summary>
     private void InitializeSoundDictionary()
     {
@@ -63,85 +63,85 @@ public class SoundManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"ÒôĞ§Ãû³ÆÖØ¸´: {entry.soundName}");
+                    Debug.LogWarning($"éŸ³æ•ˆåç§°é‡å¤: {entry.soundName}");
                 }
             }
         }
 
-        if (enableLogging) Debug.Log($"ÒÑ¼ÓÔØ {soundDictionary.Count} ¸öÒôĞ§");
+        if (enableLogging) Debug.Log($"å·²åŠ è½½ {soundDictionary.Count} ä¸ªéŸ³æ•ˆ");
     }
 
     /// <summary>
-    /// ²¥·ÅÖ¸¶¨Ãû³ÆµÄÒôĞ§
+    /// æ’­æ”¾æŒ‡å®šåç§°çš„éŸ³æ•ˆ
     /// </summary>
-    /// <param name="soundName">ÒôĞ§Ãû³Æ</param>
+    /// <param name="soundName">éŸ³æ•ˆåç§°</param>
     public void PlaySound(string soundName)
     {
         if (soundDictionary.TryGetValue(soundName, out SoundEntry sound))
         {
             audioSource.PlayOneShot(sound.audioClip, sound.volume);
 
-            if (enableLogging) Debug.Log($"²¥·ÅÒôĞ§: {soundName}");
+            if (enableLogging) Debug.Log($"æ’­æ”¾éŸ³æ•ˆ: {soundName}");
         }
         else
         {
-            Debug.LogWarning($"Î´ÕÒµ½ÒôĞ§: {soundName}");
+            Debug.LogWarning($"æœªæ‰¾åˆ°éŸ³æ•ˆ: {soundName}");
         }
     }
 
     /// <summary>
-    /// ²¥·ÅÖ¸¶¨Ãû³ÆµÄÒôĞ§£¨´øÒô¸ß±ä»¯£©
+    /// æ’­æ”¾æŒ‡å®šåç§°çš„éŸ³æ•ˆï¼ˆå¸¦éŸ³é«˜å˜åŒ–ï¼‰
     /// </summary>
-    /// <param name="soundName">ÒôĞ§Ãû³Æ</param>
-    /// <param name="pitchVariation">Òô¸ß±ä»¯·¶Î§£¨0-1£©</param>
+    /// <param name="soundName">éŸ³æ•ˆåç§°</param>
+    /// <param name="pitchVariation">éŸ³é«˜å˜åŒ–èŒƒå›´ï¼ˆ0-1ï¼‰</param>
     public void PlaySoundWithPitch(string soundName, float pitchVariation = 0.1f)
     {
         if (soundDictionary.TryGetValue(soundName, out SoundEntry sound))
         {
-            // ±£´æÔ­Ê¼Òô¸ß
+            // ä¿å­˜åŸå§‹éŸ³é«˜
             float originalPitch = audioSource.pitch;
 
-            // ÉèÖÃËæ»úÒô¸ß
+            // è®¾ç½®éšæœºéŸ³é«˜
             audioSource.pitch = Random.Range(
                 originalPitch - pitchVariation,
                 originalPitch + pitchVariation
             );
 
-            // ²¥·ÅÒôĞ§
+            // æ’­æ”¾éŸ³æ•ˆ
             audioSource.PlayOneShot(sound.audioClip, sound.volume);
 
-            // »Ö¸´Ô­Ê¼Òô¸ß
+            // æ¢å¤åŸå§‹éŸ³é«˜
             audioSource.pitch = originalPitch;
 
-            if (enableLogging) Debug.Log($"²¥·ÅÒôĞ§(´øÒô¸ß±ä»¯): {soundName}");
+            if (enableLogging) Debug.Log($"æ’­æ”¾éŸ³æ•ˆ(å¸¦éŸ³é«˜å˜åŒ–): {soundName}");
         }
         else
         {
-            Debug.LogWarning($"Î´ÕÒµ½ÒôĞ§: {soundName}");
+            Debug.LogWarning($"æœªæ‰¾åˆ°éŸ³æ•ˆ: {soundName}");
         }
     }
 
     /// <summary>
-    /// ²¥·ÅÖ¸¶¨Ãû³ÆµÄÒôĞ§£¨´øÎ»ÖÃĞÅÏ¢£¬ÊÊÓÃÓÚ3DÒôĞ§£©
+    /// æ’­æ”¾æŒ‡å®šåç§°çš„éŸ³æ•ˆï¼ˆå¸¦ä½ç½®ä¿¡æ¯ï¼Œé€‚ç”¨äº3DéŸ³æ•ˆï¼‰
     /// </summary>
-    /// <param name="soundName">ÒôĞ§Ãû³Æ</param>
-    /// <param name="position">²¥·ÅÎ»ÖÃ</param>
+    /// <param name="soundName">éŸ³æ•ˆåç§°</param>
+    /// <param name="position">æ’­æ”¾ä½ç½®</param>
     public void PlaySoundAtPosition(string soundName, Vector3 position)
     {
         if (soundDictionary.TryGetValue(soundName, out SoundEntry sound))
         {
             AudioSource.PlayClipAtPoint(sound.audioClip, position, sound.volume);
 
-            if (enableLogging) Debug.Log($"ÔÚÎ»ÖÃ {position} ²¥·ÅÒôĞ§: {soundName}");
+            if (enableLogging) Debug.Log($"åœ¨ä½ç½® {position} æ’­æ”¾éŸ³æ•ˆ: {soundName}");
         }
         else
         {
-            Debug.LogWarning($"Î´ÕÒµ½ÒôĞ§: {soundName}");
+            Debug.LogWarning($"æœªæ‰¾åˆ°éŸ³æ•ˆ: {soundName}");
         }
     }
 
     /// <summary>
-    /// Ìí¼ÓĞÂÒôĞ§
+    /// æ·»åŠ æ–°éŸ³æ•ˆ
     /// </summary>
     public void AddSound(string name, AudioClip clip, float volume = 1f)
     {
@@ -154,17 +154,17 @@ public class SoundManager : MonoBehaviour
 
         sounds.Add(newSound);
 
-        // ¸üĞÂ×Öµä
+        // æ›´æ–°å­—å…¸
         if (!soundDictionary.ContainsKey(name))
         {
             soundDictionary.Add(name, newSound);
         }
 
-        if (enableLogging) Debug.Log($"Ìí¼ÓÁËĞÂÒôĞ§: {name}");
+        if (enableLogging) Debug.Log($"æ·»åŠ äº†æ–°éŸ³æ•ˆ: {name}");
     }
 
     /// <summary>
-    /// Í£Ö¹ËùÓĞÒôĞ§
+    /// åœæ­¢æ‰€æœ‰éŸ³æ•ˆ
     /// </summary>
     public void StopAllSounds()
     {
@@ -172,7 +172,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ÉèÖÃÒôÆµÔ´¾²Òô
+    /// è®¾ç½®éŸ³é¢‘æºé™éŸ³
     /// </summary>
     public void SetMute(bool mute)
     {
@@ -180,7 +180,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ÉèÖÃÖ÷ÒôÁ¿
+    /// è®¾ç½®ä¸»éŸ³é‡
     /// </summary>
     public void SetVolume(float volume)
     {

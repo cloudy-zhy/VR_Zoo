@@ -4,13 +4,13 @@ namespace RhythmGame
 {
     public class RhythmTrack : MonoBehaviour
     {
-        [Header("¹ìµÀÅäÖÃ")]
+        [Header("è½¨é“é…ç½®")]
         [SerializeField] private TrackType trackType;
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private Transform judgmentPoint;
         [SerializeField] private float judgmentRadius = 0.25f;
 
-        [Header("Òô·ûÔ¤ÖÆÌå")]
+        [Header("éŸ³ç¬¦é¢„åˆ¶ä½“")]
         [SerializeField] private GameObject noteBlockPrefab;
 
         public TrackType TrackType => trackType;
@@ -19,23 +19,23 @@ namespace RhythmGame
         public Vector3 JudgmentPosition => judgmentPoint.position;
         public float JudgmentRadius => judgmentRadius;
 
-        [Header("³¤ÒôÖ§³Ö")]
+        [Header("é•¿éŸ³æ”¯æŒ")]
         [SerializeField] private JudgmentZoneTrigger judgmentZoneTrigger;
 
         public JudgmentZoneTrigger ZoneTrigger => judgmentZoneTrigger;
 
         private void Start()
         {
-            // É¾µô£ºHandPositionTracker.Instance.RegisterTrack(this);
+            // åˆ æ‰ï¼šHandPositionTracker.Instance.RegisterTrack(this);
         }
 
-        // É¾µôÕû¸ö Update()£¬²»ÔÙĞèÒª¼ì²âÊÖ²¿ÇøÓò¸ßÁÁ
+        // åˆ æ‰æ•´ä¸ª Update()ï¼Œä¸å†éœ€è¦æ£€æµ‹æ‰‹éƒ¨åŒºåŸŸé«˜äº®
 
         public NoteBlock SpawnNote()
         {
             if (noteBlockPrefab == null)
             {
-                Debug.LogWarning($"[RhythmTrack] {trackType} Ã»ÓĞÉèÖÃ NoteBlock Prefab");
+                Debug.LogWarning($"[RhythmTrack] {trackType} æ²¡æœ‰è®¾ç½® NoteBlock Prefab");
                 return null;
             }
             GameObject obj = Instantiate(noteBlockPrefab, spawnPoint.position, Quaternion.identity);
@@ -49,18 +49,18 @@ namespace RhythmGame
             Vector3 spawnDir  = (judgmentPoint.position - spawnPoint.position).normalized;
             float   tailOffset = holdDuration * noteSpeed;
 
-            // Í·²¿
+            // å¤´éƒ¨
             GameObject headObj = Instantiate(noteBlockPrefab, spawnPoint.position, Quaternion.identity);
             NoteBlock  head    = headObj.GetComponent<NoteBlock>();
             head.Initialize(this, isHold: true);
 
-            // Î²²¿£ºÔÚÍ·²¿Éú³Éµãºó·½£¬Íí holdDuration Ãëµ½´ï
+            // å°¾éƒ¨ï¼šåœ¨å¤´éƒ¨ç”Ÿæˆç‚¹åæ–¹ï¼Œæ™š holdDuration ç§’åˆ°è¾¾
             Vector3    tailSpawn = spawnPoint.position - spawnDir * tailOffset;
             GameObject tailObj   = Instantiate(noteBlockPrefab, tailSpawn, Quaternion.identity);
             NoteBlock  tail      = tailObj.GetComponent<NoteBlock>();
             tail.Initialize(this, isHold: true);
 
-            // HoldNote ÈİÆ÷
+            // HoldNote å®¹å™¨
             GameObject holdObj  = new GameObject("HoldNote");
             HoldNote   holdNote = holdObj.AddComponent<HoldNote>();
             holdNote.Initialize(TrackType, head, tail, judgmentZoneTrigger);

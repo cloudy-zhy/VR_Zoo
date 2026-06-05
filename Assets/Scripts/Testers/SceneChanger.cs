@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneChanger : MonoBehaviour
 {
     // Start is called before the first frame update
-    [Header("Ìø×ª³¡¾°")]
+    [Header("è·³è½¬åœºæ™¯")]
     [SerializeField] private string targetSceneName = "Scene1-2";
     void Start()
     {

@@ -13,42 +13,42 @@ public class DialogueController : MonoBehaviour
     [System.Serializable]
     public class DialogueEntry
     {
-        public bool isPlayerSpeaking = false;  // true=Íæ¼ÒËµ»°£¬false=NPCËµ»°
-        public string speakerName = "";        // Ëµ»°ÕßÃû×Ö
+        public bool isPlayerSpeaking = false;  // true=ç©å®¶è¯´è¯ï¼Œfalse=NPCè¯´è¯
+        public string speakerName = "";        // è¯´è¯è€…åå­—
         [TextArea(3, 5)]
-        public string dialogueText = "";       // ¶Ô»°ÄÚÈİ
-        public float displayDuration = 3.0f;   // Ã¿¾ä»°ÏÔÊ¾Ê±³¤£¨Ãë£©
+        public string dialogueText = "";       // å¯¹è¯å†…å®¹
+        public float displayDuration = 3.0f;   // æ¯å¥è¯æ˜¾ç¤ºæ—¶é•¿ï¼ˆç§’ï¼‰
     }
 
-    [Header("¶Ô»°ÅäÖÃ")]
-    [SerializeField] private List<DialogueEntry> dialogueSequence = new List<DialogueEntry>(); // ¶Ô»°ĞòÁĞ
+    [Header("å¯¹è¯é…ç½®")]
+    [SerializeField] private List<DialogueEntry> dialogueSequence = new List<DialogueEntry>(); // å¯¹è¯åºåˆ—
 
-    [Header("Í·ÏñÒıÓÃ")]
-    [SerializeField] private Sprite playerPortrait;    // Íæ¼ÒÍ·Ïñ
-    [SerializeField] private Sprite npcPortrait;       // NPCÍ·Ïñ
+    [Header("å¤´åƒå¼•ç”¨")]
+    [SerializeField] private Sprite playerPortrait;    // ç©å®¶å¤´åƒ
+    [SerializeField] private Sprite npcPortrait;       // NPCå¤´åƒ
 
-    [Header("³¡¾°Ìø×ª")]
-    [SerializeField] private bool sceneChangeFlag = false;// ¶Ô»°½áÊøºóÊÇ·ñÌø×ª
-    [SerializeField] private string targetSceneName = "Scene1"; // Ä¿±ê³¡¾°Ãû³Æ
-    [SerializeField] private float delayBeforeSceneChange = 2.0f; // ¶Ô»°½áÊøºóÑÓ³ÙÌø×ª
+    [Header("åœºæ™¯è·³è½¬")]
+    [SerializeField] private bool sceneChangeFlag = false;// å¯¹è¯ç»“æŸåæ˜¯å¦è·³è½¬
+    [SerializeField] private string targetSceneName = "Scene1"; // ç›®æ ‡åœºæ™¯åç§°
+    [SerializeField] private float delayBeforeSceneChange = 2.0f; // å¯¹è¯ç»“æŸåå»¶è¿Ÿè·³è½¬
 
-    [Header("×Ô¶¯¶Ô»°ÉèÖÃ")]
+    [Header("è‡ªåŠ¨å¯¹è¯è®¾ç½®")]
     [SerializeField] private bool autoDisplayFlag = true;
-    [SerializeField] private float initialDelay = 1.0f; // ¿ªÊ¼Ç°µÄ³õÊ¼ÑÓ³Ù
-    [SerializeField] private float delayBetweenDialogues = 0.5f; // ¶Ô»°Ö®¼äµÄÑÓ³Ù
-    [SerializeField] private float minimumDisplayTime = 2.0f; // Ã¿¾ä»°×îÉÙÏÔÊ¾Ê±¼ä
-    [SerializeField] private float timePerCharacter = 0.05f; // Ã¿¸ö×Ö·ûÏÔÊ¾Ê±¼ä£¨Ó°Ïì×Ô¶¯¼ÆËãÊ±³¤£©
-    [SerializeField] private bool enableLastDialogue = false; // ×îºóÒ»¸ö¶Ô»°ÊÇ·ñÒ»Ö±ÏÔÊ¾
+    [SerializeField] private float initialDelay = 1.0f; // å¼€å§‹å‰çš„åˆå§‹å»¶è¿Ÿ
+    [SerializeField] private float delayBetweenDialogues = 0.5f; // å¯¹è¯ä¹‹é—´çš„å»¶è¿Ÿ
+    [SerializeField] private float minimumDisplayTime = 2.0f; // æ¯å¥è¯æœ€å°‘æ˜¾ç¤ºæ—¶é—´
+    [SerializeField] private float timePerCharacter = 0.05f; // æ¯ä¸ªå­—ç¬¦æ˜¾ç¤ºæ—¶é—´ï¼ˆå½±å“è‡ªåŠ¨è®¡ç®—æ—¶é•¿ï¼‰
+    [SerializeField] private bool enableLastDialogue = false; // æœ€åä¸€ä¸ªå¯¹è¯æ˜¯å¦ä¸€ç›´æ˜¾ç¤º
 
-    [Header("ÒôÆµÉèÖÃ")]
-    [SerializeField] private AudioSource audioSource;          // ÒôÆµÔ´×é¼ş
-    [SerializeField] private AudioClip[] dialogueAudioClips;   // Ã¿¸ö¶Ô»°¶ÔÓ¦µÄÒôÆµ¼ô¼­
+    [Header("éŸ³é¢‘è®¾ç½®")]
+    [SerializeField] private AudioSource audioSource;          // éŸ³é¢‘æºç»„ä»¶
+    [SerializeField] private AudioClip[] dialogueAudioClips;   // æ¯ä¸ªå¯¹è¯å¯¹åº”çš„éŸ³é¢‘å‰ªè¾‘
 
-    [Header("µ÷ÊÔ")]
-    [SerializeField] private bool showDebugLogs = false; // ÊÇ·ñÏÔÊ¾µ÷ÊÔÈÕÖ¾
+    [Header("è°ƒè¯•")]
+    [SerializeField] private bool showDebugLogs = false; // æ˜¯å¦æ˜¾ç¤ºè°ƒè¯•æ—¥å¿—
 
-    // Ë½ÓĞ±äÁ¿
-    [Header("¶Ô»°id")]
+    // ç§æœ‰å˜é‡
+    [Header("å¯¹è¯id")]
     [SerializeField] private int currentDialogueIndex = 0;
     private bool isDialogueActive = false;
     private Coroutine dialogueCoroutine;
@@ -56,7 +56,7 @@ public class DialogueController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        // È·±£ AudioSource ´æÔÚ
+        // ç¡®ä¿ AudioSource å­˜åœ¨
         if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
@@ -69,13 +69,13 @@ public class DialogueController : MonoBehaviour
 
     private void Start()
     {
-        // ¿ªÊ¼¶Ô»°
-        if (showDebugLogs) Debug.Log("¶Ô»°¿ØÖÆÆ÷Æô¶¯");
+        // å¼€å§‹å¯¹è¯
+        if (showDebugLogs) Debug.Log("å¯¹è¯æ§åˆ¶å™¨å¯åŠ¨");
         if (autoDisplayFlag) StartDialogueSequence();
     }
 
     /// <summary>
-    /// ¿ªÊ¼¶Ô»°ĞòÁĞ
+    /// å¼€å§‹å¯¹è¯åºåˆ—
     /// </summary>
     public void StartDialogueSequence()
     {
@@ -88,59 +88,59 @@ public class DialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// ¶Ô»°ĞòÁĞĞ­³Ì
+    /// å¯¹è¯åºåˆ—åç¨‹
     /// </summary>
     private IEnumerator DialogueSequenceCoroutine()
     {
         isDialogueActive = true;
 
-        // ³õÊ¼ÑÓ³Ù
+        // åˆå§‹å»¶è¿Ÿ
         yield return new WaitForSeconds(initialDelay);
 
-        // Òş²ØËùÓĞ¶Ô»°¿ò
+        // éšè—æ‰€æœ‰å¯¹è¯æ¡†
         if (UIManager.Instance != null)
         {
             UIManager.Instance.HideAllDialogs();
         }
 
-        // ±éÀúËùÓĞ¶Ô»°ÌõÄ¿
+        // éå†æ‰€æœ‰å¯¹è¯æ¡ç›®
         for (currentDialogueIndex = 0; currentDialogueIndex < dialogueSequence.Count; currentDialogueIndex++)
         {
             var dialogueEntry = dialogueSequence[currentDialogueIndex];
 
             if (dialogueEntry == null)
             {
-                Debug.LogWarning($"¶Ô»°ÌõÄ¿ {currentDialogueIndex} Îª¿Õ£¬Ìø¹ı");
+                Debug.LogWarning($"å¯¹è¯æ¡ç›® {currentDialogueIndex} ä¸ºç©ºï¼Œè·³è¿‡");
                 continue;
             }
 
-            // ÏÔÊ¾µ±Ç°¶Ô»°
+            // æ˜¾ç¤ºå½“å‰å¯¹è¯
             ShowDialogue(dialogueEntry);
 
-            // ¼ÆËãÏÔÊ¾Ê±¼ä
+            // è®¡ç®—æ˜¾ç¤ºæ—¶é—´
             float displayTime = dialogueEntry.displayDuration;
             if (displayTime <= 0)
             {
-                // ×Ô¶¯¼ÆËã£º»ùÓÚÎÄ±¾³¤¶È£¬µ«²»ÉÙÓÚ×îĞ¡ÏÔÊ¾Ê±¼ä
+                // è‡ªåŠ¨è®¡ç®—ï¼šåŸºäºæ–‡æœ¬é•¿åº¦ï¼Œä½†ä¸å°‘äºæœ€å°æ˜¾ç¤ºæ—¶é—´
                 displayTime = Mathf.Max(minimumDisplayTime, dialogueEntry.dialogueText.Length * timePerCharacter);
             }
 
-            if (showDebugLogs) Debug.Log($"ÏÔÊ¾¶Ô»° {currentDialogueIndex + 1}/{dialogueSequence.Count}£¬Ê±³¤: {displayTime:F1}Ãë");
+            if (showDebugLogs) Debug.Log($"æ˜¾ç¤ºå¯¹è¯ {currentDialogueIndex + 1}/{dialogueSequence.Count}ï¼Œæ—¶é•¿: {displayTime:F1}ç§’");
 
-            // µÈ´ıÏÔÊ¾Ê±¼ä
+            // ç­‰å¾…æ˜¾ç¤ºæ—¶é—´
             yield return new WaitForSeconds(displayTime);
 
-            // Èç¹û²»ÊÇ×îºóÒ»Ìõ¶Ô»°£¬ÔÚ¶Ô»°Ö®¼äÌí¼ÓÑÓ³Ù
+            // å¦‚æœä¸æ˜¯æœ€åä¸€æ¡å¯¹è¯ï¼Œåœ¨å¯¹è¯ä¹‹é—´æ·»åŠ å»¶è¿Ÿ
             if (currentDialogueIndex < dialogueSequence.Count - 1)
             {
                 yield return new WaitForSeconds(delayBetweenDialogues);
             }
         }
 
-        // ¶Ô»°½áÊø
-        if (showDebugLogs) Debug.Log("ËùÓĞ¶Ô»°½áÊø");
+        // å¯¹è¯ç»“æŸ
+        if (showDebugLogs) Debug.Log("æ‰€æœ‰å¯¹è¯ç»“æŸ");
 
-        // Òş²ØËùÓĞ¶Ô»°¿ò
+        // éšè—æ‰€æœ‰å¯¹è¯æ¡†
         if (UIManager.Instance != null && !enableLastDialogue)
         {
             UIManager.Instance.HideAllDialogs();
@@ -148,21 +148,21 @@ public class DialogueController : MonoBehaviour
 
         isDialogueActive = false;
 
-        // ÑÓ³ÙºóÌø×ª³¡¾°
+        // å»¶è¿Ÿåè·³è½¬åœºæ™¯
         yield return new WaitForSeconds(delayBeforeSceneChange);
 
-        // Ìø×ªµ½Ä¿±ê³¡¾°
+        // è·³è½¬åˆ°ç›®æ ‡åœºæ™¯
         if (!string.IsNullOrEmpty(targetSceneName) && sceneChangeFlag)
         {
-            if (showDebugLogs) Debug.Log($"Ìø×ªµ½³¡¾°: {targetSceneName}");
+            if (showDebugLogs) Debug.Log($"è·³è½¬åˆ°åœºæ™¯: {targetSceneName}");
             SceneManager.LoadScene(targetSceneName);
         }
         else
         {
             if (string.IsNullOrEmpty(targetSceneName))
-                Debug.LogWarning("Ä¿±ê³¡¾°Ãû³ÆÎª¿Õ£¬ÎŞ·¨Ìø×ª");
+                Debug.LogWarning("ç›®æ ‡åœºæ™¯åç§°ä¸ºç©ºï¼Œæ— æ³•è·³è½¬");
             else
-                Debug.Log("¶Ô»°½áÊøºó²»Ìø×ª");
+                Debug.Log("å¯¹è¯ç»“æŸåä¸è·³è½¬");
         }
     }
 
@@ -176,28 +176,28 @@ public class DialogueController : MonoBehaviour
         float displayTime = dialogueEntry.displayDuration;
         if (displayTime <= 0)
         {
-            // ×Ô¶¯¼ÆËã£º»ùÓÚÎÄ±¾³¤¶È£¬µ«²»ÉÙÓÚ×îĞ¡ÏÔÊ¾Ê±¼ä
+            // è‡ªåŠ¨è®¡ç®—ï¼šåŸºäºæ–‡æœ¬é•¿åº¦ï¼Œä½†ä¸å°‘äºæœ€å°æ˜¾ç¤ºæ—¶é—´
             displayTime = Mathf.Max(minimumDisplayTime, dialogueEntry.dialogueText.Length * timePerCharacter);
         }
 
-        if (showDebugLogs) Debug.Log($"ÏÔÊ¾¶Ô»° {currentDialogueIndex + 1}/{dialogueSequence.Count}£¬Ê±³¤: {displayTime:F1}Ãë");
+        if (showDebugLogs) Debug.Log($"æ˜¾ç¤ºå¯¹è¯ {currentDialogueIndex + 1}/{dialogueSequence.Count}ï¼Œæ—¶é•¿: {displayTime:F1}ç§’");
         StartCoroutine(DialogsHideDelay(displayTime));
         currentDialogueIndex++;
 
-        // Ìø×ªµ½Ä¿±ê³¡¾°
+        // è·³è½¬åˆ°ç›®æ ‡åœºæ™¯
         if (!string.IsNullOrEmpty(targetSceneName) && sceneChangeFlag && currentDialogueIndex==dialogueSequence.Count)
         {
-            if (showDebugLogs) Debug.Log($"Ìø×ªµ½³¡¾°: {targetSceneName}");
+            if (showDebugLogs) Debug.Log($"è·³è½¬åˆ°åœºæ™¯: {targetSceneName}");
             SceneManager.LoadScene(targetSceneName);
         }
         else
         {
             if (string.IsNullOrEmpty(targetSceneName))
-                Debug.LogWarning("Ä¿±ê³¡¾°Ãû³ÆÎª¿Õ£¬ÎŞ·¨Ìø×ª");
+                Debug.LogWarning("ç›®æ ‡åœºæ™¯åç§°ä¸ºç©ºï¼Œæ— æ³•è·³è½¬");
             else if (sceneChangeFlag)
-                Debug.Log("¶Ô»°½áÊøºó²»Ìø×ª");
+                Debug.Log("å¯¹è¯ç»“æŸåä¸è·³è½¬");
             else
-                Debug.Log("¶Ô»°Î´½áÊø");
+                Debug.Log("å¯¹è¯æœªç»“æŸ");
         }
     }
 
@@ -207,10 +207,10 @@ public class DialogueController : MonoBehaviour
 
         yield return new WaitForSeconds(1.0f);
         var dialogueEntry = dialogueSequence[currentDialogueIndex];
-        ShowDialogue(dialogueEntry); // ÕâÀï»á¼¤»î¶Ô»°¿òGameObject
+        ShowDialogue(dialogueEntry); // è¿™é‡Œä¼šæ¿€æ´»å¯¹è¯æ¡†GameObject
         PlayDialogueAudio(currentDialogueIndex);
 
-        // +++ ¹Ø¼üĞŞ¸´£ºµÈ´ıÒ»Ö¡£¬È·±£±»SetActive(true)µÄUI×é¼şÍê³É±¾Ö¡äÖÈ¾¸üĞÂ +++
+        // +++ å…³é”®ä¿®å¤ï¼šç­‰å¾…ä¸€å¸§ï¼Œç¡®ä¿è¢«SetActive(true)çš„UIç»„ä»¶å®Œæˆæœ¬å¸§æ¸²æŸ“æ›´æ–° +++
         yield return null;
 
         float displayTime = dialogueEntry.displayDuration;
@@ -218,33 +218,33 @@ public class DialogueController : MonoBehaviour
         {
             displayTime = Mathf.Max(minimumDisplayTime, dialogueEntry.dialogueText.Length * timePerCharacter);
         }
-        if (showDebugLogs) Debug.Log($"ÏÔÊ¾¶Ô»° {currentDialogueIndex + 1}/{dialogueSequence.Count} Ê±¼ä: {displayTime:F1}");
+        if (showDebugLogs) Debug.Log($"æ˜¾ç¤ºå¯¹è¯ {currentDialogueIndex + 1}/{dialogueSequence.Count} æ—¶é—´: {displayTime:F1}");
 
-        // ÏÖÔÚ£¬ÔÚ¶Ô»°¿òÈ·ÈÏÍê³ÉÒ»Ö¡¸üĞÂ¡¢ÎÈ¶¨ÏÔÊ¾ºó£¬ÔÙ¿ªÊ¼¡°¶à¾ÃºóÒş²ØËü¡±µÄµ¹¼ÆÊ±
+        // ç°åœ¨ï¼Œåœ¨å¯¹è¯æ¡†ç¡®è®¤å®Œæˆä¸€å¸§æ›´æ–°ã€ç¨³å®šæ˜¾ç¤ºåï¼Œå†å¼€å§‹â€œå¤šä¹…åéšè—å®ƒâ€çš„å€’è®¡æ—¶
         yield return StartCoroutine(DialogsHideDelay(displayTime));
         currentDialogueIndex++;
 
-        // Ìø×ªµ½Ä¿±ê³¡¾°
+        // è·³è½¬åˆ°ç›®æ ‡åœºæ™¯
         if (!string.IsNullOrEmpty(targetSceneName) && sceneChangeFlag && currentDialogueIndex==dialogueSequence.Count)
         {
-            // ÑÓ³ÙºóÌø×ª³¡¾°
+            // å»¶è¿Ÿåè·³è½¬åœºæ™¯
             yield return new WaitForSeconds(delayBeforeSceneChange);
-            if (showDebugLogs) Debug.Log($"Ìø×ªµ½³¡¾°: {targetSceneName}");
+            if (showDebugLogs) Debug.Log($"è·³è½¬åˆ°åœºæ™¯: {targetSceneName}");
             SceneManager.LoadScene(targetSceneName);
         }
         else
         {
             if (string.IsNullOrEmpty(targetSceneName))
-                Debug.LogWarning("Ä¿±ê³¡¾°Ãû³ÆÎª¿Õ£¬ÎŞ·¨Ìø×ª");
+                Debug.LogWarning("ç›®æ ‡åœºæ™¯åç§°ä¸ºç©ºï¼Œæ— æ³•è·³è½¬");
             else if (sceneChangeFlag)
-                Debug.Log("¶Ô»°½áÊøºó²»Ìø×ª");
+                Debug.Log("å¯¹è¯ç»“æŸåä¸è·³è½¬");
             else
-                Debug.Log("¶Ô»°Î´½áÊø");
+                Debug.Log("å¯¹è¯æœªç»“æŸ");
         }
     }
 
     /// <summary>
-    /// ¸ù¾İË÷Òı²¥·Å¶Ô»°ÒôÆµ
+    /// æ ¹æ®ç´¢å¼•æ’­æ”¾å¯¹è¯éŸ³é¢‘
     /// </summary>
     private void PlayDialogueAudio(int index)
     {
@@ -254,7 +254,7 @@ public class DialogueController : MonoBehaviour
         AudioClip clip = dialogueAudioClips[index];
         if (clip != null)
         {
-            audioSource.Stop(); // Í£Ö¹µ±Ç°²¥·ÅµÄÒôÆµ
+            audioSource.Stop(); // åœæ­¢å½“å‰æ’­æ”¾çš„éŸ³é¢‘
             audioSource.clip = clip;
             audioSource.Play();
         }
@@ -267,38 +267,38 @@ public class DialogueController : MonoBehaviour
         OnDialogueEnded.Invoke();
     }
     /// <summary>
-    /// ÏÔÊ¾¶Ô»°
+    /// æ˜¾ç¤ºå¯¹è¯
     /// </summary>
     private void ShowDialogue(DialogueEntry dialogueEntry)
     {
         if (UIManager.Instance == null)
         {
-            Debug.LogError("UIManagerÊµÀıÎ´ÕÒµ½£¡");
+            Debug.LogError("UIManagerå®ä¾‹æœªæ‰¾åˆ°ï¼");
             return;
         }
 
         if (dialogueEntry.isPlayerSpeaking)
         {
-            // ÏÔÊ¾Íæ¼Ò¶Ô»°¿ò
+            // æ˜¾ç¤ºç©å®¶å¯¹è¯æ¡†
             UIManager.Instance.ShowSelfDialog(
                 dialogueEntry.dialogueText,
-                string.IsNullOrEmpty(dialogueEntry.speakerName) ? "Íæ¼Ò" : dialogueEntry.speakerName,
+                string.IsNullOrEmpty(dialogueEntry.speakerName) ? "ç©å®¶" : dialogueEntry.speakerName,
                 playerPortrait
             );
         }
         else
         {
-            // ÏÔÊ¾NPC¶Ô»°¿ò
+            // æ˜¾ç¤ºNPCå¯¹è¯æ¡†
             UIManager.Instance.ShowOthersDialog(
                 dialogueEntry.dialogueText,
-                string.IsNullOrEmpty(dialogueEntry.speakerName) ? "ÅµÑÇ" : dialogueEntry.speakerName,
+                string.IsNullOrEmpty(dialogueEntry.speakerName) ? "è¯ºäºš" : dialogueEntry.speakerName,
                 npcPortrait
             );
         }
     }
 
     /// <summary>
-    /// Ìí¼Ó¶Ô»°ÌõÄ¿
+    /// æ·»åŠ å¯¹è¯æ¡ç›®
     /// </summary>
     public void AddDialogue(bool isPlayerSpeaking, string text, string speakerName = "", float displayDuration = 0)
     {
@@ -314,7 +314,7 @@ public class DialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// ÉèÖÃÍæ¼ÒÍ·Ïñ
+    /// è®¾ç½®ç©å®¶å¤´åƒ
     /// </summary>
     public void SetPlayerPortrait(Sprite portrait)
     {
@@ -322,7 +322,7 @@ public class DialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// ÉèÖÃNPCÍ·Ïñ
+    /// è®¾ç½®NPCå¤´åƒ
     /// </summary>
     public void SetNPCPortrait(Sprite portrait)
     {
@@ -330,7 +330,7 @@ public class DialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// Á¢¼´½áÊø¶Ô»°²¢Ìø×ª³¡¾°
+    /// ç«‹å³ç»“æŸå¯¹è¯å¹¶è·³è½¬åœºæ™¯
     /// </summary>
     public void EndDialogueImmediately()
     {
@@ -346,7 +346,7 @@ public class DialogueController : MonoBehaviour
 
         isDialogueActive = false;
 
-        // Á¢¼´Ìø×ª³¡¾°
+        // ç«‹å³è·³è½¬åœºæ™¯
         if (!string.IsNullOrEmpty(targetSceneName))
         {
             SceneManager.LoadScene(targetSceneName);
@@ -354,7 +354,7 @@ public class DialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// ÖØĞÂ¿ªÊ¼¶Ô»°
+    /// é‡æ–°å¼€å§‹å¯¹è¯
     /// </summary>
     public void RestartDialogue()
     {
@@ -367,7 +367,7 @@ public class DialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// »ñÈ¡µ±Ç°¶Ô»°×´Ì¬
+    /// è·å–å½“å‰å¯¹è¯çŠ¶æ€
     /// </summary>
     public bool IsDialogueActive()
     {
@@ -375,7 +375,7 @@ public class DialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// »ñÈ¡µ±Ç°¶Ô»°Ë÷Òı
+    /// è·å–å½“å‰å¯¹è¯ç´¢å¼•
     /// </summary>
     public int GetCurrentDialogueIndex()
     {
@@ -383,7 +383,7 @@ public class DialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// »ñÈ¡×Ü¶Ô»°ÊıÁ¿
+    /// è·å–æ€»å¯¹è¯æ•°é‡
     /// </summary>
     public int GetTotalDialogueCount()
     {
@@ -391,7 +391,7 @@ public class DialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// ÉèÖÃÄ¿±ê³¡¾°
+    /// è®¾ç½®ç›®æ ‡åœºæ™¯
     /// </summary>
     public void SetTargetScene(string sceneName)
     {
@@ -399,37 +399,37 @@ public class DialogueController : MonoBehaviour
     }
 
     /// <summary>
-    /// ÔÚ±à¼­Æ÷ÖĞ¿ìËÙ²âÊÔ
+    /// åœ¨ç¼–è¾‘å™¨ä¸­å¿«é€Ÿæµ‹è¯•
     /// </summary>
-    [ContextMenu("²âÊÔ¶Ô»°ĞòÁĞ")]
+    [ContextMenu("æµ‹è¯•å¯¹è¯åºåˆ—")]
     private void TestDialogueSequence()
     {
         if (Application.isPlaying)
         {
-            Debug.Log("ÓÎÏ·ÔËĞĞÊ±ÎŞ·¨Í¨¹ı±à¼­Æ÷²âÊÔ");
+            Debug.Log("æ¸¸æˆè¿è¡Œæ—¶æ— æ³•é€šè¿‡ç¼–è¾‘å™¨æµ‹è¯•");
             return;
         }
 
-        // Ìí¼Ó²âÊÔ¶Ô»°
+        // æ·»åŠ æµ‹è¯•å¯¹è¯
         dialogueSequence.Clear();
 
-        AddDialogue(false, "ÄãºÃ£¬Ä°ÉúµÄÂÃĞĞÕß¡£ÎÒÊÇÅµÑÇ£¬ÕâÆ¬ÍÁµØµÄÊØ»¤Õß¡£", "ÅµÑÇ", 3.5f);
-        AddDialogue(true, "ÕâÊÇÄÄÀï£¿ÎÒÎªÊ²Ã´»áÔÚÕâÀï£¿", "Íæ¼Ò", 2.5f);
-        AddDialogue(false, "»¶Ó­À´µ½°¬ÉªÀ­ÊÀ½ç¡£Äã±»Ñ¡ÖĞÀ´µ½ÕâÀï£¬ÒòÎªºÚ°µÕıÔÚÂûÑÓ£¬ÎÒÃÇĞèÒªÄãµÄ°ïÖú¡£", "ÅµÑÇ", 4.0f);
-        AddDialogue(true, "ÎÒÄÜ×öÊ²Ã´£¿ÎÒÖ»ÊÇ¸öÆÕÍ¨ÈË¡£", "Íæ¼Ò", 2.5f);
-        AddDialogue(false, "Ã¿¸öÈË¶¼ÓĞ×Ô¼ºµÄÁ¦Á¿¡£ÏÖÔÚ£¬ÊÇÊ±ºò¿ªÊ¼ÄãµÄÂÃ³ÌÁË¡£×£ÄãºÃÔË£¬ÓÂÊ¿¡£", "ÅµÑÇ", 4.0f);
+        AddDialogue(false, "ä½ å¥½ï¼Œé™Œç”Ÿçš„æ—…è¡Œè€…ã€‚æˆ‘æ˜¯è¯ºäºšï¼Œè¿™ç‰‡åœŸåœ°çš„å®ˆæŠ¤è€…ã€‚", "è¯ºäºš", 3.5f);
+        AddDialogue(true, "è¿™æ˜¯å“ªé‡Œï¼Ÿæˆ‘ä¸ºä»€ä¹ˆä¼šåœ¨è¿™é‡Œï¼Ÿ", "ç©å®¶", 2.5f);
+        AddDialogue(false, "æ¬¢è¿æ¥åˆ°è‰¾ç‘Ÿæ‹‰ä¸–ç•Œã€‚ä½ è¢«é€‰ä¸­æ¥åˆ°è¿™é‡Œï¼Œå› ä¸ºé»‘æš—æ­£åœ¨è”“å»¶ï¼Œæˆ‘ä»¬éœ€è¦ä½ çš„å¸®åŠ©ã€‚", "è¯ºäºš", 4.0f);
+        AddDialogue(true, "æˆ‘èƒ½åšä»€ä¹ˆï¼Ÿæˆ‘åªæ˜¯ä¸ªæ™®é€šäººã€‚", "ç©å®¶", 2.5f);
+        AddDialogue(false, "æ¯ä¸ªäººéƒ½æœ‰è‡ªå·±çš„åŠ›é‡ã€‚ç°åœ¨ï¼Œæ˜¯æ—¶å€™å¼€å§‹ä½ çš„æ—…ç¨‹äº†ã€‚ç¥ä½ å¥½è¿ï¼Œå‹‡å£«ã€‚", "è¯ºäºš", 4.0f);
 
-        Debug.Log($"ÒÑÌí¼Ó {dialogueSequence.Count} Ìõ²âÊÔ¶Ô»°");
+        Debug.Log($"å·²æ·»åŠ  {dialogueSequence.Count} æ¡æµ‹è¯•å¯¹è¯");
     }
 
     /// <summary>
-    /// ÔÚ±à¼­Æ÷ÖĞÇå³ı¶Ô»°
+    /// åœ¨ç¼–è¾‘å™¨ä¸­æ¸…é™¤å¯¹è¯
     /// </summary>
-    [ContextMenu("Çå³ıËùÓĞ¶Ô»°")]
+    [ContextMenu("æ¸…é™¤æ‰€æœ‰å¯¹è¯")]
     private void ClearAllDialogues()
     {
         dialogueSequence.Clear();
-        Debug.Log("ÒÑÇå³ıËùÓĞ¶Ô»°");
+        Debug.Log("å·²æ¸…é™¤æ‰€æœ‰å¯¹è¯");
     }
 
     public void SwitchToNextScene()

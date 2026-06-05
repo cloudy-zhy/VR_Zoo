@@ -5,12 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewBeatmap", menuName = "RhythmGame/Beatmap")]
 public class BeatmapData : ScriptableObject
 {
-    [Tooltip("¶ÔÓ¦µÄ±³¾°ÒôÀÖ")]
+    [Tooltip("å¯¹åº”çš„èƒŒæ™¯éŸ³ä¹")]
     public AudioClip music;
 
-    [Tooltip("BPM£¨½ö²Î¿¼£¬Êµ¼Ê½ÚµãÓÉ hitTime ¾ö¶¨£©")]
+    [Tooltip("BPMï¼ˆä»…å‚è€ƒï¼Œå®é™…èŠ‚ç‚¹ç”± hitTime å†³å®šï¼‰")]
     public float bpm = 120f;
 
-    [Tooltip("Òô·ûÁĞ±í£¬°´ hitTime ÉıĞòÅÅÁĞ")]
+    [Tooltip("éŸ³ç¬¦åˆ—è¡¨ï¼ŒæŒ‰ hitTime å‡åºæ’åˆ—")]
     public List<NoteData> notes = new List<NoteData>();
 }

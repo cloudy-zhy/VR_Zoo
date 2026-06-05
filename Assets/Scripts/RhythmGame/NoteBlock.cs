@@ -1,5 +1,5 @@
 // NoteBlock.cs
-// Åö×²¼ì²â·½°¸£ºÊÖ²¿ Collider Åöµ½ Block ¼´´¥·¢ÅĞ¶¨
+// ç¢°æ’æ£€æµ‹æ–¹æ¡ˆï¼šæ‰‹éƒ¨ Collider ç¢°åˆ° Block å³è§¦å‘åˆ¤å®š
 
 using System.Collections;
 using UnityEngine;
@@ -11,13 +11,13 @@ namespace RhythmGame
 
     public class NoteBlock : MonoBehaviour
     {
-        [Header("ÒÆ¶¯²ÎÊı")]
+        [Header("ç§»åŠ¨å‚æ•°")]
         [SerializeField] private float moveSpeed = 4f;
 
-        [Header("Miss ÅĞ¶¨£ºBlock ³¬¹ıÅĞ¶¨µã¶àÔ¶ºóËã Miss£¨Ã×£©")]
+        [Header("Miss åˆ¤å®šï¼šBlock è¶…è¿‡åˆ¤å®šç‚¹å¤šè¿œåç®— Missï¼ˆç±³ï¼‰")]
         [SerializeField] private float missDistance = 0.3f;
 
-        [Header("ÊÓ¾õ")]
+        [Header("è§†è§‰")]
         [SerializeField] private Renderer noteRenderer;
         [SerializeField] private Color movingColor = new Color(0.3f, 0.8f, 1f);
         [SerializeField] private Color caughtColor = Color.green;
@@ -47,8 +47,8 @@ namespace RhythmGame
 
             if (noteRenderer != null)
                 noteRenderer.material.color = isHold
-                    ? new Color(0.6f, 0.9f, 1f)  // ³¤Òô£ºÇ³À¶
-                    : movingColor;                // ÆÕÍ¨£ºÕı³£À¶
+                    ? new Color(0.6f, 0.9f, 1f)  // é•¿éŸ³ï¼šæµ…è“
+                    : movingColor;                // æ™®é€šï¼šæ­£å¸¸è“
         }
 
         private void Update()
@@ -57,30 +57,30 @@ namespace RhythmGame
 
             transform.position += moveDirection * moveSpeed * Time.deltaTime;
 
-            // ¼ì²éÊÇ·ñÔ½¹ıÅĞ¶¨µã
+            // æ£€æŸ¥æ˜¯å¦è¶Šè¿‡åˆ¤å®šç‚¹
             float distToTarget = Vector3.Distance(transform.position, targetPosition);
             Vector3 toTarget = targetPosition - transform.position;
 
-            // µ± Block Ô½¹ıÅĞ¶¨µã£¨·½Ïò·´×ª£©Ê±¿ªÊ¼¼Æ¾à
+            // å½“ Block è¶Šè¿‡åˆ¤å®šç‚¹ï¼ˆæ–¹å‘åè½¬ï¼‰æ—¶å¼€å§‹è®¡è·
             if (!passedTarget && Vector3.Distance(transform.position, targetPosition) < 0.05f)
             {
                 passedTarget = true;
-                OnArrived.Invoke(this);   // ¡û ĞÂÔö
+                OnArrived.Invoke(this);   // â† æ–°å¢
             }
 
-            // Ô½¹ıÅĞ¶¨µãºó³¬³ö missDistance ¡ú Miss
+            // è¶Šè¿‡åˆ¤å®šç‚¹åè¶…å‡º missDistance â†’ Miss
             if (passedTarget && distToTarget >= missDistance)
             {
                 Miss();
             }
         }
 
-        // ©¤©¤ Åö×²¼ì²â ©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤©¤
-        // NoteBlock µÄ Collider Ğè¹´Ñ¡ IsTrigger
-        // ÊÖ²¿¶ÔÏóÉÏĞè¹ÒÔØ HandIdentifier ×é¼ş
+        // â”€â”€ ç¢°æ’æ£€æµ‹ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // NoteBlock çš„ Collider éœ€å‹¾é€‰ IsTrigger
+        // æ‰‹éƒ¨å¯¹è±¡ä¸Šéœ€æŒ‚è½½ HandIdentifier ç»„ä»¶
         private void OnTriggerEnter(Collider other)
         {   
-            if (DisableCollisionCatch) return;   // ¡û ³¤ÒôÍ·²¿Ìø¹ıÅö×²¼ì²â
+            if (DisableCollisionCatch) return;   // â† é•¿éŸ³å¤´éƒ¨è·³è¿‡ç¢°æ’æ£€æµ‹
 
             if (State != NoteState.Moving) return;
 

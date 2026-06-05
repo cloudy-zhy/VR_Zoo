@@ -1,6 +1,6 @@
 // BeatmapImporter.cs
-// ·ÅÔÚ Assets/Editor/ ÎÄ¼ş¼ĞÏÂ
-// Ê¹ÓÃ·½Ê½£º²Ëµ¥À¸ ¡ú RhythmGame ¡ú Import Beatmap JSON
+// æ”¾åœ¨ Assets/Editor/ æ–‡ä»¶å¤¹ä¸‹
+// ä½¿ç”¨æ–¹å¼ï¼šèœå•æ  â†’ RhythmGame â†’ Import Beatmap JSON
 
 using UnityEngine;
 using UnityEditor;
@@ -20,20 +20,20 @@ public class BeatmapImporter : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.Label("µ¼ÈëÆ×Ãæ JSON", EditorStyles.boldLabel);
+        GUILayout.Label("å¯¼å…¥è°±é¢ JSON", EditorStyles.boldLabel);
         GUILayout.Space(8);
 
         EditorGUILayout.BeginHorizontal();
-        jsonPath = EditorGUILayout.TextField("JSON Â·¾¶", jsonPath);
-        if (GUILayout.Button("ä¯ÀÀ", GUILayout.Width(50)))
+        jsonPath = EditorGUILayout.TextField("JSON è·¯å¾„", jsonPath);
+        if (GUILayout.Button("æµè§ˆ", GUILayout.Width(50)))
         {
-            jsonPath = EditorUtility.OpenFilePanel("Ñ¡ÔñÆ×Ãæ JSON", Application.dataPath, "json");
+            jsonPath = EditorUtility.OpenFilePanel("é€‰æ‹©è°±é¢ JSON", Application.dataPath, "json");
         }
         EditorGUILayout.EndHorizontal();
 
         GUILayout.Space(12);
 
-        if (GUILayout.Button("µ¼ÈëÎª BeatmapData"))
+        if (GUILayout.Button("å¯¼å…¥ä¸º BeatmapData"))
         {
             ImportBeatmap(jsonPath);
         }
@@ -43,14 +43,14 @@ public class BeatmapImporter : EditorWindow
     {
         if (!File.Exists(path))
         {
-            EditorUtility.DisplayDialog("´íÎó", "ÎÄ¼ş²»´æÔÚ£º" + path, "OK");
+            EditorUtility.DisplayDialog("é”™è¯¯", "æ–‡ä»¶ä¸å­˜åœ¨ï¼š" + path, "OK");
             return;
         }
 
         string json = File.ReadAllText(path);
         BeatmapJson data = JsonUtility.FromJson<BeatmapJson>(json);
 
-        // ´´½¨ ScriptableObject
+        // åˆ›å»º ScriptableObject
         BeatmapData asset = ScriptableObject.CreateInstance<BeatmapData>();
         asset.bpm = data.bpm;
         asset.notes = new List<NoteData>();
@@ -70,12 +70,12 @@ public class BeatmapImporter : EditorWindow
             {
                 track        = track,
                 hitTime      = n.hitTime,
-                isHold       = n.isHold,        // ¡û ĞÂÔö
-                holdDuration = n.holdDuration   // ¡û ĞÂÔö
+                isHold       = n.isHold,        // â† æ–°å¢
+                holdDuration = n.holdDuration   // â† æ–°å¢
             });
         }
 
-        // ±£´æµ½ Assets/Resources/Beatmaps/
+        // ä¿å­˜åˆ° Assets/Resources/Beatmaps/
         string dir = "Assets/Resources/Beatmaps";
         if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
@@ -87,14 +87,14 @@ public class BeatmapImporter : EditorWindow
         AssetDatabase.Refresh();
 
         EditorUtility.DisplayDialog(
-            "µ¼Èë³É¹¦",
-            $"ÒÑÉú³É£º{assetPath}\n¹² {asset.notes.Count} ¸öÒô·û\nBPM: {asset.bpm}",
+            "å¯¼å…¥æˆåŠŸ",
+            $"å·²ç”Ÿæˆï¼š{assetPath}\nå…± {asset.notes.Count} ä¸ªéŸ³ç¬¦\nBPM: {asset.bpm}",
             "OK");
 
         Selection.activeObject = asset;
     }
 
-    // JSON ·´ĞòÁĞ»¯ÓÃµÄÁÙÊ±Àà
+    // JSON ååºåˆ—åŒ–ç”¨çš„ä¸´æ—¶ç±»
     [System.Serializable]
     private class BeatmapJson
     {
@@ -107,7 +107,7 @@ public class BeatmapImporter : EditorWindow
     {
         public string track;
         public float hitTime;
-        public bool   isHold       = false;   // ¡û ĞÂÔö
-        public float  holdDuration = 0f;      // ¡û ĞÂÔö
+        public bool   isHold       = false;   // â† æ–°å¢
+        public float  holdDuration = 0f;      // â† æ–°å¢
     }
 }

@@ -4,17 +4,17 @@ using TMPro;
 
 public class BillboardProgressBar : MonoBehaviour
 {
-    [Header("½ø¶ÈÌõÉèÖÃ")]
-    [Tooltip("Íê³ÉËùĞèÊ±¼ä£¨Ãë£©")]
-    public float duration = 10f;          // ¡û Ö»ĞèĞŞ¸ÄÕâ¸öÊıÖµ
+    [Header("è¿›åº¦æ¡è®¾ç½®")]
+    [Tooltip("å®Œæˆæ‰€éœ€æ—¶é—´ï¼ˆç§’ï¼‰")]
+    public float duration = 10f;          // â† åªéœ€ä¿®æ”¹è¿™ä¸ªæ•°å€¼
 
-    [Header("UI ÒıÓÃ")]
-    public RectTransform fillRect;        // Fill Í¼Æ¬µÄ RectTransform
-    public RectTransform backgroundRect;  // Background µÄ RectTransform
-    public TextMeshProUGUI label;         // °Ù·Ö±ÈÎÄ×Ö
+    [Header("UI å¼•ç”¨")]
+    public RectTransform fillRect;        // Fill å›¾ç‰‡çš„ RectTransform
+    public RectTransform backgroundRect;  // Background çš„ RectTransform
+    public TextMeshProUGUI label;         // ç™¾åˆ†æ¯”æ–‡å­—
 
-    [Header("¹«¸æ°å³¯Ïò")]
-    public bool faceCamera = true;        // ÊÇ·ñÊ¼ÖÕ³¯ÏòÉãÏñ»ú
+    [Header("å…¬å‘Šæ¿æœå‘")]
+    public bool faceCamera = true;        // æ˜¯å¦å§‹ç»ˆæœå‘æ‘„åƒæœº
 
     private float elapsed = 0f;
     private bool isRunning = false;
@@ -26,14 +26,14 @@ public class BillboardProgressBar : MonoBehaviour
 
     void Update()
     {
-        // ¹«¸æ°å³¯ÏòÉãÏñ»ú
+        // å…¬å‘Šæ¿æœå‘æ‘„åƒæœº
         if (faceCamera && Camera.main != null)
         {
             transform.LookAt(Camera.main.transform);
-            transform.Rotate(0, 180, 0); // ĞŞÕı³¯Ïò
+            transform.Rotate(0, 180, 0); // ä¿®æ­£æœå‘
         }
 
-        // ½ø¶È¸üĞÂ
+        // è¿›åº¦æ›´æ–°
         if (isRunning)
         {
             elapsed += Time.deltaTime;
@@ -62,14 +62,14 @@ public class BillboardProgressBar : MonoBehaviour
 
     void UpdateBar(float progress)
     {
-        // ¸ù¾İ½ø¶ÈÉèÖÃ Fill µÄ¿í¶È
+        // æ ¹æ®è¿›åº¦è®¾ç½® Fill çš„å®½åº¦
         float maxWidth = backgroundRect.rect.width;
         fillRect.sizeDelta = new Vector2(maxWidth * progress, fillRect.sizeDelta.y);
 
-        // ¸üĞÂÎÄ×Ö
+        // æ›´æ–°æ–‡å­—
         if (label) label.text = $"{Mathf.RoundToInt(progress * 100)}%";
 
-        // ÑÕÉ«½¥±ä£¨ÂÌ¡ú»Æ¡úºì ¿ÉÑ¡£©
+        // é¢œè‰²æ¸å˜ï¼ˆç»¿â†’é»„â†’çº¢ å¯é€‰ï¼‰
         //Image fillImage = fillRect.GetComponent<Image>();
         //if (fillImage)
         //    fillImage.color = Color.Lerp(Color.green, Color.red, progress);

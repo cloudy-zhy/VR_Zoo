@@ -10,10 +10,10 @@ public class Scene2Manager : MonoBehaviour
     private RhythmGameManager rhythmGameManager;
     private DialogueController dialogueController;
     private bool gameEnded = false;
-    private BillboardProgressBar progressBar;    // ½ø¶ÈÌõUI
+    private BillboardProgressBar progressBar;    // è¿›åº¦æ¡UI
 
-    public GameObject billboard;                 // ½ø¶ÈÌõÊ¾Àı
-    public List<float> ChapterDuration;          // Ã¿Ò»¹ØµÄÊ±³¤
+    public GameObject billboard;                 // è¿›åº¦æ¡ç¤ºä¾‹
+    public List<float> ChapterDuration;          // æ¯ä¸€å…³çš„æ—¶é•¿
 
     void Start()
     {
@@ -25,16 +25,16 @@ public class Scene2Manager : MonoBehaviour
 
     IEnumerator ExecuteSequence()
     {
-        // µÚÒ»´Î¶Ô»°
+        // ç¬¬ä¸€æ¬¡å¯¹è¯
         yield return StartCoroutine(dialogueController.ShowDialogueWithIndexAndWait());
 
-        // µÚ¶ş´Î¶Ô»°
+        // ç¬¬äºŒæ¬¡å¯¹è¯
         yield return StartCoroutine(dialogueController.ShowDialogueWithIndexAndWait());
 
         billboard.SetActive(true);
-        progressBar.SetDuration(ChapterDuration[0]);   // ÖØÖÃ½ø¶ÈÌõ
+        progressBar.SetDuration(ChapterDuration[0]);   // é‡ç½®è¿›åº¦æ¡
 
-        // µÚÒ»´Î½Ú×àÓÎÏ·
+        // ç¬¬ä¸€æ¬¡èŠ‚å¥æ¸¸æˆ
         gameEnded = false;
         rhythmGameManager.OnSongCompleted.AddListener(OnGameEnded);
         rhythmGameManager.StartGame();
@@ -42,20 +42,20 @@ public class Scene2Manager : MonoBehaviour
         rhythmGameManager.OnSongCompleted.RemoveListener(OnGameEnded);
 
 
-        // µÚÈı´Î¶Ô»°
+        // ç¬¬ä¸‰æ¬¡å¯¹è¯
         yield return StartCoroutine(dialogueController.ShowDialogueWithIndexAndWait());
 
         billboard.SetActive(true);
-        progressBar.SetDuration(ChapterDuration[1]);   // ÖØÖÃ½ø¶ÈÌõ
+        progressBar.SetDuration(ChapterDuration[1]);   // é‡ç½®è¿›åº¦æ¡
 
-        // µÚ¶ş´Î½Ú×àÓÎÏ·
+        // ç¬¬äºŒæ¬¡èŠ‚å¥æ¸¸æˆ
         gameEnded = false;
         rhythmGameManager.OnSongCompleted.AddListener(OnGameEnded);
         rhythmGameManager.StartGame();
         yield return new WaitUntil(() => gameEnded);
         rhythmGameManager.OnSongCompleted.RemoveListener(OnGameEnded);
 
-        // µÚËÄ´Î¶Ô»°
+        // ç¬¬å››æ¬¡å¯¹è¯
         yield return StartCoroutine(dialogueController.ShowDialogueWithIndexAndWait());
 
     }

@@ -3,8 +3,8 @@ using UnityEngine;
 [ExecuteAlways]
 public class ChangeCubeColor : MonoBehaviour
 {
-    public Material normalMaterial;   // 初始材质
-    public Material pressedMaterial;  // 按下 K 时的材质
+    public Material normalMaterial;   // 鍒濆鏉愯川
+    public Material pressedMaterial;  // 鎸変笅 K 鏃剁殑鏉愯川
 
     private Renderer rend;
 

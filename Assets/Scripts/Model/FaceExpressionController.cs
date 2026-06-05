@@ -3,20 +3,20 @@ using UnityEngine;
 
 public class FaceExpressionController : MonoBehaviour
 {
-    [Header("»ù´¡ÉèÖÃ (Base Settings)")]
+    [Header("åŸºç¡€è®¾ç½® (Base Settings)")]
     public Renderer faceRenderer;
     public int materialIndex = 0;
     public string texturePropertyName = "_BaseMap";
 
-    [Header("ÌùÍ¼Íø¸ñÉèÖÃ (Grid Settings)")]
-    public int gridX = 3;               // ±íÇéÍ¼ÓĞ¼¸ÁĞ
-    public int gridY = 3;               // ±íÇéÍ¼ÓĞ¼¸ĞĞ
+    [Header("è´´å›¾ç½‘æ ¼è®¾ç½® (Grid Settings)")]
+    public int gridX = 3;               // è¡¨æƒ…å›¾æœ‰å‡ åˆ—
+    public int gridY = 3;               // è¡¨æƒ…å›¾æœ‰å‡ è¡Œ
 
-    [Header("¶¯»­×´Ì¬Óë±íÇéÓ³Éä (Animation to Expression)")]
+    [Header("åŠ¨ç”»çŠ¶æ€ä¸è¡¨æƒ…æ˜ å°„ (Animation to Expression)")]
     public Animator animator;
     public List<AnimExpressionMap> expressionMappings;
 
-    [Header("´ı»úÌØÊâÅäÖÃ (Idle Random Settings)")]
+    [Header("å¾…æœºç‰¹æ®Šé…ç½® (Idle Random Settings)")]
     public string idleStateName = "Idle";
     public int defaultIdleExpression = 0;
     public int randomIdleExpression = 1;
@@ -32,7 +32,7 @@ public class FaceExpressionController : MonoBehaviour
     }
 
     private Material faceMaterial;
-    private Vector2 uvStepSize; // UV Ã¿´ÎÒÆ¶¯µÄ¹Ì¶¨²½³¤
+    private Vector2 uvStepSize; // UV æ¯æ¬¡ç§»åŠ¨çš„å›ºå®šæ­¥é•¿
     private int currentAnimatorStateHash;
     private int currentExpressionIndex = -1;
 
@@ -46,14 +46,14 @@ public class FaceExpressionController : MonoBehaviour
         if (faceRenderer == null) faceRenderer = GetComponentInChildren<Renderer>();
         if (animator == null) animator = GetComponentInChildren<Animator>();
 
-        // ÊµÀı»¯²ÄÖÊ²¢»ñÈ¡ÒıÓÃ
+        // å®ä¾‹åŒ–æè´¨å¹¶è·å–å¼•ç”¨
         faceMaterial = faceRenderer.materials[materialIndex];
 
-        // ¼ÆËãUVÃ¿´ÎĞèÒªÆ½ÒÆµÄ¹Ì¶¨¾àÀë (ÀıÈç 3x3 µÄÍ¼£¬Ã¿´ÎÆ½ÒÆ 0.3333)
+        // è®¡ç®—UVæ¯æ¬¡éœ€è¦å¹³ç§»çš„å›ºå®šè·ç¦» (ä¾‹å¦‚ 3x3 çš„å›¾ï¼Œæ¯æ¬¡å¹³ç§» 0.3333)
         uvStepSize = new Vector2(1f / gridX, 1f / gridY);
 
-        // ¡¾ºËĞÄĞŞ¸Äµã¡¿£ºÒòÎªÄãµÄUVÔÚ½¨Ä£Èí¼şÀïÒÑ¾­Ëõ·ÅºÃÁË£¬ËùÒÔÕâÀï²»ÔÙµ÷ÓÃ SetTextureScale ËõĞ¡ÌùÍ¼
-        // Ö±½ÓÊ¹ÓÃ²ÄÖÊÄ¬ÈÏµÄ Tiling (1,1) ¼´¿É
+        // ã€æ ¸å¿ƒä¿®æ”¹ç‚¹ã€‘ï¼šå› ä¸ºä½ çš„UVåœ¨å»ºæ¨¡è½¯ä»¶é‡Œå·²ç»ç¼©æ”¾å¥½äº†ï¼Œæ‰€ä»¥è¿™é‡Œä¸å†è°ƒç”¨ SetTextureScale ç¼©å°è´´å›¾
+        // ç›´æ¥ä½¿ç”¨æè´¨é»˜è®¤çš„ Tiling (1,1) å³å¯
 
         ResetIdleTimer();
     }
@@ -137,21 +137,21 @@ public class FaceExpressionController : MonoBehaviour
         nextRandomTime = Random.Range(randomMinInterval, randomMaxInterval);
     }
 
-    // ºËĞÄËã·¨£ºÍ¨¹ı±íÇéĞòºÅ£¬ÒÆ¶¯¹Ì¶¨¾àÀëµÄ UV
+    // æ ¸å¿ƒç®—æ³•ï¼šé€šè¿‡è¡¨æƒ…åºå·ï¼Œç§»åŠ¨å›ºå®šè·ç¦»çš„ UV
     private void SetExpression(int index)
     {
         if (currentExpressionIndex == index) return;
 
-        // ¼ÆËãµ±Ç°ĞòºÅ¶ÔÓ¦ÒªÒÆ¶¯¼¸¸ö¸ñ×Ó
+        // è®¡ç®—å½“å‰åºå·å¯¹åº”è¦ç§»åŠ¨å‡ ä¸ªæ ¼å­
         int col = index % gridX;
         int row = index / gridX;
 
-        // ¡¾ºËĞÄĞŞ¸Äµã¡¿£ºÒòÎªÆğÊ¼UV¾ÍÔÚ×óÏÂ½Ç£¬¶øUnityµÄUVÔ­µã(0,0)Ò²ÊÇ×óÏÂ½Ç
-        // ËùÒÔÖ±½ÓÍùÓÒ(U)ºÍÍùÉÏ(V)¼ÓÉÏ¹Ì¶¨¾àÀë¼´¿É£¬²»ĞèÒªÈÎºÎ¸´ÔÓµÄ·­×ªÁË£¡
+        // ã€æ ¸å¿ƒä¿®æ”¹ç‚¹ã€‘ï¼šå› ä¸ºèµ·å§‹UVå°±åœ¨å·¦ä¸‹è§’ï¼Œè€ŒUnityçš„UVåŸç‚¹(0,0)ä¹Ÿæ˜¯å·¦ä¸‹è§’
+        // æ‰€ä»¥ç›´æ¥å¾€å³(U)å’Œå¾€ä¸Š(V)åŠ ä¸Šå›ºå®šè·ç¦»å³å¯ï¼Œä¸éœ€è¦ä»»ä½•å¤æ‚çš„ç¿»è½¬äº†ï¼
         float uOffset = col * uvStepSize.x;
         float vOffset = row * uvStepSize.y;
 
-        // ¸Ä±ä Offset£¬ÔÚ Shader ²ãÃæ¾ÍÊÇ°Ñ UV Å²¶¯ÁËÕâÃ´¶à¾àÀë
+        // æ”¹å˜ Offsetï¼Œåœ¨ Shader å±‚é¢å°±æ˜¯æŠŠ UV æŒªåŠ¨äº†è¿™ä¹ˆå¤šè·ç¦»
         faceMaterial.SetTextureOffset(texturePropertyName, new Vector2(uOffset, vOffset));
 
         currentExpressionIndex = index;

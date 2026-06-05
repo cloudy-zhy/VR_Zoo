@@ -1,6 +1,6 @@
 // TrackVisual.cs
-// Ö°Ôğ£ºÓÃ LineRenderer »æÖÆÕı·½ĞÎÏß¿òºÍËÄÌõÏòÔ¶´¦ÑÓÉìµÄ¹ìµÀÏß
-// ¹ÒÔØÔÚ³¡¾°ÖĞÈÎÒâ¿Õ GameObject ÉÏ£¬½«ËÄ¸ö RhythmTrack ¸³Öµ½øÀ´¼´¿É×Ô¶¯»æÖÆ
+// èŒè´£ï¼šç”¨ LineRenderer ç»˜åˆ¶æ­£æ–¹å½¢çº¿æ¡†å’Œå››æ¡å‘è¿œå¤„å»¶ä¼¸çš„è½¨é“çº¿
+// æŒ‚è½½åœ¨åœºæ™¯ä¸­ä»»æ„ç©º GameObject ä¸Šï¼Œå°†å››ä¸ª RhythmTrack èµ‹å€¼è¿›æ¥å³å¯è‡ªåŠ¨ç»˜åˆ¶
 
 using UnityEngine;
 
@@ -9,19 +9,19 @@ namespace RhythmGame
     [RequireComponent(typeof(LineRenderer))]
     public class TrackVisual : MonoBehaviour
     {
-        [Header("ËÄÌõ¹ìµÀ£¨Ë³Ğò£ºLeftHigh, RightHigh, LeftLow, RightLow£©")]
+        [Header("å››æ¡è½¨é“ï¼ˆé¡ºåºï¼šLeftHigh, RightHigh, LeftLow, RightLowï¼‰")]
         [SerializeField] private RhythmTrack leftHigh;
         [SerializeField] private RhythmTrack rightHigh;
         [SerializeField] private RhythmTrack leftLow;
         [SerializeField] private RhythmTrack rightLow;
 
-        [Header("ÊÓ¾õ²ÎÊı")]
+        [Header("è§†è§‰å‚æ•°")]
         [SerializeField] private float lineWidth = 0.02f;
         [SerializeField] private Color frameColor = new Color(0.3f, 0.8f, 1f, 0.8f);
         [SerializeField] private Color trackColor = new Color(0.3f, 0.8f, 1f, 0.3f);
         [SerializeField] private Material lineMaterial;
 
-        // Ã¿Ìõ¹ìµÀÏß + Õı·½ĞÎÏß¿ò¸÷×ÔÓÃ¶ÀÁ¢µÄ LineRenderer
+        // æ¯æ¡è½¨é“çº¿ + æ­£æ–¹å½¢çº¿æ¡†å„è‡ªç”¨ç‹¬ç«‹çš„ LineRenderer
         private LineRenderer frameLine;
         private LineRenderer[] trackLines = new LineRenderer[4];
 
@@ -31,22 +31,22 @@ namespace RhythmGame
             DrawTrackLines();
         }
 
-        /// <summary>»æÖÆÕı·½ĞÎÏß¿ò£¨ËÄ¸öÅĞ¶¨µãÁ¬³ÉµÄÕı·½ĞÎ£©</summary>
+        /// <summary>ç»˜åˆ¶æ­£æ–¹å½¢çº¿æ¡†ï¼ˆå››ä¸ªåˆ¤å®šç‚¹è¿æˆçš„æ­£æ–¹å½¢ï¼‰</summary>
         private void DrawFrame()
         {
             frameLine = GetComponent<LineRenderer>();
             ConfigureLine(frameLine, frameColor, lineWidth * 1.5f);
 
-            // °´Ë³ĞòÁ¬½ÓËÄ¸öÅĞ¶¨µã£¬×îºó»Øµ½ÆğµãĞÎ³É±ÕºÏÕı·½ĞÎ
+            // æŒ‰é¡ºåºè¿æ¥å››ä¸ªåˆ¤å®šç‚¹ï¼Œæœ€åå›åˆ°èµ·ç‚¹å½¢æˆé—­åˆæ­£æ–¹å½¢
             frameLine.positionCount = 5;
             frameLine.SetPosition(0, leftHigh.JudgmentPosition);
             frameLine.SetPosition(1, rightHigh.JudgmentPosition);
             frameLine.SetPosition(2, rightLow.JudgmentPosition);
             frameLine.SetPosition(3, leftLow.JudgmentPosition);
-            frameLine.SetPosition(4, leftHigh.JudgmentPosition); // ±ÕºÏ
+            frameLine.SetPosition(4, leftHigh.JudgmentPosition); // é—­åˆ
         }
 
-        /// <summary>»æÖÆËÄÌõ´ÓÅĞ¶¨µãÑÓÉìÏòÉú³ÉµãµÄ¹ìµÀÏß</summary>
+        /// <summary>ç»˜åˆ¶å››æ¡ä»åˆ¤å®šç‚¹å»¶ä¼¸å‘ç”Ÿæˆç‚¹çš„è½¨é“çº¿</summary>
         private void DrawTrackLines()
         {
             RhythmTrack[] ordered = { leftHigh, rightHigh, leftLow, rightLow };
@@ -72,9 +72,9 @@ namespace RhythmGame
         private void ConfigureLine(LineRenderer lr, Color color, float width)
         {
             lr.startWidth = width;
-            lr.endWidth = width * 0.3f;  // ÏòÔ¶´¦½¥Ï¸£¬Ôö¼ÓÍ¸ÊÓ¸Ğ
+            lr.endWidth = width * 0.3f;  // å‘è¿œå¤„æ¸ç»†ï¼Œå¢åŠ é€è§†æ„Ÿ
             lr.startColor = color;
-            lr.endColor = new Color(color.r, color.g, color.b, 0f); // ½¥Òş
+            lr.endColor = new Color(color.r, color.g, color.b, 0f); // æ¸éš
             lr.useWorldSpace = true;
             lr.material = lineMaterial != null ? lineMaterial : new Material(Shader.Find("Sprites/Default"));
         }
