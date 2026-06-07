@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4158922661666556322}
   - component: {fileID: 8978330066455675011}
   - component: {fileID: 1755398696719035028}
-  m_Layer: 1
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,6 +160,11 @@ MonoBehaviour:
   OnMissed:
     m_PersistentCalls:
       m_Calls: []
+  OnArrived:
+    m_PersistentCalls:
+      m_Calls: []
+  DisableCollisionCatch: 0
+  SuppressAutoDestroy: 0
 --- !u!1001 &3229775513917638077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -171,7 +176,7 @@ PrefabInstance:
     - target: {fileID: 523101553466998867, guid: afb7bc221235e764aa4625bd09d61921,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1204080552795906388, guid: afb7bc221235e764aa4625bd09d61921,
         type: 3}
@@ -251,7 +256,7 @@ PrefabInstance:
     - target: {fileID: 2199674400674401783, guid: afb7bc221235e764aa4625bd09d61921,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2243837752245291292, guid: afb7bc221235e764aa4625bd09d61921,
         type: 3}
@@ -261,7 +266,7 @@ PrefabInstance:
     - target: {fileID: 2243837752245291292, guid: afb7bc221235e764aa4625bd09d61921,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2243837752245291292, guid: afb7bc221235e764aa4625bd09d61921,
         type: 3}
@@ -271,7 +276,7 @@ PrefabInstance:
     - target: {fileID: 3700794289028002688, guid: afb7bc221235e764aa4625bd09d61921,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4885864799056999550, guid: afb7bc221235e764aa4625bd09d61921,
         type: 3}

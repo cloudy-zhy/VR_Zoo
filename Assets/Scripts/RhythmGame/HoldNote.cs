@@ -9,29 +9,29 @@ namespace RhythmGame
     public class HoldNote : MonoBehaviour
     {
         [Header("连接线参数")]
-        [SerializeField] private int   lineCount  = 2;
+        [SerializeField] private int lineCount = 2;
         [SerializeField] private float lineSpread = 0.06f;
-        [SerializeField] private float lineWidth  = 0.02f;
+        [SerializeField] private float lineWidth = 0.02f;
         [SerializeField] private Material lineMaterial;
 
         [Header("颜色")]
-        [SerializeField] private Color holdLineColor   = new Color(0.6f, 0.9f, 1f, 0.8f);
-        [SerializeField] private Color holdingColor    = new Color(0.2f, 1f,   0.5f, 0.9f);
-        [SerializeField] private Color failedLineColor = new Color(1f,   0.3f, 0.3f, 0.5f);
+        [SerializeField] private Color holdLineColor = new Color(0.6f, 0.9f, 1f, 0.8f);
+        [SerializeField] private Color holdingColor = new Color(0.2f, 1f, 0.5f, 0.9f);
+        [SerializeField] private Color failedLineColor = new Color(1f, 0.3f, 0.3f, 0.5f);
 
         public UnityEvent<HoldNote> OnCompleted = new UnityEvent<HoldNote>();
-        public UnityEvent<HoldNote> OnFailed    = new UnityEvent<HoldNote>();
+        public UnityEvent<HoldNote> OnFailed = new UnityEvent<HoldNote>();
 
-        public HoldState State     { get; private set; } = HoldState.Approaching;
+        public HoldState State { get; private set; } = HoldState.Approaching;
         public TrackType TrackType { get; private set; }
 
         public NoteBlock HeadBlock => headBlock;
         public NoteBlock TailBlock => tailBlock;
 
-        private NoteBlock           headBlock;
-        private NoteBlock           tailBlock;
+        private NoteBlock headBlock;
+        private NoteBlock tailBlock;
         private JudgmentZoneTrigger zoneTrigger;
-        private LineRenderer[]      lines;
+        private LineRenderer[] lines;
 
         // ─────────────────────────────────────────
         // 初始化
@@ -42,23 +42,23 @@ namespace RhythmGame
                                NoteBlock tail,
                                JudgmentZoneTrigger zone)
         {
-            TrackType   = trackType;
-            headBlock   = head;
-            tailBlock   = tail;
+            TrackType = trackType;
+            headBlock = head;
+            tailBlock = tail;
             zoneTrigger = zone;
 
             // 头部：禁用碰撞触发，禁用自动销毁，等待到达判定区
             head.DisableCollisionCatch = true;
-            head.SuppressAutoDestroy   = true;
+            head.SuppressAutoDestroy = true;
             head.OnArrived.AddListener(_ => OnHeadArrived());
             head.OnMissed.AddListener(_ => OnHeadMissed());
 
             // 尾部：正常碰撞触发
             // 尾部被接住 → 完成；尾部飞过未接 → 若仍在持握则失败
             tail.OnCaught.AddListener(_ => CompleteHold());
-            //tail.OnMissed.AddListener(_ => {
-            //    if (State == HoldState.Holding) FailHold();
-            //});
+            tail.OnMissed.AddListener(_ => {
+                if (State == HoldState.Holding) FailHold();
+            });
 
             SetupLines();
         }
@@ -171,14 +171,14 @@ namespace RhythmGame
                 GameObject obj = new GameObject($"HoldLine_{i}");
                 obj.transform.SetParent(transform);
 
-                LineRenderer lr  = obj.AddComponent<LineRenderer>();
+                LineRenderer lr = obj.AddComponent<LineRenderer>();
                 lr.positionCount = 2;
-                lr.startWidth    = lineWidth;
-                lr.endWidth      = lineWidth;
-                lr.startColor    = holdLineColor;
-                lr.endColor      = holdLineColor;
+                lr.startWidth = lineWidth;
+                lr.endWidth = lineWidth;
+                lr.startColor = holdLineColor;
+                lr.endColor = holdLineColor;
                 lr.useWorldSpace = true;
-                lr.material      = lineMaterial != null
+                lr.material = lineMaterial != null
                     ? lineMaterial
                     : new Material(Shader.Find("Sprites/Default"));
 
@@ -198,8 +198,8 @@ namespace RhythmGame
             for (int i = 0; i < lines.Length; i++)
             {
                 if (lines[i] == null) continue;
-                float   offset = (i - (lineCount - 1) * 0.5f) * lineSpread;
-                Vector3 shift  = sideAxis * offset;
+                float offset = (i - (lineCount - 1) * 0.5f) * lineSpread;
+                Vector3 shift = sideAxis * offset;
                 lines[i].SetPosition(0, headBlock.transform.position + shift);
                 lines[i].SetPosition(1, tailBlock.transform.position + shift);
             }
@@ -212,7 +212,7 @@ namespace RhythmGame
             {
                 if (lr == null) continue;
                 lr.startColor = color;
-                lr.endColor   = color;
+                lr.endColor = color;
             }
         }
 

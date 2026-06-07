@@ -15,14 +15,14 @@ namespace RhythmGame
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<HandIdentifier>() != null)
-                handsInZone++;
+            handsInZone++;
+            Debug.Log("success");
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.GetComponent<HandIdentifier>() != null)
-                handsInZone = Mathf.Max(0, handsInZone - 1);
+            handsInZone = Mathf.Max(0, handsInZone - 1);
+            Debug.Log("success");
         }
     }
 }

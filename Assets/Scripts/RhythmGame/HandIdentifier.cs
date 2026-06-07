@@ -8,6 +8,6 @@ namespace RhythmGame
 {
     public class HandIdentifier : MonoBehaviour
     {
-
+        public bool isLeftHand;
     }
 }
