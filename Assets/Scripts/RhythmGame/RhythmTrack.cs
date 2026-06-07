@@ -38,7 +38,9 @@ namespace RhythmGame
                 Debug.LogWarning($"[RhythmTrack] {trackType} 没有设置 NoteBlock Prefab");
                 return null;
             }
-            GameObject obj = Instantiate(noteBlockPrefab, spawnPoint.position, Quaternion.identity);
+            Quaternion trackRotation = Quaternion.LookRotation(judgmentPoint.position - spawnPoint.position);
+
+            GameObject obj = Instantiate(noteBlockPrefab, spawnPoint.position, trackRotation);
             NoteBlock note = obj.GetComponent<NoteBlock>();
             note.Initialize(this);
             return note;
@@ -46,17 +48,19 @@ namespace RhythmGame
 
         public HoldNote SpawnHoldNote(float holdDuration, float noteSpeed)
         {
-            Vector3 spawnDir  = (judgmentPoint.position - spawnPoint.position).normalized;
-            float   tailOffset = holdDuration * noteSpeed;
+            float tailOffset = holdDuration * noteSpeed;
+
+            Vector3 spawnDir = (judgmentPoint.position - spawnPoint.position).normalized;
+            Quaternion trackRotation = Quaternion.LookRotation(spawnDir);
 
             // 头部
-            GameObject headObj = Instantiate(noteBlockPrefab, spawnPoint.position, Quaternion.identity);
+            GameObject headObj = Instantiate(noteBlockPrefab, spawnPoint.position, trackRotation);
             NoteBlock  head    = headObj.GetComponent<NoteBlock>();
             head.Initialize(this, isHold: true);
 
             // 尾部：在头部生成点后方，晚 holdDuration 秒到达
             Vector3    tailSpawn = spawnPoint.position - spawnDir * tailOffset;
-            GameObject tailObj   = Instantiate(noteBlockPrefab, tailSpawn, Quaternion.identity);
+            GameObject tailObj = Instantiate(noteBlockPrefab, tailSpawn, trackRotation);
             NoteBlock  tail      = tailObj.GetComponent<NoteBlock>();
             tail.Initialize(this, isHold: true);
 
