@@ -1,6 +1,3 @@
-// NoteBlock.cs
-// 碰撞检测方案：手部 Collider 碰到 Block 即触发判定
-
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,19 +21,23 @@ namespace RhythmGame
         [SerializeField] private Color missedColor = Color.red;
         [SerializeField] private ParticleSystem catchParticles;
 
-        public UnityEvent<NoteBlock> OnCaught = new UnityEvent<NoteBlock>();
-        public UnityEvent<NoteBlock> OnMissed = new UnityEvent<NoteBlock>();
-
-        public bool DisableCollisionCatch = false;
+        public UnityEvent<NoteBlock> OnCaught  = new UnityEvent<NoteBlock>();
+        public UnityEvent<NoteBlock> OnMissed  = new UnityEvent<NoteBlock>();
         public UnityEvent<NoteBlock> OnArrived = new UnityEvent<NoteBlock>();
 
-        public NoteState State { get; private set; } = NoteState.Moving;
+        /// <summary>true 时碰撞不触发 Catch（长音头部用）</summary>
+        public bool DisableCollisionCatch = false;
+
+        /// <summary>true 时 Catch 后不自动销毁（长音头部用，由 HoldNote 统一销毁）</summary>
+        public bool SuppressAutoDestroy = false;
+
+        public NoteState State     { get; private set; } = NoteState.Moving;
         public TrackType TrackType { get; private set; }
-        public HandSide Hand { get; private set; }
+        public HandSide  Hand      { get; private set; }
 
         private Vector3 targetPosition;
         private Vector3 moveDirection;
-        private bool passedTarget = false;
+        private bool    passedTarget = false;
 
         public void Initialize(RhythmTrack track, bool isHold = false)
         {
@@ -47,8 +48,8 @@ namespace RhythmGame
 
             if (noteRenderer != null)
                 noteRenderer.material.color = isHold
-                    ? new Color(0.6f, 0.9f, 1f)  // 长音：浅蓝
-                    : movingColor;                // 普通：正常蓝
+                    ? new Color(0.6f, 0.9f, 1f)
+                    : movingColor;
         }
 
         private void Update()
@@ -57,37 +58,28 @@ namespace RhythmGame
 
             transform.position += moveDirection * moveSpeed * Time.deltaTime;
 
-            // 检查是否越过判定点
             float distToTarget = Vector3.Distance(transform.position, targetPosition);
-            Vector3 toTarget = targetPosition - transform.position;
 
-            // 当 Block 越过判定点（方向反转）时开始计距
-            if (!passedTarget && Vector3.Distance(transform.position, targetPosition) < 0.05f)
+            if (!passedTarget && distToTarget < 0.05f)
             {
                 passedTarget = true;
-                OnArrived.Invoke(this);   // ← 新增
+                OnArrived.Invoke(this);
             }
 
-            // 越过判定点后超出 missDistance → Miss
             if (passedTarget && distToTarget >= missDistance)
-            {
                 Miss();
-            }
         }
 
-        // ── 碰撞检测 ──────────────────────────────────────
-        // NoteBlock 的 Collider 需勾选 IsTrigger
-        // 手部对象上需挂载 HandIdentifier 组件
         private void OnTriggerEnter(Collider other)
-        {   
-            if (DisableCollisionCatch) return;   // ← 长音头部跳过碰撞检测
-
+        {
+            if (DisableCollisionCatch) return;
             if (State != NoteState.Moving) return;
-
             if (other.GetComponent<HandIdentifier>() == null) return;
-
             Catch();
         }
+
+        /// <summary>供 HoldNote 主动触发头部计分</summary>
+        public void ForceCatch() => Catch();
 
         private void Catch()
         {
@@ -99,7 +91,10 @@ namespace RhythmGame
 
             catchParticles?.Play();
             OnCaught.Invoke(this);
-            StartCoroutine(DestroyAfter(0.3f));
+
+            // SuppressAutoDestroy=true 时由外部（HoldNote）负责销毁
+            if (!SuppressAutoDestroy)
+                StartCoroutine(DestroyAfter(0.3f));
         }
 
         private void Miss()

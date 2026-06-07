@@ -1,9 +1,3 @@
-// HoldNote.cs【新增文件】
-// Bug修复记录：
-//   1. 不再订阅 tailBlock.OnMissed（防止正常完成时误判为失败）
-//   2. 结果处理时立即隐藏连接线（不等 DestroyAfter 延迟）
-//   3. OnDestroy 保底销毁线条子物体
-
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,8 +9,8 @@ namespace RhythmGame
     public class HoldNote : MonoBehaviour
     {
         [Header("连接线参数")]
-        [SerializeField] private int   lineCount  = 2;       // 线条数量
-        [SerializeField] private float lineSpread = 0.06f;   // 线条间距（米）
+        [SerializeField] private int   lineCount  = 2;
+        [SerializeField] private float lineSpread = 0.06f;
         [SerializeField] private float lineWidth  = 0.02f;
         [SerializeField] private Material lineMaterial;
 
@@ -28,13 +22,16 @@ namespace RhythmGame
         public UnityEvent<HoldNote> OnCompleted = new UnityEvent<HoldNote>();
         public UnityEvent<HoldNote> OnFailed    = new UnityEvent<HoldNote>();
 
-        public HoldState State    { get; private set; } = HoldState.Approaching;
+        public HoldState State     { get; private set; } = HoldState.Approaching;
         public TrackType TrackType { get; private set; }
 
-        private NoteBlock            headBlock;
-        private NoteBlock            tailBlock;
-        private JudgmentZoneTrigger  zoneTrigger;
-        private LineRenderer[]       lines;
+        public NoteBlock HeadBlock => headBlock;
+        public NoteBlock TailBlock => tailBlock;
+
+        private NoteBlock           headBlock;
+        private NoteBlock           tailBlock;
+        private JudgmentZoneTrigger zoneTrigger;
+        private LineRenderer[]      lines;
 
         // ─────────────────────────────────────────
         // 初始化
@@ -50,8 +47,18 @@ namespace RhythmGame
             tailBlock   = tail;
             zoneTrigger = zone;
 
-            head.OnCaught.AddListener(_ => OnHeadCaught());
+            // 头部：禁用碰撞触发，禁用自动销毁，等待到达判定区
+            head.DisableCollisionCatch = true;
+            head.SuppressAutoDestroy   = true;
+            head.OnArrived.AddListener(_ => OnHeadArrived());
             head.OnMissed.AddListener(_ => OnHeadMissed());
+
+            // 尾部：正常碰撞触发
+            // 尾部被接住 → 完成；尾部飞过未接 → 若仍在持握则失败
+            tail.OnCaught.AddListener(_ => CompleteHold());
+            //tail.OnMissed.AddListener(_ => {
+            //    if (State == HoldState.Holding) FailHold();
+            //});
 
             SetupLines();
         }
@@ -62,68 +69,93 @@ namespace RhythmGame
 
         private void Update()
         {
+            // 线条跟随头尾位置
             if (State == HoldState.Approaching || State == HoldState.Holding)
                 UpdateLines();
 
-            if (State != HoldState.Holding) return;
-
-            // 手离开区域 → 失败
-            if (!zoneTrigger.IsHandPresent)
+            // 持握中：检测手是否离开判定区
+            if (State == HoldState.Holding)
             {
-                FailHold();
-                return;
-            }
-
-            // 尾部自然经过判定点后进入 Missed 状态，这是正常完成信号
-            if (tailBlock == null || tailBlock.State == NoteState.Missed)
-            {
-                CompleteHold();
+                if (zoneTrigger == null || !zoneTrigger.IsHandPresent)
+                    FailHold();
             }
         }
 
         // ─────────────────────────────────────────
-        // 头部事件
+        // 头部到达判定区
         // ─────────────────────────────────────────
 
-        private void OnHeadCaught()
+        private void OnHeadArrived()
         {
             if (State != HoldState.Approaching) return;
-            State = HoldState.Holding;
-            SetLineColor(holdingColor);
-            // ✅ 不订阅 tailBlock.OnMissed
-            //    尾部 Missed 是正常生命周期，由 Update 里统一判断完成
+
+            if (zoneTrigger != null && zoneTrigger.IsHandPresent)
+            {
+                // 手已在位，开始持握
+                State = HoldState.Holding;
+                SetLineColor(holdingColor);
+                headBlock.ForceCatch();   // 触发计分事件，头部停在判定区
+            }
+            else
+            {
+                // 手不在位，整个长音直接失败
+                FailHold();
+            }
         }
 
         private void OnHeadMissed()
         {
+            // 头部自然飞过判定区未被接住
             FailHold();
         }
 
         // ─────────────────────────────────────────
-        // 结果处理
+        // 完成（尾部被接住）
         // ─────────────────────────────────────────
 
         private void CompleteHold()
         {
             if (State != HoldState.Holding) return;
             State = HoldState.Completed;
-            // HideLines();   // 立即隐藏，不等延迟
             OnCompleted.Invoke(this);
-            StartCoroutine(DestroyAfter(0.8f));
+            DestroyAll();
         }
+
+        // ─────────────────────────────────────────
+        // 失败
+        // ─────────────────────────────────────────
 
         private void FailHold()
         {
             if (State == HoldState.Failed || State == HoldState.Completed) return;
             State = HoldState.Failed;
-            // HideLines();   // 立即隐藏，不等延迟
+
+            // 手动触发未结算的音符的 Miss 事件（让 RhythmGameManager 正确计数）
+            if (headBlock != null && headBlock.State == NoteState.Moving)
+            {
+                headBlock.OnMissed.Invoke(headBlock);
+                headBlock.gameObject.SetActive(false);
+            }
+            if (tailBlock != null && tailBlock.State == NoteState.Moving)
+            {
+                tailBlock.OnMissed.Invoke(tailBlock);
+                tailBlock.gameObject.SetActive(false);
+            }
+
+            SetLineColor(failedLineColor);
             OnFailed.Invoke(this);
-            StartCoroutine(DestroyAfter(0.2f));
+            DestroyAll();
         }
 
-        private IEnumerator DestroyAfter(float delay)
+        // ─────────────────────────────────────────
+        // 统一销毁：头部、尾部、连线、HoldNote 自身
+        // ─────────────────────────────────────────
+
+        private void DestroyAll()
         {
-            yield return new WaitForSeconds(delay);
+            HideLines();
+            if (headBlock != null) { Destroy(headBlock.gameObject); headBlock = null; }
+            if (tailBlock != null) { Destroy(tailBlock.gameObject); tailBlock = null; }
             Destroy(gameObject);
         }
 
@@ -191,7 +223,6 @@ namespace RhythmGame
                 if (lr != null) lr.enabled = false;
         }
 
-        // 保底：销毁时清理所有线条子物体
         private void OnDestroy()
         {
             if (lines == null) return;

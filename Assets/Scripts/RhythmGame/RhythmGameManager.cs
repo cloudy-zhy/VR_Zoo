@@ -34,24 +34,47 @@ namespace RhythmGame
         public int Combo { get; private set; }
         public int Score { get; private set; }
 
+        /// <summary>最高连击数</summary>
+        public int MaxCombo { get; private set; }
+
+        /// <summary>命中率 0~1</summary>
+        public float HitRatio => totalNotes > 0
+            ? (float)hitCount / totalNotes
+            : 0f;
+
         private int totalNotes;
         private int settledNotes;   // 已判定（成功+失败）的音符数
         private bool isPlaying;
         private int curLevel = 0;
 
+        private int hitCount = 0;   // 成功命中的音符数（普通+长音）
+
+        public UnityEvent OnGameStarted = new UnityEvent();
         // ─────────────────────────────────────────
         // 启动
         // ─────────────────────────────────────────
 
         /// <summary>外部调用此方法开始游戏（例如玩家与小象互动后）</summary>
+
         public void StartGame()
         {
-            if (isPlaying || beatmap == null) return;
+            if (isPlaying || beatmap == null || curLevel >= beatmap.Count) return;
             isPlaying = true;
-            totalNotes = beatmap[curLevel].notes.Count;
+            //totalNotes = beatmap[curLevel].notes.Count;
+            totalNotes = 0;
+            foreach (var note in beatmap[curLevel].notes)
+                totalNotes += note.isHold ? 2 : 1;
+
+            // 重置所有统计
             settledNotes = 0;
             Combo = 0;
             Score = 0;
+            hitCount = 0;
+            MaxCombo = 0;
+
+            OnGameStarted.Invoke();
+            OnComboChanged.Invoke(0);
+            OnScoreChanged.Invoke(0);
 
             StartCoroutine(PlaybackRoutine());
             curLevel++;
@@ -115,8 +138,12 @@ namespace RhythmGame
             {
                 HoldNote hold = track.SpawnHoldNote(data.holdDuration, noteSpeed);
                 if (hold == null) return;
-                hold.OnCompleted.AddListener(OnHoldCompleted);
-                hold.OnFailed.AddListener(OnHoldFailed);
+                //hold.OnCompleted.AddListener(OnHoldCompleted);
+                //hold.OnFailed.AddListener(OnHoldFailed);
+                hold.HeadBlock.OnCaught.AddListener(OnNoteCaught);
+                hold.HeadBlock.OnMissed.AddListener(OnNoteMissed);
+                hold.TailBlock.OnCaught.AddListener(OnNoteCaught);
+                hold.TailBlock.OnMissed.AddListener(OnNoteMissed);
             }
             else
             {
@@ -139,10 +166,11 @@ namespace RhythmGame
 
         private void OnNoteCaught(NoteBlock note)
         {
+            hitCount++;          // ← 新增
             Combo++;
+            if (Combo > MaxCombo) MaxCombo = Combo;   // ← 新增
             Score += CalculateScore(Combo);
             settledNotes++;
-
             OnComboChanged.Invoke(Combo);
             OnScoreChanged.Invoke(Score);
         }
@@ -151,14 +179,15 @@ namespace RhythmGame
         {
             Combo = 0;
             settledNotes++;
-
             OnComboChanged.Invoke(0);
         }
 
         private void OnHoldCompleted(HoldNote hold)
         {
+            hitCount++;          // ← 新增
             Combo++;
-            Score += CalculateScore(Combo) * 2;  // 长音双倍分
+            if (Combo > MaxCombo) MaxCombo = Combo;   // ← 新增
+            Score += CalculateScore(Combo) * 2;
             settledNotes++;
             OnComboChanged.Invoke(Combo);
             OnScoreChanged.Invoke(Score);
