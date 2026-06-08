@@ -16,5 +16,8 @@ namespace Pet
         /// 响应一次有效摸头。
         /// </summary>
         void OnPetted(PetContext context);
+        
+        void OnPetBegin();
+        void OnPetAfter();
     }
 }

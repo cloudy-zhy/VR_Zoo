@@ -1,4 +1,3 @@
-using Core.Event;
 using Core.Fsm;
 using Manager;
 using UnityEngine;
@@ -28,13 +27,13 @@ namespace Pet
         [Tooltip("开启后，每次成功响应摸头都会在 Console 输出日志。")]
         [SerializeField] private bool enableDebugLog = true;
 
-        public virtual bool CanBePetted { get; }
+        public virtual bool CanBePetted => false;
         protected TAnimal m_animal;
 
 
         public void Awake()
         {
-            m_animal = GetComponent<TAnimal>();
+            m_animal = GetComponentInParent<TAnimal>();
         }
 
         public void OnPetted(PetContext context)
@@ -63,6 +62,10 @@ namespace Pet
 
             BroadcastPetEvent();
         }
+
+        public virtual void OnPetBegin() { }
+
+        public virtual void OnPetAfter() { }
 
         protected virtual void BroadcastPetEvent() { }
     }
