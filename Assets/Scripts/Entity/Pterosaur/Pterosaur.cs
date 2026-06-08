@@ -1,6 +1,7 @@
 using System;
 using Core.Event;
 using Core.Fsm;
+using Core.Utils;
 using Entity.Pterosaur.State;
 using StarlightCollect;
 using UnityEngine;
@@ -11,12 +12,12 @@ using Random = UnityEngine.Random;
 
 namespace Entity.Pterosaur
 {
-    [RequireComponent(typeof(AudioSource))]
-    [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(Animator))]
-    [RequireComponent(typeof(XRSimpleInteractable))]
+    // TODO:偷小懒ai改代码改出了一坨，但是偏偏还能用，暂时不改了Orz
+    [DisallowMultipleComponent]
     public class Pterosaur : MonoBehaviour, IAnimator, IAudioSource, ICurStateType<PterosaurStateType>
     {
+        public bool autoMove = true;
+        
         #region Components
         
         public NavMeshAgent nav { get; private set; }
@@ -126,7 +127,8 @@ namespace Entity.Pterosaur
             RegisterXR();
             _fsm.Initialize(PterosaurStateType.Idle);
             _isFsmInitialized = true;
-            SetRandomDestination();
+            if (autoMove)
+                SetRandomDestination();
         }
         
         private void Update()       => _fsm.OnUpdate();
@@ -149,8 +151,8 @@ namespace Entity.Pterosaur
             _fsm.AddState(PterosaurStateType.Idle, new IdleState(this, _fsm, "Idle"));
             _fsm.AddState(PterosaurStateType.Move, new MoveState(this, _fsm, "Move"));
             _fsm.AddState(PterosaurStateType.Throw, new ThrowState(this, _fsm, "Throw"));
-            _fsm.AddState(PterosaurStateType.Chase, new StarLightChaseState(this, _fsm, "Move"));
-            _fsm.AddState(PterosaurStateType.Return, new ReturnToPlayerState(this, _fsm, "Move"));
+            _fsm.AddState(PterosaurStateType.Chase, new StarLightChaseState(this, _fsm, "Fly"));
+            _fsm.AddState(PterosaurStateType.Return, new ReturnToPlayerState(this, _fsm, "Fly"));
             // _fsm.OnStateChanged += (from, to) =>
             //     Debug.Log($"[Pterosaur:{name}] {from} → {to}");
         }
@@ -212,7 +214,7 @@ namespace Entity.Pterosaur
         /// </summary>
         public bool TryStartStarLightCatchTask(StarLight starLight)
         {
-            if (starLight == null || _fsm == null || !_isFsmInitialized || HasStarLightTask)
+            if (starLight.IsNull() || _fsm == null || !_isFsmInitialized || HasStarLightTask)
                 return false;
 
             StarLightCatchTarget = starLight;
@@ -250,7 +252,7 @@ namespace Entity.Pterosaur
 
             StarLightReturnPosition = new Vector3(
                 playerPosition.x + offset.x,
-                playerPosition.y,
+                -1,
                 playerPosition.z + offset.y
             );
         }

@@ -22,7 +22,7 @@ namespace Entity.Pterosaur.State
         {
             base.OnUpdate();
             if (owner.IsReached)
-                stateMachine.ChangeState(PterosaurStateType.Idle);
+                stateMachine.ChangeState(owner.HadRequest ? PterosaurStateType.Throw : PterosaurStateType.Move);
         }
 
         public override void OnExit()
