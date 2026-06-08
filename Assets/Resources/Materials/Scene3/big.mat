@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: land
+  m_Name: big
   m_Shader: {fileID: 4800000, guid: 76db028848d656a489ef20983d9acbbd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -65,7 +65,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 40ac85dce078262408a07bd2337057a0, type: 3}
+        m_Texture: {fileID: 2800000, guid: fabcef9b3b6e4ce4d95f2a214ffba15c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MatCap:
@@ -170,8 +170,8 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadow: 1
     - _ReceiveShadows: 1
-    - _ShadowFeather: 0.01
-    - _ShadowStep: 0.578
+    - _ShadowFeather: 0
+    - _ShadowStep: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -184,7 +184,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Basecolor: {r: 0.46331227, g: 0.5844595, b: 0.66666657, a: 1}
-    - _Color: {r: 0.38993704, g: 0.38993704, b: 0.38993704, a: 1}
+    - _Color: {r: 0.44025147, g: 0.44025147, b: 0.44025147, a: 1}
     - _Color_1: {r: 0.5737114, g: 0.69252145, b: 0.70440245, a: 0}
     - _Color_2: {r: 0.8596832, g: 0.9433962, b: 0.5369644, a: 0}
     - _Color_3: {r: 0.15699527, g: 0.6483366, b: 0.7924528, a: 0}
@@ -196,9 +196,9 @@ Material:
     - _LightColor: {r: 0.54772353, g: 0.76729554, b: 0.7190458, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
     - _MatcapColor: {r: 0.25157225, g: 0.25157225, b: 0.25157225, a: 1}
-    - _OutlineColor: {r: 0.3039436, g: 0.6376276, b: 0.8553459, a: 1}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _RalColor: {r: 0.9811321, g: 0.96442044, b: 0.7003678, a: 1}
-    - _ShadowColor: {r: 0.4009334, g: 0.68557286, b: 0.70440245, a: 1}
+    - _ShadowColor: {r: 0.34640634, g: 0.7106918, b: 0.64310414, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _UpColor: {r: 0.77672946, g: 0.9921858, b: 1, a: 1}
   m_BuildTextureStacks: []
