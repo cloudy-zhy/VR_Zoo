@@ -10,6 +10,14 @@
       },
       "hash": "b98193db05e9a2906f491f244ccdd1766283cab3"
     },
+    "com.distantlands.cozy.plume": {
+      "version": "file:com.distantlands.cozy.plume",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.distantlands.cozy.core": "3.6.7"
+      }
+    },
     "com.unity.addressables": {
       "version": "1.21.21",
       "depth": 0,
