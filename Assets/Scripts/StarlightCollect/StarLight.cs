@@ -54,7 +54,7 @@ namespace StarlightCollect
             // TODO:被定住后的视觉效果
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerExit(Collider other)
         {
             if (landLayer.Contains(other.gameObject.layer))
             {

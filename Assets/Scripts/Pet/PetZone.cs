@@ -100,7 +100,7 @@ namespace Pet
             if (onlyDirectInteractor && interactorTransform.GetComponent<XRDirectInteractor>() == null)
                 return;
 
-            CachePettable();
+            //CachePettable();
             _activeInteractor = interactorTransform;
             _activeInteractorObject = interactorTransform.gameObject;
             _lastInteractorPosition = interactorTransform.position;
@@ -134,8 +134,6 @@ namespace Pet
 
         private void TriggerPet(Vector3 contactPosition)
         {
-            _lastPetTime = Time.time;
-            _hasTriggeredInCurrentHover = true;
 
             PetContext context = new PetContext(
                 _activeInteractorObject,
@@ -144,15 +142,21 @@ namespace Pet
                 _strokeDistance,
                 Time.time - _hoverStartTime);
 
+            if (!_hasTriggeredInCurrentHover)
+                _pettable.OnPetBegin();
             _pettable.OnPetted(context);
 
             _strokeDistance = 0f;
+            _lastPetTime = Time.time;
             _hoverStartTime = Time.time;
             _lastInteractorPosition = contactPosition;
+            _hasTriggeredInCurrentHover = true;
         }
 
         private void ClearHover()
         {
+            if (_hasTriggeredInCurrentHover)
+                _pettable.OnPetBegin();
             _activeInteractor = null;
             _activeInteractorObject = null;
             _strokeDistance = 0f;
