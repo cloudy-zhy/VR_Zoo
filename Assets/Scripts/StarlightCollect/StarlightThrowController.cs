@@ -10,17 +10,25 @@ namespace StarlightCollect
         [Header("Pterosaur")]
         [SerializeField] private Transform pterosaurParent;
 
-        [Header("StarLight")]
-        [SerializeField] private int minRequestCount = 1;
-        [SerializeField] private int maxRequestCount = 1;
-        [SerializeField] private float spawnInterval = 3f;
-        [SerializeField] private Vector2 requestSpacingRange = new Vector2(0.1f, 0.35f);
-        [SerializeField] private float throwVelocity = 1f;
+        private int _minRequestCount;
+        private int _maxRequestCount;
+        private float _spawnInterval;
+        private Vector2 _requestSpacingRange;
+        private float _throwVelocity;
 
         private bool _isRunning;
         private Coroutine _throwLoopCoroutine;
         private Pterosaur[] _pterosaurs;
         private Transform _starLightParent;
+        
+        public void ApplyConfig(StarlightLevelSO config)
+        {
+            _throwVelocity = config.throwVelocity;
+            _spawnInterval = config.spawnInterval;
+            _minRequestCount = config.minRequestCount;
+            _maxRequestCount = config.maxRequestCount;
+            _requestSpacingRange = config.requestSpacingRange;
+        }
 
         private void Start()
         {
@@ -66,20 +74,20 @@ namespace StarlightCollect
             while (_isRunning)
             {
                 int requestCount = Random.Range(
-                    Mathf.Max(1, minRequestCount),
-                    Mathf.Max(minRequestCount, maxRequestCount) + 1
+                    Mathf.Max(1, _minRequestCount),
+                    Mathf.Max(_minRequestCount, _maxRequestCount) + 1
                 );
 
                 for (int i = 0; i < requestCount; i++)
                 {
                     RequestRandomPterosaurThrow();
                     yield return new WaitForSeconds(Random.Range(
-                        Mathf.Min(requestSpacingRange.x, requestSpacingRange.y),
-                        Mathf.Max(requestSpacingRange.x, requestSpacingRange.y)
+                        Mathf.Min(_requestSpacingRange.x, _requestSpacingRange.y),
+                        Mathf.Max(_requestSpacingRange.x, _requestSpacingRange.y)
                     ));
                 }
 
-                yield return new WaitForSeconds(Mathf.Max(0.1f, spawnInterval));
+                yield return new WaitForSeconds(Mathf.Max(0.1f, _spawnInterval));
             }
         }
 
@@ -100,7 +108,7 @@ namespace StarlightCollect
             if (GameManager.Pool.TryRent<StarLight>(StarlightConstant.StarLightPoolKey, out var starLight,
                     position: context.Payload, parent: _starLightParent))
             {
-                starLight.Initialize(throwVelocity);
+                starLight.Initialize(_throwVelocity);
             }
         }
     }
