@@ -41,7 +41,8 @@ namespace Entity.NormalAnimal
             set
             {
                 m_isPetting = value;
-                nav.isStopped = value;
+                if (nav.enabled)
+                    nav.isStopped = value;
             }
         }
         public Vector3 Destination { get; set; }

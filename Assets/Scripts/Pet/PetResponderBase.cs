@@ -45,7 +45,7 @@ namespace Pet
             {
                 string interactorName = context.Interactor != null ? context.Interactor.name : "<null>";
                 Debug.Log(
-                    $"[DodoBirdPetResponder] {name} 被摸头。State={m_animal.CurrentStateTypeEnum}, " +
+                    $"[PetResponder] {name} 被摸头。State={m_animal.CurrentStateTypeEnum}, " +
                     $"Interactor={interactorName}, StrokeDistance={context.StrokeDistance:F3}, " +
                     $"HoldDuration={context.HoldDuration:F3}",
                     this);

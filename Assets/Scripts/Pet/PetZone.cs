@@ -156,7 +156,7 @@ namespace Pet
         private void ClearHover()
         {
             if (_hasTriggeredInCurrentHover)
-                _pettable.OnPetBegin();
+                _pettable.OnPetAfter();
             _activeInteractor = null;
             _activeInteractorObject = null;
             _strokeDistance = 0f;
