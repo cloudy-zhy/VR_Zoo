@@ -10,11 +10,11 @@ namespace StarlightCollect
         [Header("Pterosaur")]
         [SerializeField] private Transform pterosaurParent;
 
-        private int _minRequestCount;
-        private int _maxRequestCount;
-        private float _spawnInterval;
-        private Vector2 _requestSpacingRange;
-        private float _throwVelocity;
+        private int _minRequestCount = 1;
+        private int _maxRequestCount = 1;
+        private float _spawnInterval = 3;
+        private Vector2 _requestSpacingRange = new Vector2(0, 1);
+        private float _throwVelocity = 1;
 
         private bool _isRunning;
         private Coroutine _throwLoopCoroutine;

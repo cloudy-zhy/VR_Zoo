@@ -13,6 +13,7 @@ namespace StarlightCollect
         public const float ArrivalDist = 0.2f;
         // ===== GameEvent =====
         public const string GameStart = "StarLight.GameStart";  // 游戏开始广播
+        public const string GameEnd = "StarLight.GameEnd";
         // ===== ThrowEvent =====
         public const string PterosaurThrow = "StarLight.PterosaurThrow";
         public const string StarlightMarked = "StarLight.StarLightMarked";    // 星光广播，Controller接收

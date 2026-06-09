@@ -12,48 +12,52 @@ namespace StarlightCollect
     {
         [SerializeField] private StarlightLevelSO[] levels;   // 拖入 Level1Config, Level2Config
         [SerializeField] private StarlightThrowController throwController;
+        [SerializeField] private StarlightUI ui;
 
-        private int _currentLevelIndex;
-        private int _currentScore;
+        public StarlightLevelSO CurrentLevel => levels[CurrentLevelIndex];
+        public int CurrentLevelIndex { get; private set; }
 
-        public StarlightLevelSO CurrentLevel => levels[_currentLevelIndex];
-        public int CurrentLevelIndex => _currentLevelIndex;
-        public int CurrentScore => _currentScore;
+        public int CurrentScore { get; private set; }
+
+        public int CurrentLevelScore { get; private set; }
 
         private void Start()
         {
             GameManager.Event.Register(StarlightConstant.StarLightCollected, OnStarlightCollected);
-            GameManager.Event.Register(StarlightConstant.GameStart, StartGame);
         }
 
         private void OnDestroy()
         {
             GameManager.Event.Unregister(StarlightConstant.StarLightCollected, OnStarlightCollected);
-            GameManager.Event.Unregister(StarlightConstant.GameStart, StartGame);
         }
         
-        private void StartGame(EventContext context) => StartLevel(0);
+        [ContextMenu("StartGame")]
+        public void StartGame() => StartLevel(0);
 
         private void StartLevel(int index)
         {
-            _currentLevelIndex = index;
-            _currentScore = 0;
+            CurrentLevelIndex = index;
+            CurrentLevelScore = 0;
             throwController.ApplyConfig(CurrentLevel);
             throwController.StartThrowGame();
+            ui.ShowScore(CurrentScore, CurrentLevel.scoreToPass);
         }
 
         private void OnStarlightCollected(EventContext context)
         {
-            _currentScore++;
+            CurrentScore++;
+            CurrentLevelScore++;
+            ui.ShowDelta(1);
+            ui.ShowScore(CurrentScore, CurrentLevel.scoreToPass);
 
-            if (_currentScore >= CurrentLevel.scoreToPass)
+            if (CurrentLevelScore >= CurrentLevel.scoreToPass)
                 OnLevelPass();
         }
 
         private void OnLevelPass()
         {
             throwController.StopThrowGame();
-            int nextIndex = _currentLevelIndex + 1;
+            int nextIndex = CurrentLevelIndex + 1;
 
             if (nextIndex < levels.Length)
             {
@@ -63,7 +67,7 @@ namespace StarlightCollect
             else
             {
                 // 全部通关
-                
+                this.Broadcast(StarlightConstant.GameEnd);
             }
         }
     }
