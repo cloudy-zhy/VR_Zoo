@@ -1,6 +1,8 @@
+using System.Collections;
 using Core.Event;
 using Manager;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace StarlightCollect
 {
@@ -68,7 +70,14 @@ namespace StarlightCollect
             {
                 // 全部通关
                 this.Broadcast(StarlightConstant.GameEnd);
+                StartCoroutine(TmpGameEndCoroutine());
             }
+        }
+
+        private IEnumerator TmpGameEndCoroutine()
+        {
+            yield return new WaitForSeconds(2f);
+            SceneManager.LoadScene("EndScene");
         }
     }
 }
