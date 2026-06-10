@@ -447,18 +447,8 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 92307bb7c57e8154f9f7f7aa46ca6586,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2777613418246941974}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 92307bb7c57e8154f9f7f7aa46ca6586,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3898252746171414272}
   m_SourcePrefab: {fileID: 100100000, guid: 92307bb7c57e8154f9f7f7aa46ca6586, type: 3}
---- !u!137 &3807879133956540049 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 5625035446220664487, guid: 92307bb7c57e8154f9f7f7aa46ca6586,
-    type: 3}
-  m_PrefabInstance: {fileID: 8847442458069215286}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8505338012067009895 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 92307bb7c57e8154f9f7f7aa46ca6586,
@@ -727,31 +717,6 @@ MonoBehaviour:
   shockPS: {fileID: 4765787209988279338}
   smogPS: {fileID: 1609478630725864340}
   cryPS: {fileID: 6054975844397745043}
---- !u!114 &2777613418246941974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8505338012067009895}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99f564deda283744b8c205590cc79983, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  faceRenderer: {fileID: 3807879133956540049}
-  materialIndex: 0
-  texturePropertyName: _BaseMap
-  gridX: 3
-  gridY: 3
-  animator: {fileID: 7508123958046764323}
-  expressionMappings: []
-  idleStateName: Idle
-  defaultIdleExpression: 0
-  randomIdleExpression: 1
-  randomMinInterval: 2
-  randomMaxInterval: 5
-  randomDuration: 0.15
 --- !u!82 &3898252746171414272
 AudioSource:
   m_ObjectHideFlags: 0
