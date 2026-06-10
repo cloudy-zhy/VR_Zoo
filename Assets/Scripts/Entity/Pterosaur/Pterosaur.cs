@@ -3,11 +3,11 @@ using Core.Event;
 using Core.Fsm;
 using Core.Utils;
 using Entity.Pterosaur.State;
+using Manager;
 using StarlightCollect;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
-using UnityEngine.XR.Interaction.Toolkit;
 using Random = UnityEngine.Random;
 
 namespace Entity.Pterosaur
@@ -17,12 +17,12 @@ namespace Entity.Pterosaur
     public class Pterosaur : MonoBehaviour, IAnimator, IAudioSource, ICurStateType<PterosaurStateType>
     {
         public bool autoMove = true;
+        public BoxCollider canThrowArea;
         
         #region Components
         
         public NavMeshAgent nav { get; private set; }
         public Animator ani { get; private set; }
-        public XRSimpleInteractable xri { get; private set; }
         public AudioSource aus { get; private set; }
         
         #endregion
@@ -39,7 +39,6 @@ namespace Entity.Pterosaur
                 return offset.sqrMagnitude <= 0.25f;
             }
         }
-        public bool IsHovered { get; private set; }
         // public bool IsArrived { get; private set; }
         public bool IsCalled  { get; private set; }
         public bool HadDestination { get; private set; }
@@ -95,20 +94,6 @@ namespace Entity.Pterosaur
 
         #endregion
         
-        #region XRStateMethod
-
-        private void RegisterHoverEnter(HoverEnterEventArgs args)
-        {
-            IsHovered = true;
-        }
-
-        private void RegisterHoverExit(HoverExitEventArgs args)
-        {
-            IsHovered = false;
-        }
-        
-        #endregion
-        
         #region LifeCycle
 
         private void Awake()
@@ -117,18 +102,23 @@ namespace Entity.Pterosaur
             BuildFsm();
         }
 
-        private void OnDestroy()
-        {
-            UnregisterXR();
-        }
-
         private void Start()
         {
-            RegisterXR();
             _fsm.Initialize(PterosaurStateType.Idle);
             _isFsmInitialized = true;
             if (autoMove)
                 SetRandomDestination();
+            GameManager.Event.Register(StarlightConstant.GameEnd, OnGameEnd);
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Event.Unregister(StarlightConstant.GameEnd, OnGameEnd);
+        }
+
+        private void OnGameEnd(EventContext context)
+        {
+            _remainReqs = 0;
         }
         
         private void Update()       => _fsm.OnUpdate();
@@ -141,7 +131,6 @@ namespace Entity.Pterosaur
         {
             nav = GetComponent<NavMeshAgent>();
             ani = GetComponent<Animator>();
-            xri = GetComponent<XRSimpleInteractable>();
             aus = GetComponent<AudioSource>();
         }
 
@@ -155,18 +144,6 @@ namespace Entity.Pterosaur
             _fsm.AddState(PterosaurStateType.Return, new ReturnToPlayerState(this, _fsm, "Fly"));
             // _fsm.OnStateChanged += (from, to) =>
             //     Debug.Log($"[Pterosaur:{name}] {from} → {to}");
-        }
-
-        private void RegisterXR()
-        {
-            xri.hoverEntered.AddListener(RegisterHoverEnter);
-            xri.hoverExited.AddListener(RegisterHoverExit);
-        }
-
-        private void UnregisterXR()
-        {
-            xri.hoverEntered.RemoveListener(RegisterHoverEnter);
-            xri.hoverExited.RemoveListener(RegisterHoverExit);
         }
         
         #endregion

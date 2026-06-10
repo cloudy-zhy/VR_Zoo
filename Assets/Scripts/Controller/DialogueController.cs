@@ -151,6 +151,7 @@ public class DialogueController : MonoBehaviour
         }
 
         isDialogueActive = false;
+        OnDialogueEnded?.Invoke();
 
         // 延迟后跳转场景
         yield return new WaitForSeconds(delayBeforeSceneChange);

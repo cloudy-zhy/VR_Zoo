@@ -43,7 +43,7 @@ namespace Core.Fsm
         /// false（默认）：目标已是当前状态时忽略；
         /// true：强制执行 OnExit + OnEnter，适用于需要重置状态内部数据的场景。
         /// </param>
-        public void ChangeState(TStateKey key, bool allowReEnter = false)
+        public async void ChangeState(TStateKey key, bool allowReEnter = false)
         {
             
             if (!allowReEnter && EqualityComparer<TStateKey>.Default.Equals(CurrentKey, key))
@@ -52,7 +52,7 @@ namespace Core.Fsm
             }
             CurrentState.OnExit();
             // 状态间切换先等待一帧，防止一帧内切换多个状态
-            // await UniTask.Yield();
+            await UniTask.Yield();
             TStateKey prevKey = CurrentKey;
             CurrentKey = key;
             CurrentState = _states[CurrentKey];

@@ -44,6 +44,8 @@ namespace Entity.NormalAnimal.State
 
         private IEnumerator IdleCoroutine()
         {
+            if (owner.maxIdleTime < 0)
+                yield break;
             float duration = Random.Range(owner.minIdleTime, owner.maxIdleTime);
             yield return new WaitForSeconds(duration);
             // 这种没主线的动物被摸摸就是不准走的
