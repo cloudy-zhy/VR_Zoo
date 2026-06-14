@@ -12,6 +12,10 @@ namespace Core.Dialog.Timeline
     public class DialogClip : PlayableAsset, ITimelineClipAsset
     {
         public DialogLineSO dialogLine;
+
+        [Header("语音源")]
+        [Tooltip("该句对话播放语音使用的 AudioSource 引用（场景对象）")]
+        public ExposedReference<AudioSource> audioSource;
         
         // Graph 构建期由 DialogueTrack.CreateTrackMixer 写入，运行时只读。
         // PlayableAsset 是 ScriptableObject，字段在 Graph 生命周期内持久，注入一次即可。
@@ -45,6 +49,10 @@ namespace Core.Dialog.Timeline
             var behaviour = playable.GetBehaviour();
             behaviour.dialogLine = dialogLine;
             behaviour.SetUI(m_ui);   // Graph 构建时一次性注入，Behaviour 持有引用
+            
+            // 解析 ExposedReference 并传给 behaviour
+            behaviour.targetAudioSource = audioSource.Resolve(graph.GetResolver());
+            
             return playable;
         }
     }

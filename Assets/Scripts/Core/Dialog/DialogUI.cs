@@ -26,7 +26,7 @@ namespace Core.Dialog
         [SerializeField] private GameObject portraitContainer; // 无立绘时整体隐藏
  
         [Header("语音")]
-        [SerializeField] private AudioSource audioSource;
+        // 已移除固定 AudioSource 引用，改由 Timeline Clip 动态传入
  
         [Header("打字机设置")]
         [Tooltip("打字机效果结束于 Clip 的哪个归一化时间点（0~1）。\n"
@@ -66,7 +66,7 @@ namespace Core.Dialog
         // ── 公开接口（由 DialogueBehaviour 调用）────────────────────────────
  
         /// <summary>Clip 开始时调用，展示面板并开始播放语音。</summary>
-        public void Show(DialogLineSO line)
+        public void Show(DialogLineSO line, AudioSource targetAudio)
         {
             if (line == null) return;
             
@@ -89,11 +89,11 @@ namespace Core.Dialog
                 if (portraitContainer) portraitContainer.SetActive(false);
             }
  
-            // 语音
-            if (line.voiceClip != null && audioSource != null)
+            // 语音：不做空检查，确保未配置时报错
+            if (line.voiceClip != null)
             {
-                audioSource.clip = line.voiceClip;
-                audioSource.Play();
+                targetAudio.clip = line.voiceClip;
+                targetAudio.Play();
             }
         }
  
@@ -113,38 +113,23 @@ namespace Core.Dialog
         }
  
         /// <summary>Clip 结束时调用，隐藏面板并停止语音。</summary>
-        public void Hide()
+        public void Hide(AudioSource targetAudio)
         {
             dialogPanel.SetActive(false);
             _fullText = string.Empty;
- 
-            if (audioSource != null && audioSource.isPlaying)
-                audioSource.Stop();
+
+            // 语音：不做空检查，确保未配置时报错
+            if (targetAudio.isPlaying)
+                targetAudio.Stop();
         }
         private void Awake()
         {
-            // 动态创建专有的 UI 默认穿透材质，解决静态资源在合批时 ZTest 被 Canvas 覆写的问题
-            Material uiMat = new Material(Shader.Find("UI/Default"));
-            uiMat.SetInt("unity_GUIZTestMode", (int)UnityEngine.Rendering.CompareFunction.Always);
-            uiMat.renderQueue = 4000;
-
+            var mat = new Material(Shader.Find("UI/Default"));
+            mat.SetInt("unity_GUIZTestMode", (int)UnityEngine.Rendering.CompareFunction.Always);
+    
             foreach (var graphic in GetComponentsInChildren<Graphic>(true))
             {
-                if (graphic is TMPro.TMP_Text tmpText)
-                {
-                    // 获取并克隆文字组件专有的材质，保留字形渲染和贴图，且不被遮挡
-                    Material mat = tmpText.material;
-                    if (mat != null)
-                    {
-                        mat.SetInt("unity_GUIZTestMode", (int)UnityEngine.Rendering.CompareFunction.Always);
-                        mat.renderQueue = 4000;
-                    }
-                }
-                else
-                {
-                    // 普通 Image 元素直接使用我们动态创建的 uiMat
-                    graphic.material = uiMat;
-                }
+                graphic.material = mat;
             }
         }
     }

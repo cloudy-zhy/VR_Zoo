@@ -34,6 +34,9 @@ MonoBehaviour:
   m_Name: DialogClip
   m_EditorClassIdentifier: 
   dialogLine: {fileID: 11400000, guid: 9b1cb09984e347c46a0a51ecaf90135c, type: 2}
+  audioSource:
+    exposedName: 8ca5a0871022ecf4c8cbaa5c0a9bc55c
+    defaultValue: {fileID: 0}
 --- !u!114 &8045851809780857760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -123,6 +126,6 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: test
+    m_DisplayName: "\u8BFA\u4E9A\uFF1A\u5C06\u5C04\u7EBF\u7784\u51C6\u6E21\u6E21\u9E1F\uFF0C\u62C7\u6307\u98DF\u6307\u634F\u5408\uFF0C\u6293\u4F4F\u5B83\uFF01"
   m_Markers:
     m_Objects: []

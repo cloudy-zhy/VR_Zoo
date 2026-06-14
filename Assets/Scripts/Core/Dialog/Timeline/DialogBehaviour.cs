@@ -9,6 +9,9 @@ namespace Core.Dialog.Timeline
     public class DialogBehaviour : PlayableBehaviour
     {
         public DialogLineSO dialogLine;
+
+        // 由 DialogClip 传入的该 Clip 的专属播放 AudioSource 引用
+        public AudioSource targetAudioSource;
  
         // 由 DialogueTrackMixer 注入，避免单例
         private DialogUI m_boundUI;
@@ -32,7 +35,8 @@ namespace Core.Dialog.Timeline
             if (!Application.isPlaying) return;
             if (dialogLine == null || m_boundUI == null) return;
  
-            m_boundUI.Show(dialogLine);
+            // 语音：targetAudioSource 故意不做空检查，确保在测试时漏配能立刻报错
+            m_boundUI.Show(dialogLine, targetAudioSource);
             m_hasShown = true;
         }
  
@@ -41,7 +45,8 @@ namespace Core.Dialog.Timeline
             if (!Application.isPlaying) return;
             if (!m_hasShown || m_boundUI == null) return;
  
-            m_boundUI.Hide();
+            // 语音：targetAudioSource 故意不做空检查，确保在测试时漏配能立刻报错
+            m_boundUI.Hide(targetAudioSource);
             m_hasShown = false;
         }
  

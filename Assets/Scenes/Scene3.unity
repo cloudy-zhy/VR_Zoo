@@ -6017,7 +6017,8 @@ PlayableDirector:
   - key: {fileID: 8045851809780857760, guid: 39744eac4d224774ea7b357fcd75d419, type: 2}
     value: {fileID: 7229511113883047050}
   m_ExposedReferences:
-    m_References: []
+    m_References:
+    - 8ca5a0871022ecf4c8cbaa5c0a9bc55c: {fileID: 995489750}
 --- !u!1 &1515736766
 GameObject:
   m_ObjectHideFlags: 0
@@ -8101,7 +8102,6 @@ MonoBehaviour:
   dialogueBodyText: {fileID: 997954318}
   portraitImage: {fileID: 1991231449}
   portraitContainer: {fileID: 1991231447}
-  audioSource: {fileID: 995489750}
   typewriterEndAt: 0.85
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

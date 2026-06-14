@@ -55,8 +55,9 @@ Dialog Timeline 系统是一套用于在 Unity Timeline 中驱动游戏对话、
 ### 3. 添加对话 Clip
 有以下两种方式向轨道添加对话：
 * **拖拽导入（推荐）**：直接从 Project 视图中，将生成好的 `DialogLineSO` 文件拖入 `Dialog Track` 轨道的时间轴上。
-
 * **右键创建**：在 `Dialog Track` 的时间轴空白处右键选择 **`Add Dialog Clip`**。选中生成的 Clip，在 Inspector 的 `Dialog Line` 槽中，拖入对应的 `DialogLineSO` 资源。
+* **绑定语音源（必须）**：选中轨道上的任一 Dialog Clip，在 Inspector 面板中的 **`Audio Source`** 引用槽中，**必须将场景中播放该台词的 AudioSource 组件（如挂在相应 3D 角色头部的 AudioSource）拖入绑定**。
+  *   *注*：系统对该字段不进行空值保护，如果漏配，在运行时播放该句台词时会**直接报错抛出空引用异常（NullReferenceException）**，以确保在测试阶段能第一时间发现和修复配置遗漏。
 
   ![](img/004.png)
 
