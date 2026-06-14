@@ -121,15 +121,30 @@ namespace Core.Dialog
             if (audioSource != null && audioSource.isPlaying)
                 audioSource.Stop();
         }
-        
         private void Awake()
         {
-            var mat = new Material(Shader.Find("UI/Default"));
-            mat.SetInt("unity_GUIZTestMode", (int)UnityEngine.Rendering.CompareFunction.Always);
-    
+            // 动态创建专有的 UI 默认穿透材质，解决静态资源在合批时 ZTest 被 Canvas 覆写的问题
+            Material uiMat = new Material(Shader.Find("UI/Default"));
+            uiMat.SetInt("unity_GUIZTestMode", (int)UnityEngine.Rendering.CompareFunction.Always);
+            uiMat.renderQueue = 4000;
+
             foreach (var graphic in GetComponentsInChildren<Graphic>(true))
             {
-                graphic.material = mat;
+                if (graphic is TMPro.TMP_Text tmpText)
+                {
+                    // 获取并克隆文字组件专有的材质，保留字形渲染和贴图，且不被遮挡
+                    Material mat = tmpText.material;
+                    if (mat != null)
+                    {
+                        mat.SetInt("unity_GUIZTestMode", (int)UnityEngine.Rendering.CompareFunction.Always);
+                        mat.renderQueue = 4000;
+                    }
+                }
+                else
+                {
+                    // 普通 Image 元素直接使用我们动态创建的 uiMat
+                    graphic.material = uiMat;
+                }
             }
         }
     }
