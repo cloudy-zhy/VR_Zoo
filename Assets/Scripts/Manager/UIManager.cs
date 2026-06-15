@@ -1,4 +1,3 @@
-ï»¿using NPOI.SS.UserModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,95 +6,90 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("å¯¹è¯æ¡†å¼•ç”¨")]
-    [SerializeField] private GameObject dialogBoxSelf; // ç©å®¶å¯¹è¯æ¡†
-    [SerializeField] private GameObject dialogBoxOthers; // NPCå¯¹è¯æ¡†
-    [SerializeField] private Text selfText; // ç©å®¶æ–‡æœ¬
-    [SerializeField] private Text othersText; // NPCæ–‡æœ¬
+    [Header("¶Ô»°¿òÒıÓÃ")]
+    [SerializeField] private GameObject dialogBoxSelf; // Íæ¼Ò¶Ô»°¿ò
+    [SerializeField] private Text selfText; // Íæ¼ÒÎÄ±¾
+    [SerializeField] private GameObject dialogBoxOthers; // NPC¶Ô»°¿ò
+    [SerializeField] private Text othersText; // NPCÎÄ±¾
 
-    [Header("ç©å®¶å¯¹è¯æ¡†è®¾ç½®")]
-    [SerializeField] private Image selfPortrait; // ç©å®¶å¤´åƒ
-    [SerializeField] private Text selfNameText; // ç©å®¶åç§°
+    [Header("Íæ¼Ò¶Ô»°¿òÉèÖÃ")]
+    [SerializeField] private Image selfPortrait; // Íæ¼ÒÍ·Ïñ
+    [SerializeField] private Text selfNameText; // Íæ¼ÒÃû³Æ
 
-    [Header("NPCå¯¹è¯æ¡†è®¾ç½®")]
-    [SerializeField] private Image othersPortrait; // NPCå¤´åƒ
-    [SerializeField] private Text othersNameText; // NPCåç§°
+    [Header("NPC¶Ô»°¿òÉèÖÃ")]
+    [SerializeField] private Image othersPortrait; // NPCÍ·Ïñ
+    [SerializeField] private Text othersNameText; // NPCÃû³Æ
 
-    [Header("åˆ†æ•°å’Œç›®æ ‡")]
-    [SerializeField] private GameObject scoreAimPanel; // åˆ†æ•°å’Œç›®æ ‡é¢æ¿
-    [SerializeField] private Text scoreText; // åˆ†æ•°æ–‡æœ¬
-    [SerializeField] private Text aimText; // ç›®æ ‡æ–‡æœ¬
-    [SerializeField] private Text highScoreText; // æœ€é«˜åˆ†æ–‡æœ¬ï¼ˆå¯é€‰ï¼‰
+    [Header("·ÖÊıºÍÄ¿±ê")]
+    [SerializeField] private GameObject scoreAimPanel; // ·ÖÊıºÍÄ¿±êÃæ°å
+    [SerializeField] private Text scoreText; // ·ÖÊıÎÄ±¾
+    [SerializeField] private Text aimText; // Ä¿±êÎÄ±¾
+    [SerializeField] private Text highScoreText; // ×î¸ß·ÖÎÄ±¾£¨¿ÉÑ¡£©
 
-    [Header("åŠ¨ç”»è®¾ç½®")]
-    [SerializeField] private float dialogFadeSpeed = 5f; // å¯¹è¯æ¡†æ·¡å…¥æ·¡å‡ºé€Ÿåº¦
-    [SerializeField] private float typewriterSpeed = 30f; // æ‰“å­—æœºæ•ˆæœé€Ÿåº¦ï¼ˆå­—ç¬¦/ç§’ï¼‰
+    [Header("¶¯»­ÉèÖÃ")]
+    [SerializeField] private float typewriterSpeed = 30f; // ´ò×Ö»úĞ§¹ûËÙ¶È£¨×Ö·û/Ãë£©
 
-    [Header("UIçŠ¶æ€")]
+    [Header("UI×´Ì¬")]
     [SerializeField] private bool isDialogActive = false;
     [SerializeField] private bool isTyping = false;
 
-    [Header("æ·¡å…¥æ·¡å‡ºå¼€å…³")]
-    [SerializeField] private bool enableFadeIn = true;   // âœ… æ˜¯å¦å¯ç”¨æ·¡å…¥
-    [SerializeField] private bool enableFadeOut = true;  // âœ… æ˜¯å¦å¯ç”¨æ·¡å‡º
-
-    [Header("åˆå§‹æ—¶åˆ†æ•°çš„æ˜¾ç¤ºä¸å¦ï¼ˆæš‚æ—¶ï¼‰")]
+    [Header("³õÊ¼Ê±·ÖÊıµÄÏÔÊ¾Óë·ñ£¨ÔİÊ±£©")]
     [SerializeField] private bool isInitialShowScore = false;
 
-    // ç§æœ‰å˜é‡
+    // Ë½ÓĞ±äÁ¿
     private CanvasGroup selfDialogCanvasGroup;
     private CanvasGroup othersDialogCanvasGroup;
     private Coroutine currentTypingCoroutine;
 
-    // äº‹ä»¶
+    // ÊÂ¼ş
     public static event Action OnDialogStarted;
     public static event Action OnDialogEnded;
     public static event Action OnTypingComplete;
 
-    // å•ä¾‹æ¨¡å¼ï¼ˆå¯é€‰ï¼‰
+    // µ¥ÀıÄ£Ê½
     public static UIManager Instance { get; private set; }
 
-    // åˆ†æ•°ç›¸å…³
+    // ·ÖÊıÏà¹Ø
     private int currentScore = 0;
     private int highScore = 0;
     private int targetScore = 0;
     private string currentAim = "";
 
-    #region Unityç”Ÿå‘½å‘¨æœŸæ–¹æ³•
+    #region UnityÉúÃüÖÜÆÚ·½·¨
 
     private void Awake()
     {
         Application.targetFrameRate = 72;
-        // å•ä¾‹è®¾ç½®
+        Debug.Log("UIManager Awake Ö´ĞĞÁË");
         if (Instance == null)
         {
             Instance = this;
+            Debug.Log("UIManager ¸³Öµµ¥Àı³É¹¦");
         }
         else
         {
+            Debug.Log("·¢ÏÖÖØ¸´UIManager£¬Ïú»Ù×ÔÉí");
             Destroy(gameObject);
             return;
         }
-
-        // åˆå§‹åŒ–ç»„ä»¶
         InitializeComponents();
     }
 
     private void Start()
     {
-        // åˆå§‹éšè—å¯¹è¯æ¡†
+        // ³õÊ¼Òş²Ø¶Ô»°¿ò
         HideAllDialogs();
 
-        // æ˜¾ç¤ºåˆ†æ•°é¢æ¿
+        // ÏÔÊ¾·ÖÊıÃæ°å
         ShowScoreAimPanel(isInitialShowScore);
 
-        // åˆå§‹åŒ–åˆ†æ•°æ˜¾ç¤º
+        // ³õÊ¼»¯·ÖÊıÏÔÊ¾
         UpdateScoreDisplay();
     }
 
     private void Update()
     {
-        // æ£€æµ‹ç‚¹å‡»è·³è¿‡æ‰“å­—æœºæ•ˆæœ
+        // ¼ì²âµã»÷Ìø¹ı´ò×Ö»úĞ§¹û
         if (isTyping && Input.GetMouseButtonDown(0))
         {
             SkipTyping();
@@ -104,11 +98,11 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region åˆå§‹åŒ–æ–¹æ³•
+    #region ³õÊ¼»¯·½·¨
 
     private void InitializeComponents()
     {
-        // è·å–CanvasGroupç»„ä»¶ï¼Œç”¨äºæ·¡å…¥æ·¡å‡ºæ•ˆæœ
+        // »ñÈ¡CanvasGroup×é¼ş
         if (dialogBoxSelf != null)
         {
             selfDialogCanvasGroup = dialogBoxSelf.GetComponent<CanvasGroup>();
@@ -130,25 +124,25 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region å¯¹è¯æ¡†æ§åˆ¶æ–¹æ³•
+    #region ¶Ô»°¿ò¿ØÖÆ·½·¨
 
     /// <summary>
-    /// æ˜¾ç¤ºç©å®¶å¯¹è¯æ¡†
+    /// ÏÔÊ¾Íæ¼Ò¶Ô»°¿ò£¨ÎŞµ­Èë£¬Ö±½Óµ¯³ö£©
     /// </summary>
-    public void ShowSelfDialog(string message, string speakerName = "ç©å®¶", Sprite portrait = null)
+    public void ShowSelfDialog(string message, string speakerName = "Íæ¼Ò", Sprite portrait = null)
     {
         if (dialogBoxSelf == null || selfText == null) return;
 
         HideAllDialogs();
         isDialogActive = true;
 
-        // è®¾ç½®è¯´è¯è€…åç§°
+        // ÉèÖÃËµ»°ÕßÃû³Æ
         if (selfNameText != null)
         {
             selfNameText.text = speakerName;
         }
 
-        // è®¾ç½®å¤´åƒ
+        // ÉèÖÃÍ·Ïñ
         if (selfPortrait != null)
         {
             if (portrait != null)
@@ -162,19 +156,11 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        // æ˜¾ç¤ºå¹¶æ·¡å…¥
-        if (enableFadeIn)
-        {
-            dialogBoxSelf.SetActive(true);
-            StartCoroutine(FadeInDialog(selfDialogCanvasGroup));
-        }
-        else
-        {
-            dialogBoxSelf.SetActive(true);
-            selfDialogCanvasGroup.alpha = 1f;
-        }
+        // Ö±½ÓÏÔÊ¾£¬ÒÆ³ıµ­ÈëÂß¼­
+        dialogBoxSelf.SetActive(true);
+        selfDialogCanvasGroup.alpha = 1f;
 
-        // è§¦å‘æ‰“å­—æœºæ•ˆæœ
+        // ´¥·¢´ò×Ö»úĞ§¹û
         if (currentTypingCoroutine != null)
             StopCoroutine(currentTypingCoroutine);
 
@@ -184,7 +170,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// æ˜¾ç¤ºNPCå¯¹è¯æ¡†
+    /// ÏÔÊ¾NPC¶Ô»°¿ò£¨ÎŞµ­Èë£¬Ö±½Óµ¯³ö£©
     /// </summary>
     public void ShowOthersDialog(string message, string speakerName = "NPC", Sprite portrait = null)
     {
@@ -193,13 +179,13 @@ public class UIManager : MonoBehaviour
         HideAllDialogs();
         isDialogActive = true;
 
-        // è®¾ç½®è¯´è¯è€…åç§°
+        // ÉèÖÃËµ»°ÕßÃû³Æ
         if (othersNameText != null)
         {
             othersNameText.text = speakerName;
         }
 
-        // è®¾ç½®å¤´åƒ
+        // ÉèÖÃÍ·Ïñ
         if (othersPortrait != null)
         {
             if (portrait != null)
@@ -213,19 +199,11 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        // æ˜¾ç¤ºå¹¶æ·¡å…¥
-        if (enableFadeIn)
-        {
-            dialogBoxOthers.SetActive(true);
-            StartCoroutine(FadeInDialog(othersDialogCanvasGroup));
-        }
-        else
-        {
-            dialogBoxOthers.SetActive(true);
-            othersDialogCanvasGroup.alpha = 1f;
-        }
+        // Ö±½ÓÏÔÊ¾£¬ÒÆ³ıµ­ÈëÂß¼­
+        dialogBoxOthers.SetActive(true);
+        othersDialogCanvasGroup.alpha = 1f;
 
-        // è§¦å‘æ‰“å­—æœºæ•ˆæœ
+        // ´¥·¢´ò×Ö»úĞ§¹û
         if (currentTypingCoroutine != null)
             StopCoroutine(currentTypingCoroutine);
 
@@ -235,7 +213,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// éšè—æ‰€æœ‰å¯¹è¯æ¡†
+    /// Òş²ØËùÓĞ¶Ô»°¿ò£¨ÎŞµ­³ö£¬Ë²¼äÒş²Ø£©
     /// </summary>
     public void HideAllDialogs()
     {
@@ -247,30 +225,14 @@ public class UIManager : MonoBehaviour
 
         if (dialogBoxSelf != null && dialogBoxSelf.activeSelf)
         {
-            if (enableFadeOut)
-            {
-                StartCoroutine(FadeOutDialog(selfDialogCanvasGroup,
-                    () => dialogBoxSelf.SetActive(false)));
-            }
-            else
-            {
-                selfDialogCanvasGroup.alpha = 0f;
-                dialogBoxSelf.SetActive(false);
-            }
+            selfDialogCanvasGroup.alpha = 0f;
+            dialogBoxSelf.SetActive(false);
         }
 
         if (dialogBoxOthers != null && dialogBoxOthers.activeSelf)
         {
-            if (enableFadeOut)
-            {
-                StartCoroutine(FadeOutDialog(othersDialogCanvasGroup,
-                    () => dialogBoxOthers.SetActive(false)));
-            }
-            else
-            {
-                othersDialogCanvasGroup.alpha = 0f;
-                dialogBoxOthers.SetActive(false);
-            }
+            othersDialogCanvasGroup.alpha = 0f;
+            dialogBoxOthers.SetActive(false);
         }
 
         isDialogActive = false;
@@ -278,7 +240,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// è·³è¿‡æ‰“å­—æœºæ•ˆæœï¼Œç«‹å³æ˜¾ç¤ºå®Œæ•´æ–‡æœ¬
+    /// Ìø¹ı´ò×Ö»úĞ§¹û£¬Á¢¼´ÏÔÊ¾ÍêÕûÎÄ±¾
     /// </summary>
     public void SkipTyping()
     {
@@ -292,22 +254,22 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// å¿«é€Ÿæ˜¾ç¤ºç©å®¶å¯¹è¯æ¡†ï¼ˆæ— æ‰“å­—æœºæ•ˆæœï¼‰
+    /// ¿ìËÙÏÔÊ¾Íæ¼Ò¶Ô»°¿ò£¨ÎŞ´ò×Ö»ú¡¢ÎŞµ­Èëµ­³ö£©
     /// </summary>
-    public void ShowSelfDialogInstant(string message, string speakerName = "ç©å®¶", Sprite portrait = null)
+    public void ShowSelfDialogInstant(string message, string speakerName = "Íæ¼Ò", Sprite portrait = null)
     {
         if (dialogBoxSelf == null || selfText == null) return;
 
         HideAllDialogs();
         isDialogActive = true;
 
-        // è®¾ç½®è¯´è¯è€…åç§°
+        // ÉèÖÃËµ»°ÕßÃû³Æ
         if (selfNameText != null)
         {
             selfNameText.text = speakerName;
         }
 
-        // è®¾ç½®å¤´åƒ
+        // ÉèÖÃÍ·Ïñ
         if (selfPortrait != null)
         {
             if (portrait != null)
@@ -321,10 +283,10 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        // ç›´æ¥æ˜¾ç¤ºæ–‡æœ¬
+        // Ö±½ÓÏÔÊ¾ÎÄ±¾
         selfText.text = message;
 
-        // æ˜¾ç¤ºå¹¶æ·¡å…¥
+        // Ö±½ÓÏÔÊ¾Ãæ°å
         dialogBoxSelf.SetActive(true);
         if (selfDialogCanvasGroup != null)
         {
@@ -335,7 +297,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// å¿«é€Ÿæ˜¾ç¤ºNPCå¯¹è¯æ¡†ï¼ˆæ— æ‰“å­—æœºæ•ˆæœï¼‰
+    /// ¿ìËÙÏÔÊ¾NPC¶Ô»°¿ò£¨ÎŞ´ò×Ö»ú¡¢ÎŞµ­Èëµ­³ö£©
     /// </summary>
     public void ShowOthersDialogInstant(string message, string speakerName = "NPC", Sprite portrait = null)
     {
@@ -344,13 +306,13 @@ public class UIManager : MonoBehaviour
         HideAllDialogs();
         isDialogActive = true;
 
-        // è®¾ç½®è¯´è¯è€…åç§°
+        // ÉèÖÃËµ»°ÕßÃû³Æ
         if (othersNameText != null)
         {
             othersNameText.text = speakerName;
         }
 
-        // è®¾ç½®å¤´åƒ
+        // ÉèÖÃÍ·Ïñ
         if (othersPortrait != null)
         {
             if (portrait != null)
@@ -364,10 +326,10 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        // ç›´æ¥æ˜¾ç¤ºæ–‡æœ¬
+        // Ö±½ÓÏÔÊ¾ÎÄ±¾
         othersText.text = message;
 
-        // æ˜¾ç¤ºå¹¶æ·¡å…¥
+        // Ö±½ÓÏÔÊ¾Ãæ°å
         dialogBoxOthers.SetActive(true);
         if (othersDialogCanvasGroup != null)
         {
@@ -378,7 +340,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// æ£€æŸ¥å¯¹è¯æ¡†æ˜¯å¦æ¿€æ´»
+    /// ¼ì²é¶Ô»°¿òÊÇ·ñ¼¤»î
     /// </summary>
     public bool IsDialogActive()
     {
@@ -387,96 +349,55 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region åˆ†æ•°ç³»ç»Ÿæ–¹æ³•
+    #region ·ÖÊıÏµÍ³·½·¨
 
-    /// <summary>
-    /// è®¾ç½®å½“å‰åˆ†æ•°
-    /// </summary>
     public void SetScore(int score)
     {
         currentScore = score;
-
-        // æ›´æ–°æœ€é«˜åˆ†
         if (currentScore > highScore)
-        {
             highScore = currentScore;
-        }
-
         UpdateScoreDisplay();
     }
 
-    /// <summary>
-    /// æ·»åŠ åˆ†æ•°
-    /// </summary>
     public void AddScore(int points)
     {
         currentScore += points;
-
-        // æ›´æ–°æœ€é«˜åˆ†
         if (currentScore > highScore)
-        {
             highScore = currentScore;
-        }
-
         UpdateScoreDisplay();
-
-        // å¯ä»¥åœ¨è¿™é‡Œæ·»åŠ åˆ†æ•°å¢åŠ çš„åŠ¨ç”»æ•ˆæœ
         StartCoroutine(ScorePopupAnimation(points));
     }
 
-    /// <summary>
-    /// è®¾ç½®ç›®æ ‡åˆ†æ•°
-    /// </summary>
     public void SetTargetScore(int target)
     {
         targetScore = target;
         UpdateScoreDisplay();
     }
 
-    /// <summary>
-    /// è®¾ç½®ç›®æ ‡æ–‡æœ¬
-    /// </summary>
     public void SetAimText(string aim)
     {
         currentAim = aim;
-        if (aimText != null)
-        {
-            aimText.text = aim;
-        }
+        if (aimText != null) aimText.text = aim;
     }
 
-    /// <summary>
-    /// æ˜¾ç¤º/éšè—åˆ†æ•°é¢æ¿
-    /// </summary>
     public void ShowScoreAimPanel(bool show)
     {
         if (scoreAimPanel != null)
-        {
             scoreAimPanel.SetActive(show);
-        }
     }
 
-    /// <summary>
-    /// é‡ç½®åˆ†æ•°
-    /// </summary>
     public void ResetScore()
     {
         currentScore = 0;
         UpdateScoreDisplay();
     }
 
-    /// <summary>
-    /// é‡ç½®æœ€é«˜åˆ†
-    /// </summary>
     public void ResetHighScore()
     {
         highScore = 0;
         UpdateScoreDisplay();
     }
 
-    /// <summary>
-    /// æ£€æŸ¥æ˜¯å¦è¾¾åˆ°ç›®æ ‡åˆ†æ•°
-    /// </summary>
     public bool IsTargetReached()
     {
         return currentScore >= targetScore;
@@ -484,159 +405,85 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region è¾…åŠ©æ–¹æ³•
+    #region ¸¨Öú·½·¨
 
     private void UpdateScoreDisplay()
     {
         if (scoreText != null)
-        {
-            scoreText.text = $"åˆ†æ•°: {currentScore}";
-        }
-
+            scoreText.text = $"·ÖÊı: {currentScore}";
         if (highScoreText != null)
-        {
-            highScoreText.text = $"æœ€é«˜åˆ†: {highScore}";
-        }
+            highScoreText.text = $"×î¸ß·Ö: {highScore}";
     }
 
     #endregion
 
-    #region åç¨‹æ–¹æ³•
+    #region Ğ­³Ì·½·¨
 
-    /// <summary>
-    /// æ‰“å­—æœºæ•ˆæœ
-    /// </summary>
+    /// <summary>´ò×Ö»úĞ§¹û£¨±£Áô£¬ÒÑÒÆ³ıÃæ°å½¥±ä¶¯»­£©</summary>
     private IEnumerator TypewriterEffect(string message, Text textComponent)
     {
         if (textComponent == null) yield break;
-
         isTyping = true;
         string currentText = "";
         textComponent.text = "";
-
         for (int i = 0; i < message.Length; i++)
         {
             currentText += message[i];
             textComponent.text = currentText;
-
-            // æ ¹æ®é€Ÿåº¦ç­‰å¾…
             yield return new WaitForSeconds(1f / typewriterSpeed);
         }
-
         isTyping = false;
         OnTypingComplete?.Invoke();
     }
 
-    /// <summary>
-    /// æ·¡å…¥å¯¹è¯æ¡†
-    /// </summary>
-    private IEnumerator FadeInDialog(CanvasGroup canvasGroup)
-    {
-        if (canvasGroup == null) yield break;
-
-        canvasGroup.alpha = 0;
-        float targetAlpha = 1f;
-
-        while (canvasGroup.alpha < targetAlpha)
-        {
-            canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, targetAlpha, dialogFadeSpeed * Time.deltaTime);
-            yield return null;
-        }
-    }
-
-    /// <summary>
-    /// æ·¡å‡ºå¯¹è¯æ¡†
-    /// </summary>
-    private IEnumerator FadeOutDialog(CanvasGroup canvasGroup, Action onComplete = null)
-    {
-        if (canvasGroup == null) yield break;
-
-        float startAlpha = canvasGroup.alpha;
-
-        while (canvasGroup.alpha > 0)
-        {
-            canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, 0, dialogFadeSpeed * Time.deltaTime);
-            yield return null;
-        }
-
-        onComplete?.Invoke();
-    }
-
-    /// <summary>
-    /// åˆ†æ•°å¼¹å‡ºåŠ¨ç”»
-    /// </summary>
     private IEnumerator ScorePopupAnimation(int points)
     {
-        // è¿™é‡Œå¯ä»¥æ·»åŠ åˆ†æ•°å˜åŒ–çš„åŠ¨ç”»æ•ˆæœ
-        // ä¾‹å¦‚ï¼šåˆ›å»ºä¸€ä¸ªä¸´æ—¶æ–‡æœ¬æ˜¾ç¤º"+100"å¹¶å‘ä¸Šç§»åŠ¨æ¶ˆå¤±
-
-        // è¿™åªæ˜¯ç¤ºä¾‹ï¼Œä½ å¯ä»¥æ ¹æ®éœ€è¦å®ç°
         yield return null;
     }
 
     #endregion
 
-    #region å…¬å…±å±æ€§
+    #region ¹«¹²ÊôĞÔ
 
-    public int CurrentScore
-    {
-        get { return currentScore; }
-    }
-
-    public int HighScore
-    {
-        get { return highScore; }
-    }
-
-    public int TargetScore
-    {
-        get { return targetScore; }
-    }
-
-    public string CurrentAim
-    {
-        get { return currentAim; }
-    }
-
-    public bool IsTyping
-    {
-        get { return isTyping; }
-    }
+    public int CurrentScore => currentScore;
+    public int HighScore => highScore;
+    public int TargetScore => targetScore;
+    public string CurrentAim => currentAim;
+    public bool IsTyping => isTyping;
 
     #endregion
 
-    #region ç¼–è¾‘å™¨æ–¹æ³•
+    #region ±à¼­Æ÷²âÊÔ²Ëµ¥
 
-    // åœ¨ç¼–è¾‘å™¨ä¸­å¿«é€Ÿæµ‹è¯•
-    [ContextMenu("æµ‹è¯•ç©å®¶å¯¹è¯æ¡†")]
+    [ContextMenu("²âÊÔÍæ¼Ò¶Ô»°¿ò")]
     private void TestSelfDialog()
     {
-        ShowSelfDialog("ä½ å¥½ï¼Œæˆ‘æ˜¯ç©å®¶ï¼è¿™æ˜¯ä¸€æ¡æµ‹è¯•æ¶ˆæ¯ã€‚", "æµ‹è¯•ç©å®¶");
+        ShowSelfDialog("ÄãºÃ£¬ÎÒÊÇÍæ¼Ò£¡ÕâÊÇÒ»Ìõ²âÊÔÏûÏ¢¡£", "²âÊÔÍæ¼Ò");
     }
 
-    [ContextMenu("æµ‹è¯•NPCå¯¹è¯æ¡†")]
+    [ContextMenu("²âÊÔNPC¶Ô»°¿ò")]
     private void TestOthersDialog()
     {
-        ShowOthersDialog("ä½ å¥½ï¼Œæ—…è¡Œè€…ï¼æ¬¢è¿æ¥åˆ°æˆ‘ä»¬çš„ä¸–ç•Œã€‚", "æµ‹è¯•NPC");
+        ShowOthersDialog("ÄãºÃ£¬ÂÃĞĞÕß£¡»¶Ó­À´µ½ÎÒÃÇµÄÊÀ½ç¡£", "²âÊÔNPC");
     }
 
-    [ContextMenu("æµ‹è¯•åˆ†æ•°ç³»ç»Ÿ")]
+    [ContextMenu("²âÊÔ·ÖÊıÏµÍ³")]
     private void TestScoreSystem()
     {
         AddScore(100);
-        SetAimText("æ–°ç›®æ ‡ï¼šæ‰¾åˆ°éšè—çš„å®è—");
+        SetAimText("ĞÂÄ¿±ê£ºÕÒµ½Òş²ØµÄ±¦²Ø");
     }
 
-    [ContextMenu("éšè—æ‰€æœ‰å¯¹è¯æ¡†")]
+    [ContextMenu("Òş²ØËùÓĞ¶Ô»°¿ò")]
     private void TestHideDialogs()
     {
         HideAllDialogs();
     }
 
-    [ContextMenu("æµ‹è¯•å¿«é€Ÿå¯¹è¯æ¡†")]
+    [ContextMenu("²âÊÔ¿ìËÙ¶Ô»°¿ò")]
     private void TestInstantDialog()
     {
-        ShowSelfDialogInstant("è¿™æ˜¯ä¸€æ¡ç«‹å³æ˜¾ç¤ºçš„æµ‹è¯•æ¶ˆæ¯ã€‚", "å¿«é€Ÿæµ‹è¯•");
+        ShowSelfDialogInstant("ÕâÊÇÒ»ÌõÁ¢¼´ÏÔÊ¾µÄ²âÊÔÏûÏ¢¡£", "¿ìËÙ²âÊÔ");
     }
 
     #endregion

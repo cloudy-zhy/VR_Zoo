@@ -68,9 +68,12 @@ public class FruitManager : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         LoadLevel(currentLevelIndex);
         DialogueController.Instance.ShowDialogueWithIndex();
-        if (currentLevelIndex > 3)
+        // 原代码：if (currentLevelIndex > 3)
+        // 修改为：没有下一关时才判定全部通关
+        if (currentLevelIndex + 1 >= levels.Count)
         {
             endDetector.gameObject.SetActive(true);
+            Scene3Manager.Instance?.OnGameTotalFinish();
         }
     }
 }
