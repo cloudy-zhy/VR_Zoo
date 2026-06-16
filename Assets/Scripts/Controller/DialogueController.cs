@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,8 +26,7 @@ public class DialogueController : MonoBehaviour
     [Header("头像引用")]
     [SerializeField] private Sprite playerPortrait;    // 玩家头像
     [SerializeField] private Sprite npcPortrait;       // NPC头像
-    [SerializeField] public Sprite portrait_NuoYa;
-    [SerializeField] public Sprite portrait_PangPang;
+
     [Header("场景跳转")]
     [SerializeField] private bool sceneChangeFlag = false;// 对话结束后是否跳转
     [SerializeField] private string targetSceneName = "Scene1"; // 目标场景名称
@@ -81,7 +79,6 @@ public class DialogueController : MonoBehaviour
     /// </summary>
     public void StartDialogueSequence()
     {
-        
         if (dialogueCoroutine != null)
         {
             StopCoroutine(dialogueCoroutine);
@@ -119,7 +116,7 @@ public class DialogueController : MonoBehaviour
 
             // 显示当前对话
             ShowDialogue(dialogueEntry);
-            PlayDialogueAudio(currentDialogueIndex);
+
             // 计算显示时间
             float displayTime = dialogueEntry.displayDuration;
             if (displayTime <= 0)
@@ -172,16 +169,7 @@ public class DialogueController : MonoBehaviour
 
     public void ShowDialogueWithIndex()
     {
-        // 新增：正在播放对话时，直接拦截插队
-        if (isDialogueActive)
-        {
-            Debug.Log("对话未结束，拒绝新开对话，防止打断当前台词");
-            return;
-        }
-
         if (currentDialogueIndex >= dialogueSequence.Count) return;
-        isDialogueActive = true;
-
         var dialogueEntry = dialogueSequence[currentDialogueIndex];
 
         ShowDialogue(dialogueEntry);
@@ -193,12 +181,12 @@ public class DialogueController : MonoBehaviour
             displayTime = Mathf.Max(minimumDisplayTime, dialogueEntry.dialogueText.Length * timePerCharacter);
         }
 
-        if (showDebugLogs) Debug.Log($"显示对话 {currentDialogueIndex + 1}/{dialogueSequence.Count}，时长: {displayTime:F1}");
+        if (showDebugLogs) Debug.Log($"显示对话 {currentDialogueIndex + 1}/{dialogueSequence.Count}，时长: {displayTime:F1}秒");
         StartCoroutine(DialogsHideDelay(displayTime));
         currentDialogueIndex++;
 
         // 跳转到目标场景
-        if (!string.IsNullOrEmpty(targetSceneName) && sceneChangeFlag && currentDialogueIndex == dialogueSequence.Count)
+        if (!string.IsNullOrEmpty(targetSceneName) && sceneChangeFlag && currentDialogueIndex==dialogueSequence.Count)
         {
             if (showDebugLogs) Debug.Log($"跳转到场景: {targetSceneName}");
             SceneManager.LoadScene(targetSceneName);
@@ -216,20 +204,14 @@ public class DialogueController : MonoBehaviour
 
     public IEnumerator ShowDialogueWithIndexAndWait()
     {
-        if (isDialogueActive)
-        {
-            Debug.Log("对话进行中，等待当前对话结束再执行");
-            yield break;
-        }
         if (currentDialogueIndex >= dialogueSequence.Count) yield break;
-
-        isDialogueActive = true;
 
         yield return new WaitForSeconds(1.0f);
         var dialogueEntry = dialogueSequence[currentDialogueIndex];
-        ShowDialogue(dialogueEntry);
+        ShowDialogue(dialogueEntry); // 这里会激活对话框GameObject
         PlayDialogueAudio(currentDialogueIndex);
 
+        // +++ 关键修复：等待一帧，确保被SetActive(true)的UI组件完成本帧渲染更新 +++
         yield return null;
 
         float displayTime = dialogueEntry.displayDuration;
@@ -239,11 +221,14 @@ public class DialogueController : MonoBehaviour
         }
         if (showDebugLogs) Debug.Log($"显示对话 {currentDialogueIndex + 1}/{dialogueSequence.Count} 时间: {displayTime:F1}");
 
+        // 现在，在对话框确认完成一帧更新、稳定显示后，再开始“多久后隐藏它”的倒计时
         yield return StartCoroutine(DialogsHideDelay(displayTime));
         currentDialogueIndex++;
 
-        if (!string.IsNullOrEmpty(targetSceneName) && sceneChangeFlag && currentDialogueIndex == dialogueSequence.Count)
+        // 跳转到目标场景
+        if (!string.IsNullOrEmpty(targetSceneName) && sceneChangeFlag && currentDialogueIndex==dialogueSequence.Count)
         {
+            // 延迟后跳转场景
             yield return new WaitForSeconds(delayBeforeSceneChange);
             if (showDebugLogs) Debug.Log($"跳转到场景: {targetSceneName}");
             SceneManager.LoadScene(targetSceneName);
@@ -281,8 +266,6 @@ public class DialogueController : MonoBehaviour
         yield return new WaitForSeconds(displayTime);
         UIManager.Instance.HideAllDialogs();
         OnDialogueEnded.Invoke();
-        // 对话完全结束，解锁，允许下一句调用
-        isDialogueActive = false;
     }
     /// <summary>
     /// 显示对话
@@ -306,22 +289,11 @@ public class DialogueController : MonoBehaviour
         }
         else
         {
-            // 根据说话人名字自动选择头像
-            Sprite useHead = npcPortrait;
-            if (dialogueEntry.speakerName == "诺亚")
-            {
-                useHead = portrait_NuoYa;
-            }
-            else if (dialogueEntry.speakerName == "胖胖")
-            {
-                useHead = portrait_PangPang;
-            }
-
             // 显示NPC对话框
             UIManager.Instance.ShowOthersDialog(
                 dialogueEntry.dialogueText,
                 string.IsNullOrEmpty(dialogueEntry.speakerName) ? "诺亚" : dialogueEntry.speakerName,
-                useHead
+                npcPortrait
             );
         }
     }
@@ -392,7 +364,7 @@ public class DialogueController : MonoBehaviour
         {
             StopCoroutine(dialogueCoroutine);
         }
-        
+        StartDialogueSequence();
     }
 
     /// <summary>
@@ -464,10 +436,5 @@ public class DialogueController : MonoBehaviour
     public void SwitchToNextScene()
     {
         SceneManager.LoadScene(targetSceneName);
-    }
-
-    internal void StartDialogue()
-    {
-        StartDialogueSequence();
     }
 }
