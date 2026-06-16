@@ -15,6 +15,6 @@ MonoBehaviour:
   levelName: tutorial1
   targetScore: 30
   fruits:
-  - position: {x: -16.95, y: 6.31, z: 4.59}
+  - position: {x: -26.31082649, y: 1.03086287, z: -1.1600009500000006}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 2

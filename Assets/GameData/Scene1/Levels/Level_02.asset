@@ -15,27 +15,27 @@ MonoBehaviour:
   levelName: secondlevel
   targetScore: 120
   fruits:
-  - position: {x: -16.9, y: 5.83, z: 4.87}
+  - position: {x: -26.26082649, y: 0.5508628700000004, z: -0.8800009500000003}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 0
-  - position: {x: -16.98, y: 5.82, z: 3.9899998}
+  - position: {x: -26.34082649, y: 0.5408628700000007, z: -1.7600011500000003}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 0
-  - position: {x: -16.98, y: 5.82, z: 3.9899998}
+  - position: {x: -26.34082649, y: 0.5408628700000007, z: -1.7600011500000003}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 0
-  - position: {x: -17, y: 5.8700004, z: 2.2299998}
+  - position: {x: -26.36082649, y: 0.5908632700000007, z: -3.5200011500000006}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 0
-  - position: {x: -16.99, y: 5.85, z: 3.1399999}
+  - position: {x: -26.35082649, y: 0.57086287, z: -2.6100010500000006}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 0
-  - position: {x: -16.99, y: 7.03, z: 2.8599997}
+  - position: {x: -26.35082649, y: 1.7508628700000006, z: -2.8900012500000005}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 1
-  - position: {x: -16.95, y: 7.03, z: 4.39}
+  - position: {x: -26.31082649, y: 1.7508628700000006, z: -1.3600009500000008}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 1
-  - position: {x: -16.95, y: 8.879999, z: 3.6}
+  - position: {x: -26.31082649, y: 3.60086187, z: -2.1500009500000004}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 2
