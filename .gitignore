@@ -111,4 +111,6 @@ ProjectSettings/ProjectSettings.asset
 /.gemini
 /.vscode
 /.idea
+/.codegraph
+/.reasonix
 VR_Zoo.slnx
