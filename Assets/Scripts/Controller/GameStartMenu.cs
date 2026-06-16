@@ -10,7 +10,6 @@ namespace Controller
 {
     public class GameStartMenu : MonoBehaviour
     {
-        [SerializeField] private PlayableDirector director;
         [Header("UI Pages")]
         public GameObject mainMenu;
         public GameObject options;
@@ -49,8 +48,7 @@ namespace Controller
         public void StartGame()
         {
             HideAll();
-            director.time = 0.01;
-            director.Play();
+            this.Broadcast("MenuBtn.StartGame");
         }
 
         public void HideAll()

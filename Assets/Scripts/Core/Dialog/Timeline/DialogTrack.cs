@@ -16,7 +16,7 @@ namespace Core.Dialog.Timeline
         public override Playable CreateTrackMixer(
             PlayableGraph graph, GameObject go, int inputCount)
         {
-            // Graph 构建期只执行一次：取绑定的 DialogUI，注入所有 Clip 的 Behaviour。
+            // Graph 构建期只执行一次：取绑定的 DialogUI，注入所有 Clip 的 Behaviour 与 Mixer。
             // Behaviour 实例在 Graph 生命周期内固定不变，注入一次即可，无需每帧重复。
             var director = go.GetComponent<PlayableDirector>();
             var ui = director != null
@@ -29,7 +29,11 @@ namespace Core.Dialog.Timeline
                     dialogClip.SetUI(ui);
             }
  
-            return ScriptPlayable<DialogTrackMixer>.Create(graph, inputCount);
+            var mixerPlayable = ScriptPlayable<DialogTrackMixer>.Create(graph, inputCount);
+            var mixer = mixerPlayable.GetBehaviour();
+            mixer.SetUI(ui);
+ 
+            return mixerPlayable;
         }
     }
 }

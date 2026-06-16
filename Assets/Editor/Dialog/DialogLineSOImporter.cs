@@ -134,6 +134,11 @@ namespace Core.Dialog.Timeline
                 Log("[错误] 'Characters' Sheet 列头缺少必需列 'characterName'，导入终止！");
                 return;
             }
+            if (!charCols.ContainsKey("spriteName"))
+            {
+                Log("[错误] 'Characters' Sheet 列头缺少必需列 'spriteName'，导入终止！");
+                return;
+            }
 
             // 建立立绘映射字典
             var characterPortraits = new Dictionary<(string name, string state), Sprite>();
@@ -158,6 +163,13 @@ namespace Core.Dialog.Timeline
                     assetName = characterName;
 
                 string portraitPath = GetCol(row, charCols, "portraitPath");
+                string spriteName = GetCol(row, charCols, "spriteName");
+
+                if (string.IsNullOrWhiteSpace(spriteName) && !characterState.Equals("default", StringComparison.OrdinalIgnoreCase))
+                {
+                    Log($"[错误] 'Characters' 第 {ri + 1} 行角色「{characterName}」的状态「{characterState}」非 default，但其 'spriteName' 为空！导入终止！");
+                    return;
+                }
 
                 Sprite portraitSprite = null;
                 if (portraitPath.Trim().Equals("null", StringComparison.OrdinalIgnoreCase))
@@ -166,7 +178,7 @@ namespace Core.Dialog.Timeline
                 }
                 else
                 {
-                    portraitSprite = FindPortraitSprite(assetName, characterState, portraitPath);
+                    portraitSprite = FindPortraitSprite(assetName, characterState, portraitPath, spriteName);
                     if (portraitSprite == null)
                     {
                         Log($"[错误] 'Characters' 第 {ri + 1} 行角色「{characterName}」（资源名「{assetName}」）状态「{characterState}」的立绘资源未找到！导入终止！");
@@ -310,17 +322,8 @@ namespace Core.Dialog.Timeline
                 }
                 else
                 {
-                    // 回退到默认表情
-                    var defKey = (characterName.ToLowerInvariant().Trim(), "default");
-                    if (portraitsDict.TryGetValue(defKey, out var defSprite))
-                    {
-                        portraitSprite = defSprite;
-                    }
-                    else
-                    {
-                        Log($"  [错误] 行 {row.RowNum + 1}：角色「{characterName}」未在 'Characters' Sheet 中配置立绘映射！");
-                        return false;
-                    }
+                    Log($"  [错误] 行 {row.RowNum + 1}：角色「{characterName}」状态「{characterState}」未在 'Characters' Sheet 中配置立绘映射！");
+                    return false;
                 }
             }
 
@@ -377,76 +380,64 @@ namespace Core.Dialog.Timeline
         /// <summary>
         /// 寻找并提取立绘 Sprite，仅寻找 .png 格式。
         /// </summary>
-        private Sprite FindPortraitSprite(string assetName, string characterState, string portraitPath)
+        private Sprite FindPortraitSprite(string assetName, string characterState, string portraitPath, string spriteName)
         {
-            // 1. 若填了具体路径 (非 "null")
-            if (!string.IsNullOrWhiteSpace(portraitPath))
+            if (string.IsNullOrWhiteSpace(portraitPath))
             {
-                if (!portraitPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
-                {
-                    Log($"  [错误] 指定的立绘路径必须是 .png 文件：{portraitPath}");
-                    return null;
-                }
-
-                // 尝试直接加载单图 Sprite
-                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(portraitPath);
-                if (sprite != null) return sprite;
-
-                // 尝试加载大图的子 Sprite
-                var allAssets = AssetDatabase.LoadAllAssetsAtPath(portraitPath);
-                foreach (var asset in allAssets)
-                {
-                    if (asset is Sprite subSprite && subSprite.name.Equals(characterState, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return subSprite;
-                    }
-                }
+                Log($"  [错误] 角色「{assetName}」状态「{characterState}」的 portraitPath 为空！");
                 return null;
             }
 
-            // 2. 留空，走缺省规则 (仅限 .png)
-            // 模式 1：独立图片模式
-            string path1 = $"Assets/Resources/Sprites/{assetName}/{characterState}.png";
-            var s1 = AssetDatabase.LoadAssetAtPath<Sprite>(path1);
-            if (s1 != null) return s1;
-
-            // 模式 2：共享大图模式 (Assets/Resources/Sprites/{assetName}.png 里找同名子 Sprite)
-            string path2 = $"Assets/Resources/Sprites/{assetName}.png";
-            var assets2 = AssetDatabase.LoadAllAssetsAtPath(path2);
-            if (assets2 != null && assets2.Length > 0)
+            if (!portraitPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
             {
-                foreach (var asset in assets2)
+                Log($"  [错误] 指定的立绘路径必须是 .png 文件：{portraitPath}");
+                return null;
+            }
+
+            // 1. 确定大图 png 资产的加载路径
+            string imgAssetPath;
+            if (portraitPath.Contains("/") || portraitPath.Contains("\\"))
+            {
+                imgAssetPath = portraitPath.Trim();
+            }
+            else
+            {
+                imgAssetPath = "Assets/Resources/Sprites/" + portraitPath.Trim();
+            }
+
+            // 2. 校验图片大图文件是否存在
+            var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(imgAssetPath);
+            if (tex == null)
+            {
+                Log($"  [错误] 找不到大图资产文件：{imgAssetPath}");
+                return null;
+            }
+
+            // 3. 确定目标 Sprite 的名称
+            string targetSpriteName;
+            if (!string.IsNullOrWhiteSpace(spriteName))
+            {
+                targetSpriteName = spriteName.Trim();
+            }
+            else
+            {
+                targetSpriteName = $"{assetName}_{characterState}";
+            }
+
+            // 4. 从大图中寻找名为 targetSpriteName 的子 Sprite
+            var allSubAssets = AssetDatabase.LoadAllAssetRepresentationsAtPath(imgAssetPath);
+            if (allSubAssets != null && allSubAssets.Length > 0)
+            {
+                foreach (var asset in allSubAssets)
                 {
-                    if (asset is Sprite subSprite && subSprite.name.Equals(characterState, StringComparison.OrdinalIgnoreCase))
+                    if (asset is Sprite subSprite && subSprite.name.Equals(targetSpriteName, StringComparison.OrdinalIgnoreCase))
                     {
                         return subSprite;
                     }
                 }
             }
 
-            // 3. 回退规则：若特定 state 未找到，尝试回退寻找默认（default）表情
-            if (!characterState.Equals("default", StringComparison.OrdinalIgnoreCase))
-            {
-                Log($"  [提示] 角色「{assetName}」的状态「{characterState}」未找到立绘，尝试寻找其「default」状态...");
-
-                // 回退到模式 1 默认立绘
-                string defPath1 = $"Assets/Resources/Sprites/{assetName}/default.png";
-                var defS1 = AssetDatabase.LoadAssetAtPath<Sprite>(defPath1);
-                if (defS1 != null) return defS1;
-
-                // 回退到模式 2 默认子 Sprite
-                if (assets2 != null && assets2.Length > 0)
-                {
-                    foreach (var asset in assets2)
-                    {
-                        if (asset is Sprite subSprite && subSprite.name.Equals("default", StringComparison.OrdinalIgnoreCase))
-                        {
-                            return subSprite;
-                        }
-                    }
-                }
-            }
-
+            Log($"  [错误] 无法在大图「{imgAssetPath}」中找到名为「{targetSpriteName}」的子 Sprite！");
             return null;
         }
  

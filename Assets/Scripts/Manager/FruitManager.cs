@@ -3,6 +3,7 @@ using Slingshot;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 public class FruitManager : MonoBehaviour
@@ -19,8 +20,7 @@ public class FruitManager : MonoBehaviour
     [Header("分数")]
     public int targetScore;
 
-    [Header("场景跳转传送门")]
-    public PlayerEnterAreaDetector endDetector;
+    [SerializeField] private PlayableDirector trainComeAgain;
 
     void Awake()
     {
@@ -70,10 +70,10 @@ public class FruitManager : MonoBehaviour
         DialogueController.Instance.ShowDialogueWithIndex();
         // 原代码：if (currentLevelIndex > 3)
         // 修改为：没有下一关时才判定全部通关
-        if (currentLevelIndex + 1 >= levels.Count)
+        if (currentLevelIndex > levels.Count)
         {
-            endDetector.gameObject.SetActive(true);
-            Scene3Manager.Instance?.OnGameTotalFinish();
+            // 车回来接人
+            trainComeAgain.Play();
         }
     }
 }

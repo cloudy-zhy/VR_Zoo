@@ -53,11 +53,21 @@ namespace Core.Dialog.Timeline
         /// <summary>
         /// 由 Mixer 每帧调用，传入归一化进度 [0,1] 驱动打字机。
         /// </summary>
-        public void OnMixerUpdate(float normalizedTime)
+        public void OnMixerUpdate(float normalizedTime, double clipTime, double clipDuration)
         {
             if (!Application.isPlaying) return;
             if (dialogLine == null || m_boundUI == null) return;
- 
+
+            // 如果已经播放完毕（适用于 Hold 模式等未触发 OnBehaviourPause 的情况）
+            if (m_hasShown && clipTime >= clipDuration - 0.005)
+            {
+                m_boundUI.Hide(targetAudioSource);
+                m_hasShown = false;
+                return;
+            }
+
+            if (!m_hasShown) return;
+
             m_boundUI.UpdateTypewriter(normalizedTime);
         }
     }

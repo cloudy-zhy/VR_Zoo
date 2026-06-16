@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99cc3fb6e916466abad3ffb3cabc6e16, type: 3}
+  m_Name: Scene0_04
+  m_EditorClassIdentifier: 
+  characterName: "\u80D6\u80D6"
+  dialogText: "\u4F60\u770B\uFF01\u661F\u5149\u8F68\u8FF9\u4E0A\u4E00\u5171\u4E09\u7AD9\uFF1A\u6BDB\u91CC\u6C42\u65AF\u6C99\u6EE9\u3001\u51B0\u5DDD\u79D8\u5883\uFF0C\u6700\u540E\u5230\u6050\u9F99\u8C37\uFF01\u6BCF\u7AD9\u5404\u6709\u4E00\u6837\u4E1C\u897F\u8981\u5BFB\u627E\uFF1A\u679C\u5B9E\u3001\u65CB\u5F8B\u3001\u80FD\u91CF\u3002\u96C6\u9F50\u8FD9\u4E09\u6837\uFF0C\u4EEA\u5F0F\u624D\u80FD\u5F00\u59CB\u3002"
+  characterPortrait: {fileID: -2131090342, guid: 549e03a1ae9a4874bb2a2fdbe1570595,
+    type: 3}
+  characterState: default
+  voiceClip: {fileID: 8300000, guid: 2118f52e812e43748a6ac8b35a15064d, type: 3}
+  useAudioDuration: 1
+  fixedDuration: 3
+  endPadding: 0.15

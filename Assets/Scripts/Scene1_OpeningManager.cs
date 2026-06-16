@@ -2,23 +2,23 @@ using UnityEngine;
 
 public class Scene1_OpeningManager : MonoBehaviour
 {
-    [Header("¿ª³¡¶É¶ÉÄñ¶Ô»°¿ØÖÆÆ÷")]
+    [Header("å¼€åœºæ¸¡æ¸¡é¸Ÿå¯¹è¯æ§åˆ¶å™¨")]
     public DialogueController openingDialogue;
-    [Header("Ô­ÓĞ½Ì³Ì´¥·¢½Å±¾£¨´æ·ÅÄãÔ­À´µãÎ»´¥·¢¶Ô»°µÄ½Å±¾£©")]
+    [Header("åŸæœ‰æ•™ç¨‹è§¦å‘è„šæœ¬ï¼ˆå­˜æ”¾ä½ åŸæ¥ç‚¹ä½è§¦å‘å¯¹è¯çš„è„šæœ¬ï¼‰")]
     public MonoBehaviour originalTriggerScript;
 
-    // ±ê¼Ç£º¿ª³¡¹ı³¡ÊÇ·ñÍê³É
+    // æ ‡è®°ï¼šå¼€åœºè¿‡åœºæ˜¯å¦å®Œæˆ
     public static bool OpeningCutsceneFinished = false;
 
     private void Start()
     {
-        // ½øÈë³¡¾°ÏÈËø¶¨Ô­ÓĞ´¥·¢£¬²»ÈÃ¾É¶Ô»°ÄÜ´¥·¢
+        // è¿›å…¥åœºæ™¯å…ˆé”å®šåŸæœ‰è§¦å‘ï¼Œä¸è®©æ—§å¯¹è¯èƒ½è§¦å‘
         if (originalTriggerScript != null)
             originalTriggerScript.enabled = false;
 
         OpeningCutsceneFinished = false;
 
-        // ÑÓ³ÙÒ»Ğ¡»á¶ùÆô¶¯¿ª³¡¶É¶ÉÄñ¶Ô»°
+        // å»¶è¿Ÿä¸€å°ä¼šå„¿å¯åŠ¨å¼€åœºæ¸¡æ¸¡é¸Ÿå¯¹è¯
         Invoke(nameof(StartOpeningDialogue), 0.3f);
     }
 
@@ -27,7 +27,7 @@ public class Scene1_OpeningManager : MonoBehaviour
         if (openingDialogue != null)
         {
             openingDialogue.StartDialogueSequence();
-            // ¼àÌı¶Ô»°½áÊøÊÂ¼ş
+            // ç›‘å¬å¯¹è¯ç»“æŸäº‹ä»¶
             openingDialogue.OnDialogueEnded.AddListener(OnOpeningDialogueComplete);
         }
     }
@@ -35,7 +35,7 @@ public class Scene1_OpeningManager : MonoBehaviour
     void OnOpeningDialogueComplete()
     {
         OpeningCutsceneFinished = true;
-        // ¿ª³¡ËµÍêÁË£¬ÔÙÆôÓÃÔ­À´µãÎ»´¥·¢½Å±¾£¬ºóÃæÍæ¼Ò×ßµ½Î»ÖÃ²Å»áµ¯³ö¾É½Ì³Ì¶Ô»°
+        // å¼€åœºè¯´å®Œäº†ï¼Œå†å¯ç”¨åŸæ¥ç‚¹ä½è§¦å‘è„šæœ¬ï¼Œåé¢ç©å®¶èµ°åˆ°ä½ç½®æ‰ä¼šå¼¹å‡ºæ—§æ•™ç¨‹å¯¹è¯
         if (originalTriggerScript != null)
             originalTriggerScript.enabled = true;
     }

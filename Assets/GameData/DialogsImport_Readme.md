@@ -22,17 +22,24 @@
 
 ### **Characters 表头约定**（列名顺序任意，不区分大小写）：
 
-| 列名 | 说明 | 缺省行为 |
+| 列名 | 说明 | 缺省行为 / 校验规则 |
 | :--- | :--- | :--- |
 | `characterName` | 说话的角色显示名（在对话 UI 展现的名字，如 `DodoChief`） | 空字符串 |
 | `characterState` | 表情或状态名称（如 `default`, `happy`, `sad`） | `"default"` |
-| `assetName` | 美术资源文件使用名（用于寻路及大图匹配的文件名） | 留空时默认等于 `characterName` |
-| `portraitPath` | 显式指定立绘资源文件的具体路径（**必须是 `.png` 格式**） | 留空时走“智能多模式查找”；特殊值 `"null"` 代表该表情无立绘且不报错 |
+| `assetName` | 美术资源文件使用名（用于拼接默认子 Sprite 名称） | 留空时默认等于 `characterName` |
+| `portraitPath` | 指定立绘大图资源文件的路径或文件名（**必须是 `.png` 格式**） | **必须填写**，若仅填文件名（如 `UI.png`）则去 `Assets/Resources/Sprites/` 下寻找；若包含路径分隔符则按完全路径寻找。特殊值 `"null"` 代表该表情无立绘且不报错。 |
+| `spriteName` | 精确指定大图中的子 Sprite 资源名称 | **表头必须包含此列**。若 `characterState` 为 `"default"`（或为空）时允许为空，自动拼为 `{assetName}_default`；若为其他非 default 状态，则**必须填写**，为空将立即报错中断。 |
 
-### 智能多模式查找规则（当 `portraitPath` 留空时）：
-1.  **模式 1 (独立小图模式)**：优先检索 `Assets/Resources/Sprites/{assetName}/{characterState}.png`。
-2.  **模式 2 (共享大图模式)**：若模式 1 未找到，检索 `Assets/Resources/Sprites/{assetName}.png`，并从中查找名字与 `characterState` 相同的子 Sprite。
-3.  **表情回退**：若上述模式均找不到（且 `characterState` 不是 `"default"`），会自动回退去寻找该角色的 `"default"` 状态立绘（同样依序走模式 1 和模式 2，查找 `default` 状态）。
+### 精确查找规则：
+1.  **大图定位**：
+    *   若 `portraitPath` 包含 `/` 或 `\`，工具将直接按该路径加载大图。
+    *   若 `portraitPath` 为单文件名（如 `UI.png`），则默认前往 `Assets/Resources/Sprites/` 目录下查找。
+    *   若找不到大图文件，将立即报错并中断导入。
+2.  **Sprite 名称匹配**：
+    *   若 `spriteName` 不为空，则直接使用 `spriteName`。
+    *   若 `spriteName` 为空（要求 `characterState` 必须为 `"default"` 或为空），则使用 `{assetName}_default` 作为目标 Sprite 名字。
+3.  **加载子 Sprite**：
+    *   通过 `AssetDatabase.LoadAllAssetRepresentationsAtPath` 加载该大图下的所有子 Sprite，遍历比对名字。如果大图中找不到对应名字的子 Sprite，将立即报错并中断导入。
 
 ---
 
@@ -55,8 +62,7 @@
 
 ### 立绘自动装填规则：
 *   对话行解析时，会根据 `characterName` 和 `characterState` 从 `Characters` 字典中加载对应立绘。
-*   **回退规则**：若该角色没有配置对应的表情（且非显式设为 `"null"`），会自动尝试关联该角色的 `"default"` 立绘。
-*   **报错中断**：若在 `Characters` 表中根本没有该角色的映射，或关联的立绘无法载入，**将立即报错并中断导入**。
+*   **无隐式回退**：若在 `Characters` 表中没有配置该角色的映射，或在对话行中填写的 `characterState` 对应表情在 `Characters` 表中不存在，**将立即报错并中断导入**。
 
 ---
 
@@ -64,7 +70,11 @@
 
 1.  **`[错误] Excel 中未找到名为 'Characters' 的专用 Sheet，导入终止！`**
     *   *排查*：检查 Excel 中是否有单独的 Tab 命名为 `Characters`。
-2.  **`[错误] 行 X：角色「XXX」未在 'Characters' Sheet 中配置立绘映射！`**
-    *   *排查*：对话表中的角色没有在 `Characters` Sheet 中声明 `default` 表情。
-3.  **`[错误] 'Characters' 第 X 行角色「XXX」（资源名「YYY」）状态「ZZZ」的立绘资源未找到！`**
-    *   *排查*：检查 `portraitPath` 填写的路径是否正确，或缺省位置（`Assets/Resources/Sprites/`）下是否存在对应的 `{assetName}` 文件夹、`.png` 独立文件或大图。
+2.  **`[错误] 'Characters' Sheet 列头缺少必需列 'spriteName'，导入终止！`**
+    *   *排查*：检查 `Characters` Sheet 列头是否遗漏了 `spriteName` 列。
+3.  **`[错误] 'Characters' 第 X 行角色「XXX」的状态「YYY」非 default，但其 'spriteName' 为空！`**
+    *   *排查*：检查对于非 default 的表情状态，是否在 `spriteName` 列中填写了对应的子 Sprite 名字。
+4.  **`[错误] 无法在大图「XXX」中找到名为「YYY」的子 Sprite！`**
+    *   *排查*：确认图片资产中是否包含切片出的同名子 Sprite，大图格式是否设置为 Multiple。
+5.  **`[错误] 行 X：角色「XXX」状态「YYY」未在 'Characters' Sheet 中配置立绘映射！`**
+    *   *排查*：检查对话内容表里填写的角色名和状态，在 `Characters` 页中是否有匹配的行声明。
