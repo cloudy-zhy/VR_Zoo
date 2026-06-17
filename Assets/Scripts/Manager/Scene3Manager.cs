@@ -20,7 +20,7 @@ public class Scene3Manager : MonoBehaviour
         gameAllComplete = false;
         endTriggered = false;
         introDialogueDone = false;
-        // ÑÓºóÒ»Ö¡»ñÈ¡µ¥Àı£¬±Ü¿ª³õÊ¼»¯Ê±Ğò³åÍ»
+        // å»¶åä¸€å¸§è·å–å•ä¾‹ï¼Œé¿å¼€åˆå§‹åŒ–æ—¶åºå†²çª
         StartCoroutine(TryGetDialogueInstance());
     }
 
@@ -30,17 +30,17 @@ public class Scene3Manager : MonoBehaviour
         dialogueController = DialogueController.Instance;
         if (dialogueController == null)
         {
-            Debug.LogError("¡¾ÑÏÖØ¡¿Scene3Manager »ñÈ¡ DialogueController ÊµÀıÊ§°Ü£¡¶Ô»°³¹µ×ÎŞ·¨ÔËĞĞ");
+            Debug.LogError("ã€ä¸¥é‡ã€‘Scene3Manager è·å– DialogueController å®ä¾‹å¤±è´¥ï¼å¯¹è¯å½»åº•æ— æ³•è¿è¡Œ");
         }
         else
         {
-            Debug.Log("³É¹¦»ñÈ¡ DialogueController ÊµÀı");
+            Debug.Log("æˆåŠŸè·å– DialogueController å®ä¾‹");
         }
     }
 
     void Start()
     {
-        // ÑÓ³ÙÒ»Ö¡ÔÙÆô¶¯¾çÇé£¬È·±£ÊµÀı¾ÍĞ÷
+        // å»¶è¿Ÿä¸€å¸§å†å¯åŠ¨å‰§æƒ…ï¼Œç¡®ä¿å®ä¾‹å°±ç»ª
         StartCoroutine(DelayStartStory());
     }
 
@@ -50,35 +50,35 @@ public class Scene3Manager : MonoBehaviour
         if (dialogueController == null) yield break;
 
         dialogueController.RestartDialogue();
-        Debug.Log("×¼±¸Æô¶¯StoryFlow¾çÇéĞ­³Ì");
+        Debug.Log("å‡†å¤‡å¯åŠ¨StoryFlowå‰§æƒ…åç¨‹");
         StartCoroutine(StoryFlow());
     }
 
     IEnumerator StoryFlow()
     {
-        Debug.Log("¾çÇéÆô¶¯£¬µÈ´ı5Ãë¿ª¿Ú");
+        Debug.Log("å‰§æƒ…å¯åŠ¨ï¼Œç­‰å¾…5ç§’å¼€å£");
         yield return new WaitForSeconds(5f);
 
-        Debug.Log("¿ªÊ¼²¥·ÅµÚ0¾ä");
+        Debug.Log("å¼€å§‹æ’­æ”¾ç¬¬0å¥");
         yield return StartCoroutine(dialogueController.ShowDialogueWithIndexAndWait());
-        Debug.Log("µÚ0¾ä½áÊø£¬×¼±¸µÚ1¾ä");
+        Debug.Log("ç¬¬0å¥ç»“æŸï¼Œå‡†å¤‡ç¬¬1å¥");
 
         yield return StartCoroutine(dialogueController.ShowDialogueWithIndexAndWait());
-        Debug.Log("µÚ1¾äÈ«²¿²¥·ÅÍê±Ï£¬½øÈëµÈ´ıÓÎÏ·Í¨¹Ø½×¶Î");
+        Debug.Log("ç¬¬1å¥å…¨éƒ¨æ’­æ”¾å®Œæ¯•ï¼Œè¿›å…¥ç­‰å¾…æ¸¸æˆé€šå…³é˜¶æ®µ");
         introDialogueDone = true;
 
-        Debug.Log("µ±Ç°gameAllComplete³õÊ¼Öµ£º" + gameAllComplete);
+        Debug.Log("å½“å‰gameAllCompleteåˆå§‹å€¼ï¼š" + gameAllComplete);
         yield return new WaitUntil(() => gameAllComplete);
-        Debug.Log("¼ì²âµ½ÓÎÏ·Í¨¹Ø£¬×¼±¸½øÈë¶¯»­Õ¼Î»");
+        Debug.Log("æ£€æµ‹åˆ°æ¸¸æˆé€šå…³ï¼Œå‡†å¤‡è¿›å…¥åŠ¨ç”»å ä½");
 
         yield return new WaitForSeconds(0.5f);
-        Debug.Log("¶¯»­»º³å½áÊø£¬¿ªÊ¼²¥·ÅºóĞøÊÕÎ²Ì¨´Ê");
+        Debug.Log("åŠ¨ç”»ç¼“å†²ç»“æŸï¼Œå¼€å§‹æ’­æ”¾åç»­æ”¶å°¾å°è¯");
 
         while (dialogueController.GetCurrentDialogueIndex() < dialogueController.GetTotalDialogueCount())
         {
             yield return StartCoroutine(dialogueController.ShowDialogueWithIndexAndWait());
         }
-        Debug.Log("È«²¿ÊÕÎ²Ì¨´Ê²¥·ÅÍê³É");
+        Debug.Log("å…¨éƒ¨æ”¶å°¾å°è¯æ’­æ”¾å®Œæˆ");
     }
 
     public void OnGameTotalFinish()
@@ -86,12 +86,12 @@ public class Scene3Manager : MonoBehaviour
         if (endTriggered) return;
         if (!introDialogueDone)
         {
-            Debug.Log("À¹½Ø£º¿ª³¡0¡¢1Ì¨´ÊÎ´²¥·ÅÍê³É£¬ºöÂÔÌáÇ°Í¨¹ØĞÅºÅ");
+            Debug.Log("æ‹¦æˆªï¼šå¼€åœº0ã€1å°è¯æœªæ’­æ”¾å®Œæˆï¼Œå¿½ç•¥æå‰é€šå…³ä¿¡å·");
             return;
         }
 
         endTriggered = true;
         gameAllComplete = true;
-        Debug.Log("ÕıÊ½±ê¼ÇÓÎÏ·Í¨¹Ø£¬µÈ´ı¾çÇé¼ÌĞø");
+        Debug.Log("æ­£å¼æ ‡è®°æ¸¸æˆé€šå…³ï¼Œç­‰å¾…å‰§æƒ…ç»§ç»­");
     }
 }
