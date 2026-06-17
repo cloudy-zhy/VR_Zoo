@@ -7903,8 +7903,9 @@ MonoBehaviour:
   - {fileID: 1499498499}
   startPoint: {fileID: 1574156627}
   offset: {x: 0, y: 0.5, z: 0}
-  maxForce: 20
+  maxForce: 30
   velocityFactor: 1
+  maxPullDistance: 0.3
   horizontalAimSensitivity: 0.3
   verticalAimSensitivity: 0.8
   lockedTrajectoryColor: {r: 0.1, g: 0.85, b: 1, a: 0.95}
