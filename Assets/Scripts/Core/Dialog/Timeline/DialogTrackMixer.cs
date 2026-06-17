@@ -11,6 +11,17 @@ namespace Core.Dialog.Timeline
     /// </summary>
     public class DialogTrackMixer : PlayableBehaviour
     {
+        private DialogUI m_ui;
+        private bool m_hasActiveClip;
+        private AudioSource m_lastActiveAudioSource;
+ 
+        public void SetUI(DialogUI ui)
+        {
+            m_ui = ui;
+            m_hasActiveClip = false;
+            m_lastActiveAudioSource = null;
+        }
+ 
         public override void ProcessFrame(
             Playable playable, FrameData info, object playerData)
         {
@@ -29,11 +40,23 @@ namespace Core.Dialog.Timeline
                 }
             }
  
-            if (activeIndex < 0) return;
+            if (activeIndex < 0)
+            {
+                if (m_hasActiveClip && m_ui != null)
+                {
+                    m_ui.Hide(m_lastActiveAudioSource);
+                    m_hasActiveClip = false;
+                    m_lastActiveAudioSource = null;
+                }
+                return;
+            }
+ 
+            m_hasActiveClip = true;
  
             var inputPlayable = (ScriptPlayable<DialogBehaviour>)
                 playable.GetInput(activeIndex);
             var behaviour = inputPlayable.GetBehaviour();
+            m_lastActiveAudioSource = behaviour.targetAudioSource;
  
             // 计算归一化时间 [0, 1]，clamp 防止浮点越界
             double clipDuration = inputPlayable.GetDuration();
@@ -42,7 +65,7 @@ namespace Core.Dialog.Timeline
                 ? Mathf.Clamp01((float)(clipTime / clipDuration))
                 : 1f;
  
-            behaviour.OnMixerUpdate(normalized);
+            behaviour.OnMixerUpdate(normalized, clipTime, clipDuration);
         }
     }
 }

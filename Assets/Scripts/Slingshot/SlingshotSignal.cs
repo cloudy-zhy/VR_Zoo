@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Entity.DodoBird;
 //using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 namespace Slingshot
@@ -23,6 +24,8 @@ namespace Slingshot
         [SerializeField] private GameObject controller;
         [SerializeField] private GameObject chiefBird;
         [SerializeField] private PlayerEnterAreaDetector endDetector;
+
+        [SerializeField] private PlayableDirector trainRunAway;
 
         #endregion
         
@@ -66,7 +69,7 @@ namespace Slingshot
             chief.NavAgent.SetDestination(moveToPlayer.position);
         }
 
-        public async void ChiefSayAndPoint()
+        public void ChiefSayAndPoint()
         {
             // 酋长一边说话，一边指指点点
             chief.ani.SetBool("Move", false);
@@ -75,15 +78,17 @@ namespace Slingshot
             chiefSayGo.SetActive(true);
             // _director.Pause();
             facing.enabled = true;
-            
-            await UniTask.WaitForSeconds(2.5f);
+        }
+
+        public void BeginAreaActivate()
+        {
             beginDetector.gameObject.SetActive(true);
         }
 
         private async void OnEnterBegin()
         {
             beginDetector.gameObject.SetActive(false);
-            // _director.Play();
+            trainRunAway.Play();
             chiefSayGo.SetActive(false);
             facing.enabled = false;
             for (int i = 0; i < slots.Length; i++)

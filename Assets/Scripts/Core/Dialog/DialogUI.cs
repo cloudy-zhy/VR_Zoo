@@ -26,7 +26,7 @@ namespace Core.Dialog
         [SerializeField] private GameObject portraitContainer; // 无立绘时整体隐藏
  
         [Header("语音")]
-        // 已移除固定 AudioSource 引用，改由 Timeline Clip 动态传入
+        [SerializeField] private AudioSource defaultAudioSource;
  
         [Header("打字机设置")]
         [Tooltip("打字机效果结束于 Clip 的哪个归一化时间点（0~1）。\n"
@@ -90,10 +90,11 @@ namespace Core.Dialog
             }
  
             // 语音：不做空检查，确保未配置时报错
+            AudioSource audioSource = targetAudio != null ? targetAudio : defaultAudioSource;
             if (line.voiceClip != null)
             {
-                targetAudio.clip = line.voiceClip;
-                targetAudio.Play();
+                audioSource.clip = line.voiceClip;
+                audioSource.Play();
             }
         }
  
@@ -119,8 +120,9 @@ namespace Core.Dialog
             _fullText = string.Empty;
 
             // 语音：不做空检查，确保未配置时报错
-            if (targetAudio.isPlaying)
-                targetAudio.Stop();
+            AudioSource audioSource = targetAudio != null ? targetAudio : defaultAudioSource;
+            if (audioSource.isPlaying)
+                audioSource.Stop();
         }
         private void Awake()
         {
