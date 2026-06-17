@@ -108,7 +108,11 @@ namespace Entity.DodoBird
             _fsm.Initialize(DodoBirdStateType.Idle);
         }
 
-        private void Update() => _fsm.OnUpdate();
+        private void Update()
+        {
+            if (m_enableStateMachine)
+                _fsm.OnUpdate();
+        }
 
         #endregion
 
@@ -160,6 +164,24 @@ namespace Entity.DodoBird
                 _ => null
             };
             ps?.Play();
+        }
+
+        private bool m_enableStateMachine = true;
+        private System.Threading.CancellationTokenSource _fsmCts = new();
+        public System.Threading.CancellationToken FsmCancellationToken => _fsmCts.Token;
+
+        public void StopStateMachine()
+        {
+            m_enableStateMachine = false;
+            _fsmCts?.Cancel();
+            _fsmCts?.Dispose();
+            _fsmCts = new System.Threading.CancellationTokenSource();
+        }
+
+        private void OnDestroy()
+        {
+            _fsmCts?.Cancel();
+            _fsmCts?.Dispose();
         }
 
         #endregion

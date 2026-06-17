@@ -70,7 +70,7 @@ public class FruitManager : MonoBehaviour
         DialogueController.Instance.ShowDialogueWithIndex();
         // 原代码：if (currentLevelIndex > 3)
         // 修改为：没有下一关时才判定全部通关
-        if (currentLevelIndex > levels.Count)
+        if (currentLevelIndex >= levels.Count)
         {
             // 车回来接人
             trainComeAgain.Play();

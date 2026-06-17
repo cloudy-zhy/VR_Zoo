@@ -26,6 +26,10 @@ namespace Slingshot
         [SerializeField] private PlayerEnterAreaDetector endDetector;
 
         [SerializeField] private PlayableDirector trainRunAway;
+        [SerializeField] private DodoBird[] allBirds;
+        [SerializeField] private Transform[] finalPos;
+        [SerializeField] private float goToFinalPosTime;
+        [SerializeField] private GameObject chiefUI;
 
         #endregion
         
@@ -84,6 +88,11 @@ namespace Slingshot
         {
             beginDetector.gameObject.SetActive(true);
         }
+        
+        public void EndAreaActivate()
+        {
+            endDetector.gameObject.SetActive(true);
+        }
 
         private async void OnEnterBegin()
         {
@@ -126,6 +135,35 @@ namespace Slingshot
             // 小等一会，也可以不等，后面写跳转逻辑
             await UniTask.WaitForSeconds(2.5f);
             SceneManager.LoadScene(targetSceneName);
+        }
+        
+        public async void AllBirdsMoveToPlayer()
+        {
+            chiefUI.SetActive(false);
+            for (int i = 0; i < finalPos.Length; i++)
+            {
+                allBirds[i].StopStateMachine();
+                allBirds[i].GrabInteractable.enabled = false;
+                allBirds[i].ani.SetBool("Idle", false);
+                allBirds[i].ani.SetBool("Move", true);
+                allBirds[i].NavAgent.enabled = true;
+                allBirds[i].NavAgent.ResetPath();
+                allBirds[i].NavAgent.SetDestination(finalPos[i].position);
+            }
+            
+            Debug.Log("Begin");
+            await UniTask.WaitForSeconds(goToFinalPosTime);
+            Debug.Log("Over");
+            
+            Transform cam = Camera.main.transform;
+            for (int i = 0; i < finalPos.Length - 1; i++)
+            {
+                allBirds[i].ani.SetBool("Move", false);
+                allBirds[i].ani.SetBool("Jump", true);
+                allBirds[i].transform.rotation = Quaternion.LookRotation(cam.position - allBirds[i].transform.position);
+            }
+            allBirds[finalPos.Length - 1].ani.SetBool("Move", false);
+            allBirds[finalPos.Length - 1].ani.SetBool("Say", true);
         }
     }
 }
