@@ -228,7 +228,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_5
+      name: pterosaur_default
       rect:
         serializedVersion: 2
         x: 1504
@@ -412,13 +412,13 @@ TextureImporter:
       UI_2: -2051061752
       UI_3: -288133265
       UI_4: 1862685206
-      UI_5: -96859804
       UI_6: -1767248536
       UI_8: 1712365829
       UI_9: 2031797334
       dodochief_default: -766885219
       nuonuo_default: -388127676
       pangpang_default: -2131090342
+      pterosaur_default: -96859804
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

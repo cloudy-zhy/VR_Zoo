@@ -1,22 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4946757528096302651
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
-  m_Name: Signal Emitter
-  m_EditorClassIdentifier: 
-  m_Time: 24.516666666666666
-  m_Retroactive: 0
-  m_EmitOnce: 0
-  m_Asset: {fileID: 11400000, guid: c317da29d944a0f4a9250e5aadad2682, type: 2}
---- !u!114 &-3633254678674158095
+--- !u!114 &-6850375818461000701
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -39,7 +23,39 @@ MonoBehaviour:
   m_Clips: []
   m_Markers:
     m_Objects:
-    - {fileID: -4946757528096302651}
+    - {fileID: 7605319476813890962}
+--- !u!114 &-6088128724254399106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33895665405f4b8d85314199910e809a, type: 3}
+  m_Name: DialogClip
+  m_EditorClassIdentifier: 
+  dialogLine: {fileID: 11400000, guid: a4f87354c3ef18d4187c48ba1c739c3a, type: 2}
+  audioSource:
+    exposedName: 
+    defaultValue: {fileID: 0}
+--- !u!114 &-1911873812569181989
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33895665405f4b8d85314199910e809a, type: 3}
+  m_Name: DialogClip
+  m_EditorClassIdentifier: 
+  dialogLine: {fileID: 11400000, guid: 127a794ffe1deba4abb84ae32125da07, type: 2}
+  audioSource:
+    exposedName: 
+    defaultValue: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50,51 +66,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfda56da833e2384a9677cd3c976a436, type: 3}
-  m_Name: Scene3_Openning
+  m_Name: Scene3_Ending
   m_EditorClassIdentifier: 
   m_Version: 0
   m_Tracks:
-  - {fileID: 7164203906422534713}
-  - {fileID: -3633254678674158095}
+  - {fileID: 6498225869156394346}
+  - {fileID: -6850375818461000701}
   m_FixedDuration: 0
   m_EditorSettings:
     m_Framerate: 60
     m_ScenePreview: 1
   m_DurationMode: 0
   m_MarkerTrack: {fileID: 0}
---- !u!114 &4439187421561833511
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33895665405f4b8d85314199910e809a, type: 3}
-  m_Name: DialogClip
-  m_EditorClassIdentifier: 
-  dialogLine: {fileID: 11400000, guid: f35b6f98a56b8d14fb765d6c62469430, type: 2}
-  audioSource:
-    exposedName: 
-    defaultValue: {fileID: 0}
---- !u!114 &4723824808670284002
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33895665405f4b8d85314199910e809a, type: 3}
-  m_Name: DialogClip
-  m_EditorClassIdentifier: 
-  dialogLine: {fileID: 11400000, guid: 5f5e68058629ec44483a9cbab815ed89, type: 2}
-  audioSource:
-    exposedName: 
-    defaultValue: {fileID: 0}
---- !u!114 &7164203906422534713
+--- !u!114 &6498225869156394346
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,10 +102,10 @@ MonoBehaviour:
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: 7231049233266694458}
-    m_Duration: 5.870816141366959
+    m_Asset: {fileID: -6088128724254399106}
+    m_Duration: 7.542652994394302
     m_TimeScale: 1
-    m_ParentTrack: {fileID: 7164203906422534713}
+    m_ParentTrack: {fileID: 6498225869156394346}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: 0
@@ -183,14 +167,14 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: "\u5C0F\u7FFC\u9F99\uFF1A\u4F7F\u8005~\u4F60\u771F\u7684\u6765\u5566\uFF01\u6211\u5C31\u77E5\u9053\u6211\u7684\u722A\u5370\u9080\u8BF7\u51FD\u2026"
+    m_DisplayName: "\u8BFA\u8BFA\uFF1A\u6211\u4EEC\u628A\u4E09\u6837\u90FD\u96C6\u9F50\u4E86\u3002\u679C\u5B9E\u3001\u65CB\u5F8B\u3001\u661F\u5149\u3002\u6700\u2026"
   - m_Version: 1
-    m_Start: 5.870816141366959
+    m_Start: 7.542652994394302
     m_ClipIn: 0
-    m_Asset: {fileID: 4439187421561833511}
-    m_Duration: 11.016938596963882
+    m_Asset: {fileID: -1911873812569181989}
+    m_Duration: 7.333673387765884
     m_TimeScale: 1
-    m_ParentTrack: {fileID: 7164203906422534713}
+    m_ParentTrack: {fileID: 6498225869156394346}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: 0
@@ -252,79 +236,10 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: "\u5C0F\u7FFC\u9F99\uFF1A\u4F60\u4EEC\u5FEB\u770B\u4E0A\u9762\uFF01\u6211\u4EEC\u7684\u7FFC\u9F99\u5927\u961F\u5E26\u6765\u4E86\u8FD9\u6B21\u76DB\u2026"
-  - m_Version: 1
-    m_Start: 16.88775473833084
-    m_ClipIn: 0
-    m_Asset: {fileID: 4723824808670284002}
-    m_Duration: 7.75163260102272
-    m_TimeScale: 1
-    m_ParentTrack: {fileID: 7164203906422534713}
-    m_EaseInDuration: 0
-    m_EaseOutDuration: 0
-    m_BlendInDuration: 0
-    m_BlendOutDuration: 0
-    m_MixInCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_MixOutCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_BlendInCurveMode: 0
-    m_BlendOutCurveMode: 0
-    m_ExposedParameterNames: []
-    m_AnimationCurves: {fileID: 0}
-    m_Recordable: 0
-    m_PostExtrapolationMode: 0
-    m_PreExtrapolationMode: 0
-    m_PostExtrapolationTime: 0
-    m_PreExtrapolationTime: 0
-    m_DisplayName: "\u5C0F\u7FFC\u9F99\uFF1A\u2026\u2026\u6BCF\u5E74\u5230\u8FD9\u4E00\u523B\uFF0C\u6211\u90FD\u89C9\u5F97\u6574\u4E2A\u8C37\u5B50\u90FD\u5728\u5C4F\u2026"
+    m_DisplayName: "\u80D6\u80D6\uFF1A\u4F7F\u8005\uFF0C\u4F60\u770B\u3002\u90A3\u91CC\u5C31\u662F\u8FDC\u53E4\u7684\u796D\u575B\u3002\u661F\u5149\u4EEA\u5F0F\u2026"
   m_Markers:
     m_Objects: []
---- !u!114 &7231049233266694458
+--- !u!114 &7605319476813890962
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -333,10 +248,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33895665405f4b8d85314199910e809a, type: 3}
-  m_Name: DialogClip
+  m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
+  m_Name: Signal Emitter
   m_EditorClassIdentifier: 
-  dialogLine: {fileID: 11400000, guid: 3bfdb9c75cffddd408071cd313e20341, type: 2}
-  audioSource:
-    exposedName: 
-    defaultValue: {fileID: 0}
+  m_Time: 14.876326382160187
+  m_Retroactive: 0
+  m_EmitOnce: 0
+  m_Asset: {fileID: 11400000, guid: c317da29d944a0f4a9250e5aadad2682, type: 2}

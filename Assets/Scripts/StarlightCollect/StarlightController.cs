@@ -1,7 +1,9 @@
 using System.Collections;
 using Core.Event;
+using Core.Utils;
 using Manager;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 namespace StarlightCollect
@@ -15,17 +17,23 @@ namespace StarlightCollect
         [SerializeField] private StarlightLevelSO[] levels;   // 拖入 Level1Config, Level2Config
         [SerializeField] private StarlightThrowController throwController;
         [SerializeField] private StarlightUI ui;
+        [SerializeField] private Renderer ren;
+        [SerializeField] private PlayableDirector director;
 
         public StarlightLevelSO CurrentLevel => levels[CurrentLevelIndex];
         public int CurrentLevelIndex { get; private set; }
 
         public int CurrentScore { get; private set; }
-
-        public int CurrentLevelScore { get; private set; }
+        private int m_curTarget;
+        private int m_totalScore;
 
         private void Start()
         {
             GameManager.Event.Register(StarlightConstant.StarLightCollected, OnStarlightCollected);
+            
+            foreach (StarlightLevelSO level in levels)
+                m_totalScore += level.scoreToPass;
+            ren.SetFloatDirect("_WaterLevel", 0f);
         }
 
         private void OnDestroy()
@@ -39,20 +47,20 @@ namespace StarlightCollect
         private void StartLevel(int index)
         {
             CurrentLevelIndex = index;
-            CurrentLevelScore = 0;
+            m_curTarget += CurrentLevel.scoreToPass;
             throwController.ApplyConfig(CurrentLevel);
             throwController.StartThrowGame();
-            ui.ShowScore(CurrentScore, CurrentLevel.scoreToPass);
+            ui.ShowScore(CurrentScore, m_curTarget);
         }
 
         private void OnStarlightCollected(EventContext context)
         {
             CurrentScore++;
-            CurrentLevelScore++;
             ui.ShowDelta(1);
-            ui.ShowScore(CurrentScore, CurrentLevel.scoreToPass);
+            ui.ShowScore(CurrentScore, m_curTarget);
+            ren.SetFloatDirect("_WaterLevel", (float)CurrentScore / m_totalScore);
 
-            if (CurrentLevelScore >= CurrentLevel.scoreToPass)
+            if (CurrentScore >= m_curTarget)
                 OnLevelPass();
         }
 
@@ -70,9 +78,11 @@ namespace StarlightCollect
             {
                 // 全部通关
                 this.Broadcast(StarlightConstant.GameEnd);
-                StartCoroutine(TmpGameEndCoroutine());
+                director.Play();
             }
         }
+        
+        public void TmpGameEnd() => StartCoroutine(TmpGameEndCoroutine());
 
         private IEnumerator TmpGameEndCoroutine()
         {

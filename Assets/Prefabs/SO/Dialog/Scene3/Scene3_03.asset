@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99cc3fb6e916466abad3ffb3cabc6e16, type: 3}
-  m_Name: test
+  m_Name: Scene3_03
   m_EditorClassIdentifier: 
-  characterName: "\u8BFA\u4E9A"
-  dialogText: "\u5C06\u5C04\u7EBF\u7784\u51C6\u6E21\u6E21\u9E1F\uFF0C\u62C7\u6307\u98DF\u6307\u634F\u5408\uFF0C\u6293\u4F4F\u5B83\uFF01"
-  characterPortrait: {fileID: 21300000, guid: 859f4039c207f364d932dbdf7d244242, type: 3}
+  characterName: "\u5C0F\u7FFC\u9F99"
+  dialogText: "\u2026\u2026\u6BCF\u5E74\u5230\u8FD9\u4E00\u523B\uFF0C\u6211\u90FD\u89C9\u5F97\u6574\u4E2A\u8C37\u5B50\u90FD\u5728\u5C4F\u6C14\u51DD\u795E\u3002\u8FDE\u6700\u5435\u7684\u526F\u6809\u9F99\u90FD\u4E0D\u53EB\u4E86\u3002"
+  characterPortrait: {fileID: -96859804, guid: 549e03a1ae9a4874bb2a2fdbe1570595, type: 3}
   characterState: default
-  voiceClip: {fileID: 8300000, guid: 1b985fe5bf3214143a174a57e8a8299b, type: 3}
+  voiceClip: {fileID: 8300000, guid: 49108744d4c901a4aa5219270b9f914b, type: 3}
   useAudioDuration: 1
   fixedDuration: 3
   endPadding: 0.15

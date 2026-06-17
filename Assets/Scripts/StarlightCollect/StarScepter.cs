@@ -33,6 +33,8 @@ namespace StarlightCollect
         [SerializeField] private Material shotLineMaterial;
         [SerializeField] private Color shotLineColor = Color.cyan;
         [SerializeField] private float shotLineWidth = 0.015f;
+        [Tooltip("划线起点偏移系数（默认1.0表示向前偏移半个线宽）。用于自动根据线宽抵消端面导致的视觉后移。")]
+        [SerializeField] private float shotLineOffsetMultiplier = 1.0f;
         [SerializeField] private float shotLineDuration = 0.08f;
 
         private XRGrabInteractable _grabInteractable;
@@ -87,7 +89,10 @@ namespace StarlightCollect
             );
 
             Vector3 endPoint = hasHit ? hit.point : origin + direction * shotMaxDistance;
-            PlayShotLine(origin, endPoint);
+            // 根据线宽（半径）和偏移系数，自动计算出划线起点的向前修正量，把端面厚度抵消掉
+            float autoOffset = shotLineWidth * 0.5f * shotLineOffsetMultiplier;
+            Vector3 lineStart = origin + direction * autoOffset;
+            PlayShotLine(lineStart, endPoint);
 
             if (!hasHit)
                 return;
