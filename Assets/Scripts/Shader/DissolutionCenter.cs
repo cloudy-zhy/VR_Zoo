@@ -9,6 +9,8 @@ public class DissolutionCenter : MonoBehaviour
 
     public float distance = 2f;
     [SerializeField] private Material material;
+
+    [SerializeField] private Material[] materials;
     // Update is called once per frame
     void Update()
     {
@@ -16,6 +18,15 @@ public class DissolutionCenter : MonoBehaviour
         {
             material.SetVector("_Center", target.position);
             material.SetFloat("_Distance", distance);
+        }
+
+        if (target && materials.Length > 0)
+        {
+            for (int i = 0; i < materials.Length; i++)
+            {
+                materials[i].SetVector("_Center",target.position);
+                materials[i].SetFloat("_Distance", distance);
+            }
         }
     }
 }

@@ -324,7 +324,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.033333335
+  m_VoxelSize: 0.1
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 2b740092f7e013a43b07b26081696730, type: 2}
   m_BuildHeightMesh: 0
@@ -1834,6 +1834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoMove: 1
+  canThrowArea: {fileID: 0}
   randomRadius: 10
   randomRetryTimes: 20
   starLightChaseSpeed: 6
@@ -2395,6 +2396,12 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5495066665160271937, guid: 3631918d0de245e40854be05a6ac354e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -7064319393486498138, guid: 3631918d0de245e40854be05a6ac354e,
+        type: 3}
     - target: {fileID: -5495066665160271937, guid: 3631918d0de245e40854be05a6ac354e,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
@@ -3412,6 +3419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoMove: 0
+  canThrowArea: {fileID: 0}
   randomRadius: 10
   randomRetryTimes: 20
   starLightChaseSpeed: 6
@@ -4009,10 +4017,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e409bd600767cd04d84f801d5490a3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1902146282}
-  distance: 6.28
+  target: {fileID: 2050154216}
+  distance: 200
   material: {fileID: -876546973899608171, guid: 8c013dcf814a7fa428faa98790e7f746,
     type: 3}
+  materials:
+  - {fileID: 2100000, guid: 7d8c632a32512fe4598e87215b4678dc, type: 2}
+  - {fileID: 2100000, guid: c0dea243eb5693847a8cf53539292755, type: 2}
+  - {fileID: 2100000, guid: c12b2d0cade25ab4fa767a4b2d74235f, type: 2}
+  - {fileID: 2100000, guid: d6aa3075369543d42bd6fd9474fa4cbc, type: 2}
+  - {fileID: 2100000, guid: 708d3de7f1a92ec46be519ed53381901, type: 2}
+  - {fileID: 2100000, guid: 4a21ae6915799764fa3d86cc0a87df40, type: 2}
 --- !u!1 &1978425531
 GameObject:
   m_ObjectHideFlags: 0
@@ -4314,6 +4329,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83e4e6cca11330d4088d729ab4fc9d9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &2050154216 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 246947062379923643, guid: e9b56588b5bce02438275de01097f0b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 2050154211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2114455931
 GameObject:
   m_ObjectHideFlags: 0

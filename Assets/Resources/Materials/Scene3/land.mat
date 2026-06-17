@@ -145,6 +145,8 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DissolveEdgeWidth: 0.1
+    - _Distance: 200
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EmissionStrength: 4.16
@@ -184,10 +186,12 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Basecolor: {r: 0.46331227, g: 0.5844595, b: 0.66666657, a: 1}
+    - _Center: {r: 75.40001, g: 0, b: 0.0000076293945, a: 0}
     - _Color: {r: 0.38993704, g: 0.38993704, b: 0.38993704, a: 1}
     - _Color_1: {r: 0.5737114, g: 0.69252145, b: 0.70440245, a: 0}
     - _Color_2: {r: 0.8596832, g: 0.9433962, b: 0.5369644, a: 0}
     - _Color_3: {r: 0.15699527, g: 0.6483366, b: 0.7924528, a: 0}
+    - _DissolveEdgeColor: {r: 1, g: 1, b: 1, a: 1}
     - _DownColor: {r: 0.51257855, g: 1, b: 0.7520942, a: 1}
     - _EmissionColor: {r: 0.13378271, g: 0.6083929, b: 0.29157156, a: 1}
     - _EnvDownColor: {r: 0.2687789, g: 0.5660378, b: 0.54304767, a: 1}
