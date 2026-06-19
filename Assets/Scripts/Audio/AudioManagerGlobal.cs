@@ -4,17 +4,16 @@ using UnityEngine;
 
 /// <summary>
 /// 全局音管理类
-/// 没有dialogue
 /// </summary>
 public class AudioManagerGlobal : PersistentSingleton<AudioManagerGlobal>
 {
     private Dictionary<string, AudioType> audioDictionary = new Dictionary<string, AudioType>();
-    public AudioType[] AudioTypes;
+    public AudioConfiguration audioConfig;
 
     private void Start()
     {
         audioDictionary.Clear();
-        foreach (AudioType type in AudioTypes)
+        foreach (AudioType type in audioConfig.audioTypes)
         {
             audioDictionary.Add(type.Name, type);
             if (type.SpatialBlend != 0)
