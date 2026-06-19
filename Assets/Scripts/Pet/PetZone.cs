@@ -8,7 +8,7 @@ namespace Pet
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Collider))]
-    [RequireComponent(typeof(XRSimpleInteractable))]
+    [RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable))]
     public class PetZone : MonoBehaviour
     {
         [Header("目标")]
@@ -29,7 +29,7 @@ namespace Pet
         [Tooltip("开启后，同一次 hover 期间最多触发一次。默认关闭，让 cooldown 控制同一次接触内的重复摸头。")]
         [SerializeField] private bool triggerOncePerHover;
 
-        private XRSimpleInteractable _interactable;
+        private UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable _interactable;
         private Collider _collider;
         private IPettable _pettable;
         private Transform _activeInteractor;
@@ -43,7 +43,7 @@ namespace Pet
         private void Awake()
         {
             _collider = GetComponent<Collider>();
-            _interactable = GetComponent<XRSimpleInteractable>();
+            _interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
             CachePettable();
         }
 
@@ -97,7 +97,7 @@ namespace Pet
                 return;
 
             Transform interactorTransform = args.interactorObject.transform;
-            if (onlyDirectInteractor && interactorTransform.GetComponent<XRDirectInteractor>() == null)
+            if (onlyDirectInteractor && interactorTransform.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor>() == null)
                 return;
 
             //CachePettable();

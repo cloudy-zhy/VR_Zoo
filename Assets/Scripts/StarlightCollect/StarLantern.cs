@@ -3,7 +3,7 @@ using Core.Utils;
 using Entity.Pterosaur;
 using Manager;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
+
 
 namespace StarlightCollect
 {
@@ -11,7 +11,7 @@ namespace StarlightCollect
     /// 星光提灯
     /// 1.接收翼龙到达的消息，申请回归星光并initialize
     /// </summary>
-    [RequireComponent(typeof(XRGrabInteractable))]
+    [RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable))]
     public class StarLantern : GrabbableBase
     {
         private float _arrivalDistSqr;
