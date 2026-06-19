@@ -22,6 +22,14 @@
         
         [Header(Receive Shadow)]
         [Toggle(_RECEIVE_SHADOW)] _ReceiveShadow ("Receive Shadow", Float) = 1
+
+        [Header(Dissolve)]
+        [HDR] _DissolveEdgeColor ("Dissolve Edge Color", Color) = (1, 1, 1, 1)
+        _DissolveEdgeWidth ("Dissolve Edge Width", Range(0, 1)) = 0.1
+
+        // Dissolve中心点和距离 (由 DissolutionCenter.cs 运行时设置)
+        [HideInInspector] _Center ("Dissolve Center (World)", Vector) = (0, 0, 0, 0)
+        [HideInInspector] _Distance ("Dissolve Distance", Float) = 1000.0
     }
     
     SubShader
@@ -48,6 +56,11 @@
             
             float4 _OutlineColor;
             float _OutlineWidth;
+
+            float4 _DissolveEdgeColor;
+            float _DissolveEdgeWidth;
+            float4 _Center;
+            float _Distance;
         CBUFFER_END
         
         TEXTURE2D(_MainTex);
@@ -77,6 +90,7 @@
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
+                float3 positionWS : TEXCOORD0;
             };
             
             Varyings vert(Attributes input)
@@ -86,6 +100,9 @@
                 // 获取顶点位置和法线
                 float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
                 float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
+
+                // 保存原始世界位置用于溶解计算
+                output.positionWS = positionWS;
                 
                 // 计算轮廓线扩展方向
                 float3 outlineOffset = normalWS * _OutlineWidth;
@@ -100,6 +117,9 @@
             
             half4 frag(Varyings input) : SV_Target
             {
+                // 溶解：超出距离则裁剪
+                float dissolveDist = distance(input.positionWS, _Center.xyz);
+                clip(_Distance - dissolveDist);
                 return _OutlineColor;
             }
             ENDHLSL
@@ -149,12 +169,11 @@
                 float3 normalVS = normalize(mul((float3x3)GetWorldToViewMatrix(), normalWS));
                 float3 viewDirVS = normalize(mul((float3x3)GetWorldToViewMatrix(), viewDirWS));
                 
-                // 反射向量
-                float3 reflectVec = reflect(-viewDirVS, normalVS);
+                // 计算反射向量
+                float3 reflectionVS = reflect(-viewDirVS, normalVS);
                 
-                // 转换为Matcap UV (范围从[-1,1]转换到[0,1])
-                float2 matcapUV = reflectVec.xy * 0.5 + 0.5;
-                
+                // 将反射向量映射到[0,1]范围用于采样Matcap纹理
+                float2 matcapUV = reflectionVS.xy * 0.5 + 0.5;
                 return matcapUV;
             }
             
@@ -162,37 +181,41 @@
             {
                 Varyings output = (Varyings)0;
                 
-                VertexPositionInputs positionInputs = GetVertexPositionInputs(input.positionOS.xyz);
-                VertexNormalInputs normalInputs = GetVertexNormalInputs(input.normalOS);
+                // 计算世界空间位置
+                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                output.positionWS = positionWS;
+                output.positionCS = TransformWorldToHClip(positionWS);
                 
-                output.positionCS = positionInputs.positionCS;
-                output.positionWS = positionInputs.positionWS;
-                output.normalWS = normalInputs.normalWS;
+                // UV
                 output.uv = TRANSFORM_TEX(input.texcoord, _MainTex);
                 
-                // 计算观察方向
-                output.viewDirWS = GetWorldSpaceViewDir(output.positionWS);
+                // 世界空间法线
+                output.normalWS = TransformObjectToWorldNormal(input.normalOS);
                 
-                // 计算阴影坐标
-                output.shadowCoord = TransformWorldToShadowCoord(output.positionWS);
+                // 阴影坐标
+                float4 shadowCoord = TransformWorldToShadowCoord(positionWS);
+                output.shadowCoord = shadowCoord;
+                
+                // 观察方向
+                output.viewDirWS = GetWorldSpaceViewDir(positionWS);
                 
                 return output;
             }
             
             half4 frag(Varyings input) : SV_Target
             {
-                // 基础颜色
+                // 溶解：超出距离则裁剪（最先处理，确保溶解区域完全剔除）
+                float dissolveDist = distance(input.positionWS, _Center.xyz);
+                clip(_Distance - dissolveDist);
+
+                // 采样主纹理
                 half4 baseColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv) * _Color;
-                
-                // 获取法线和观察方向
-                float3 normalWS = normalize(input.normalWS);
-                float3 viewDirWS = normalize(input.viewDirWS);
                 
                 // 获取主光源
                 Light mainLight = GetMainLight(input.shadowCoord);
                 
-                // 计算兰伯特光照
-                float NdotL = dot(normalWS, mainLight.direction);
+                // 兰伯特光照
+                float NdotL = dot(input.normalWS, mainLight.direction);
                 
                 // 硬阴影过渡
                 float shadowMask = smoothstep(_ShadowStep - _ShadowFeather, 
@@ -211,10 +234,10 @@
                 half3 diffuse = lerp(shadowColor, litColor, shadowMask);
                 
                 // 获取URP环境光
-                half3 ambient = SampleSH(normalWS) * baseColor.rgb;
+                half3 ambient = SampleSH(input.normalWS) * baseColor.rgb;
                 
                 // 计算Matcap效果
-                float2 matcapUV = CalculateMatcapUV(normalWS, viewDirWS);
+                float2 matcapUV = CalculateMatcapUV(input.normalWS, input.viewDirWS);
                 half3 matcap = SAMPLE_TEXTURE2D(_MatcapTex, sampler_MatcapTex, matcapUV).rgb;
                 
                 // 应用Matcap颜色和强度
@@ -223,6 +246,11 @@
                 // 结合所有光照
                 // 基础光照 + 环境光 + Matcap效果
                 half3 finalColor = diffuse + ambient + matcapEffect;
+
+                // 溶解边缘发光
+                float dissolveEdge = 1.0 - smoothstep(0.0, _DissolveEdgeWidth, _Distance - dissolveDist);
+                finalColor = lerp(finalColor, _DissolveEdgeColor.rgb, dissolveEdge * _DissolveEdgeColor.a);
+
                 return half4(finalColor, baseColor.a);
             }
             ENDHLSL
@@ -248,6 +276,7 @@
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
             
             float3 _LightDirection;
+            // _Center and _Distance are in HLSLINCLUDE CBUFFER
             
             struct Attributes
             {
@@ -259,6 +288,7 @@
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
+                float3 positionWS : TEXCOORD0;
             };
             
             float4 GetShadowPositionHClip(Attributes input)
@@ -280,12 +310,16 @@
             Varyings ShadowPassVertex(Attributes input)
             {
                 Varyings output;
+                output.positionWS = TransformObjectToWorld(input.positionOS.xyz);
                 output.positionCS = GetShadowPositionHClip(input);
                 return output;
             }
             
             half4 ShadowPassFragment(Varyings input) : SV_Target
             {
+                // 溶解：超出距离则裁剪阴影
+                float dissolveDist = distance(input.positionWS, _Center.xyz);
+                clip(_Distance - dissolveDist);
                 return 0;
             }
             ENDHLSL
@@ -306,6 +340,8 @@
             #pragma vertex DepthOnlyVertex
             #pragma fragment DepthOnlyFragment
             
+            // _Center and _Distance are in HLSLINCLUDE CBUFFER
+            
             struct Attributes
             {
                 float4 positionOS : POSITION;
@@ -315,17 +351,22 @@
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
+                float3 positionWS : TEXCOORD0;
             };
             
             Varyings DepthOnlyVertex(Attributes input)
             {
                 Varyings output = (Varyings)0;
+                output.positionWS = TransformObjectToWorld(input.positionOS.xyz);
                 output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
                 return output;
             }
             
             half4 DepthOnlyFragment(Varyings input) : SV_Target
             {
+                // 溶解：超出距离则裁剪深度
+                float dissolveDist = distance(input.positionWS, _Center.xyz);
+                clip(_Distance - dissolveDist);
                 return 0;
             }
             ENDHLSL
@@ -334,3 +375,4 @@
     
     FallBack "Universal Render Pipeline/Lit"
 }
+

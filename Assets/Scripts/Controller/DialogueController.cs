@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -43,6 +44,7 @@ public class DialogueController : MonoBehaviour
     [Header("音频设置")]
     [SerializeField] private AudioSource audioSource;          // 音频源组件
     [SerializeField] private AudioClip[] dialogueAudioClips;   // 每个对话对应的音频剪辑
+    [SerializeField] AudioMixerGroup dialogueAudioMixerGroup;  // 对话音频混音器
 
     [Header("调试")]
     [SerializeField] private bool showDebugLogs = false; // 是否显示调试日志
@@ -63,6 +65,8 @@ public class DialogueController : MonoBehaviour
             if (audioSource == null)
             {
                 audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource.spatialBlend = 1f;
+                audioSource.outputAudioMixerGroup = dialogueAudioMixerGroup;
             }
         }
     }
