@@ -275,6 +275,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: XR Device Simulator
       objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -904,6 +909,7 @@ MonoBehaviour:
   shotLineMaterial: {fileID: 2100000, guid: 6db423ac428c4d940a3fd0d14b7f6586, type: 2}
   shotLineColor: {r: 0, g: 1, b: 1, a: 1}
   shotLineWidth: 0.5
+  shotLineOffsetMultiplier: 1
   shotLineDuration: 1
 --- !u!114 &384545034
 MonoBehaviour:
@@ -1265,6 +1271,8 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: 3256477954301327551, guid: 84a972c5b68252a43b11064a10cc0a12, type: 2}
     value: {fileID: 1902146284}
+  - key: {fileID: 8100000000000000001, guid: 84a972c5b68252a43b11064a10cc0a12, type: 2}
+    value: {fileID: 1674807883}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &403278276
@@ -1475,6 +1483,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: PushButton
       objectReference: {fileID: 0}
+    - target: {fileID: 5961377514689553874, guid: da3b468b35b58334693dfcd04f6e06a7,
+        type: 3}
+      propertyPath: m_AffordanceThemeDatum.m_Variable
+      value: 
+      objectReference: {fileID: 11400000, guid: 57def9352cdee8548bfc9ebc6a55914a,
+        type: 2}
+    - target: {fileID: 5978349121402991471, guid: da3b468b35b58334693dfcd04f6e06a7,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 16fba6d30ed741d4a9fdd6e79ee2f3ac, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1594,7 +1613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba0f6b6f051f400796930bc2e03acf75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AudioTypes: []
+  audioConfig: {fileID: 11400000, guid: 01531925754884a4f9f8dd01e2e19dbe, type: 2}
 --- !u!4 &702955758
 Transform:
   m_ObjectHideFlags: 0
@@ -1836,7 +1855,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoMove: 1
-  canThrowArea: {fileID: 0}
   randomRadius: 10
   randomRetryTimes: 20
   starLightChaseSpeed: 6
@@ -2298,6 +2316,7 @@ Transform:
   - {fileID: 1764966145}
   - {fileID: 509908206}
   - {fileID: 1902146282}
+  - {fileID: 1674807881}
   m_Father: {fileID: 1055601832}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1212474002
@@ -3239,6 +3258,144 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &1674807880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1674807881}
+  - component: {fileID: 1674807882}
+  - component: {fileID: 1674807883}
+  m_Layer: 0
+  m_Name: CeremonyEffectsController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1674807881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674807880}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 83.751, y: -3.858, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1211229844}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1674807882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674807880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81809efddd0df26448166c3b90d1d24c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  altarCenter: {fileID: 1781740172}
+  beamPrefab: {fileID: 0}
+  beamRiseDuration: 1.5
+  beamMaxHeight: 80
+  beamStartWidth: 0.3
+  beamEndWidth: 0.05
+  explosionParticle: {fileID: 0}
+  explosionPoint: {fileID: 0}
+  starfieldRoot: {fileID: 0}
+  starPrefab: {fileID: 0}
+  starCount: 80
+  starfieldRadius: 60
+  starMinHeight: 15
+  starMaxHeight: 50
+  starfieldSpawnDuration: 3
+  animalSilhouetteTextures: []
+  ceremonyDirector: {fileID: 403278275}
+  dissolutionCenter: {fileID: 1902146283}
+--- !u!114 &1674807883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674807880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 4a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d, type: 2}
+    - {fileID: 11400000, guid: 5b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e, type: 2}
+    - {fileID: 11400000, guid: 6c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f, type: 2}
+    - {fileID: 11400000, guid: 7d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1674807882}
+          m_TargetAssemblyTypeName: TimelineSignal.CeremonyEffectsController, Assembly-CSharp
+          m_MethodName: FireBeam
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1674807882}
+          m_TargetAssemblyTypeName: TimelineSignal.CeremonyEffectsController, Assembly-CSharp
+          m_MethodName: ExplodeBeam
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1674807882}
+          m_TargetAssemblyTypeName: TimelineSignal.CeremonyEffectsController, Assembly-CSharp
+          m_MethodName: SpawnStarfield
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1674807882}
+          m_TargetAssemblyTypeName: TimelineSignal.CeremonyEffectsController, Assembly-CSharp
+          m_MethodName: BeginTwinkle
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1001 &1684725785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3356,7 +3513,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoMove: 0
-  canThrowArea: {fileID: 0}
   randomRadius: 10
   randomRetryTimes: 20
   starLightChaseSpeed: 6
@@ -4088,12 +4244,17 @@ PrefabInstance:
     - target: {fileID: 246947062379923643, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -3.022
+      objectReference: {fileID: 0}
+    - target: {fileID: 246947062379923643, guid: e9b56588b5bce02438275de01097f0b3,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.428
       objectReference: {fileID: 0}
     - target: {fileID: 246947062379923643, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -75.4
+      value: -81.46
       objectReference: {fileID: 0}
     - target: {fileID: 351803095714826553, guid: e9b56588b5bce02438275de01097f0b3,
         type: 3}
