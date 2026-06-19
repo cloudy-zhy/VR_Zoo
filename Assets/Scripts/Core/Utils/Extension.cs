@@ -52,5 +52,20 @@ namespace Core.Utils
                 return;
             GameManager.Pool.Return(component.gameObject, duration, poolName ?? component.gameObject.name).Forget();
         }
+        
+        // 共享同一个 block 实例，避免重复 new 产生 GC 垃圾
+        private static readonly MaterialPropertyBlock TempBlock = new();
+        /// <summary>
+        /// 一步到位修改 Renderer 的 Float 属性
+        /// </summary>
+        public static void SetFloatDirect(this Renderer renderer, string propertyName, float value)
+        {
+            // 1. 获取现有属性
+            renderer.GetPropertyBlock(TempBlock);
+            // 2. 修改目标属性
+            TempBlock.SetFloat(propertyName, value);
+            // 3. 重新应用
+            renderer.SetPropertyBlock(TempBlock);
+        }
     }
 }

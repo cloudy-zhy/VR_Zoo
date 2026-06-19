@@ -6,6 +6,7 @@ using Entity.DodoBird;
 using Manager;
 using Core.Event;
 using Cysharp.Threading.Tasks;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Slingshot
 {
@@ -39,6 +40,10 @@ namespace Slingshot
         [SerializeField] private Vector3 offset;
         [SerializeField] private float maxForce = 30f;
         [SerializeField] private float velocityFactor = 2.5f;
+
+        [Header("拉弓手感")]
+        [Tooltip("最大拉动物理距离（单位：米）。超过此距离后鸟将无法继续被拉远，力度达到最大。")]
+        [SerializeField] private float maxPullDistance = 0.5f;
 
         [Header("瞄准手感")]
         [Tooltip("横向瞄准灵敏度。数值越小，手横向移动造成的落点偏移越小。")]
@@ -96,16 +101,25 @@ namespace Slingshot
         {
             if (_isPulling)
             {
+                // 直接使用渡渡鸟当前的物理 Transform 位置进行计算
                 Vector3 rawLaunchDirection = startPoint.position - _firePoint.position;
                 _launchDirection = GetAimAdjustedLaunchDirection(rawLaunchDirection);
-                _launchForce = Mathf.Clamp(rawLaunchDirection.magnitude * 10f, 0, maxForce);
+                
+                // 根据最大物理拉伸距离，计算归一化的拉力（超出 maxPullDistance 后拉力不再增加，且拉满 maxPullDistance 时力度为 maxForce）
+                float currentPullDist = rawLaunchDirection.magnitude;
+                float pullRatio = Mathf.Clamp01(currentPullDist / maxPullDistance);
+                _launchForce = pullRatio * maxForce;
+
                 Vector3 normalizedDir = _launchDirection.normalized;
                 if (normalizedDir == Vector3.zero) 
                 {
                     normalizedDir = Vector3.forward; // 给个默认前方
                 }
                 _launchVelocity = normalizedDir * (_launchForce * velocityFactor);
+
+                // 基于当前渡渡鸟实际位置作为起点更新预览
                 Vector3 previewStartPosition = _firePoint.position + offset;
+                
                 TrajectoryResult previewResult = _trajectoryPredictor.UpdatePreview(previewStartPosition, _launchVelocity);
                 _trajectoryRenderer.SetForceRatio(_launchForce / maxForce);
                 TryUpdateLockedTarget(previewResult, previewStartPosition, _launchVelocity);

@@ -23,7 +23,7 @@ namespace Entity.Pterosaur.State
             base.OnUpdate();
             if (owner.IsReached)
             {
-                if (owner.HadRequest && owner.canThrowArea.bounds.Contains(owner.Destination))
+                if (owner.HadRequest)
                     stateMachine.ChangeState(PterosaurStateType.Throw);
                 else
                     stateMachine.ChangeState(PterosaurStateType.Move, true);

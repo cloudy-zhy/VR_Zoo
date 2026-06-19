@@ -7208,6 +7208,7 @@ GameObject:
   m_Component:
   - component: {fileID: 622768006}
   - component: {fileID: 622768007}
+  - component: {fileID: 622768008}
   m_Layer: 0
   m_Name: =====      Tester      =====
   m_TagString: Untagged
@@ -7243,6 +7244,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44b6b4fb8c0b824db90a744b7ea4fd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetSceneName: Scene1
+--- !u!114 &622768008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622768005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f88298067cb5745a100334a76a9b72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useNextSceneIndex: 1
   targetSceneName: Scene1
 --- !u!1 &627406986
 GameObject:
@@ -7846,7 +7861,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -12,12 +12,10 @@ using Random = UnityEngine.Random;
 
 namespace Entity.Pterosaur
 {
-    // TODO:偷小懒ai改代码改出了一坨，但是偏偏还能用，暂时不改了Orz
     [DisallowMultipleComponent]
     public class Pterosaur : MonoBehaviour, IAnimator, IAudioSource, ICurStateType<PterosaurStateType>
     {
         public bool autoMove = true;
-        public BoxCollider canThrowArea;
         
         #region Components
         

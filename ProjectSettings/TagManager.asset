@@ -9,6 +9,7 @@ TagManager:
   - Hand
   - DodoBird
   - Fruit
+  - Train
   layers:
   - Default
   - TransparentFX

@@ -1,4 +1,4 @@
-﻿Shader "Universal Render Pipeline/Custom/ContainerWaterToon_Final"
+Shader "Universal Render Pipeline/Custom/ContainerWaterToon_Final"
 {
     Properties
     {
@@ -24,7 +24,9 @@
         _OutlineWidth ("Outline Width", Range(0, 0.05)) = 0.025
         
         [Header(Water Level Control)]
-        _WaterHeight ("Water Height (Local Y)", Float) = 1.0
+        _WaterMinY ("Water Empty Level (Local Y, bottom of container)", Float) = -1.0
+        _WaterMaxY ("Water Full Level (Local Y, top of container)", Float) = 1.0
+        _WaterLevel ("Water Level (Normalized 0-1)", Range(0, 1)) = 0.5
         [Toggle(_INVERT_CLIP)] _InvertClip ("Invert Clip Direction", Float) = 1 
 
         [Header(Water Surface Control)]
@@ -58,12 +60,18 @@
             float _MatcapIntensity;
             float4 _OutlineColor;
             float _OutlineWidth;
-            float _WaterHeight;
+            float _WaterMinY;
+            float _WaterMaxY;
+            float _WaterLevel;
             float4 _WaterSurfaceColor;
             float _WaveSpeed;
             float _WaveFrequency;
             float _WaveAmplitude;
         CBUFFER_END
+
+        // 用归一化的 _WaterLevel (0~1) 换算出实际的局部Y高度
+        // 这样所有原有代码里用到 _WaterHeight 的地方都不需要改动
+        #define _WaterHeight (lerp(_WaterMinY, _WaterMaxY, _WaterLevel))
         
         TEXTURE2D(_MainTex); SAMPLER(sampler_MainTex);
         TEXTURE2D(_MatcapTex); SAMPLER(sampler_MatcapTex);

@@ -150,7 +150,10 @@ Material:
     - _TilingN1: 6.06
     - _TilingN2: 0.05
     - _TilingN3: 1
-    - _WaterHeight: 0.76
+    - _WaterLevel: 0
+    - _WaterMaxY: 0.115
+    - _WaterMinY: 0.243
+    - _WaterProgress: 0.874
     - _WaveAmplitude: 0.02
     - _WaveFrequency: 10
     - _WaveSpeed: 2.1
