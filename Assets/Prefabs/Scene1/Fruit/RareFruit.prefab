@@ -90,6 +90,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7843d24a904945446a22489b1f40b41d,
         type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7843d24a904945446a22489b1f40b41d,
+        type: 3}
       propertyPath: m_TagString
       value: Fruit
       objectReference: {fileID: 0}
