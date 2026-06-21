@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: PXR_ProjectSetting
   m_EditorClassIdentifier: 
   useContentProtect: 0
-  handTracking: 1
-  adaptiveHand: 1
-  highFrequencyHand: 1
+  handTracking: 0
+  adaptiveHand: 0
+  highFrequencyHand: 0
   openMRC: 1
   faceTracking: 0
   lipsyncTracking: 0
   eyeTracking: 0
   eyetrackingCalibration: 0
   enableETFR: 0
-  foveationLevel: 3
+  foveationLevel: -1
   latelatching: 0
   latelatchingDebug: 0
   enableSubsampled: 0
@@ -46,10 +46,10 @@ MonoBehaviour:
   arFoundation: 0
   mrSafeguard: 0
   enableRecommendMSAA: 0
-  recommendSubsamping: 1
+  recommendSubsamping: 0
   recommendMSAA: 0
-  validationFFREnabled: 1
+  validationFFREnabled: 0
   validationETFREnabled: 0
-  portalInited: 1
+  portalInited: 0
   isDataCollectionDisabled: 0
   portalFirstSelected: 0
