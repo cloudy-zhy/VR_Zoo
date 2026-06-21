@@ -20,12 +20,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image othersPortrait; // NPC头像
     [SerializeField] private Text othersNameText; // NPC名称
 
-    [Header("分数和目标")]
-    [SerializeField] private GameObject scoreAimPanel; // 分数和目标面板
-    [SerializeField] private Text scoreText; // 分数文本
-    [SerializeField] private Text aimText; // 目标文本
-    [SerializeField] private Text highScoreText; // 最高分文本（可选）
-
     [Header("动画设置")]
     [SerializeField] private float typewriterSpeed = 30f; // 打字机效果速度（字符/秒）
 
@@ -48,12 +42,6 @@ public class UIManager : MonoBehaviour
 
     // 单例模式
     public static UIManager Instance { get; private set; }
-
-    // 分数相关
-    private int currentScore = 0;
-    private int highScore = 0;
-    private int targetScore = 0;
-    private string currentAim = "";
 
     #region Unity生命周期方法
 
@@ -79,12 +67,6 @@ public class UIManager : MonoBehaviour
     {
         // 初始隐藏对话框
         HideAllDialogs();
-
-        // 显示分数面板
-        ShowScoreAimPanel(isInitialShowScore);
-
-        // 初始化分数显示
-        UpdateScoreDisplay();
     }
 
     private void Update()
@@ -349,74 +331,6 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region 分数系统方法
-
-    public void SetScore(int score)
-    {
-        currentScore = score;
-        if (currentScore > highScore)
-            highScore = currentScore;
-        UpdateScoreDisplay();
-    }
-
-    public void AddScore(int points)
-    {
-        currentScore += points;
-        if (currentScore > highScore)
-            highScore = currentScore;
-        UpdateScoreDisplay();
-        StartCoroutine(ScorePopupAnimation(points));
-    }
-
-    public void SetTargetScore(int target)
-    {
-        targetScore = target;
-        UpdateScoreDisplay();
-    }
-
-    public void SetAimText(string aim)
-    {
-        currentAim = aim;
-        if (aimText != null) aimText.text = aim;
-    }
-
-    public void ShowScoreAimPanel(bool show)
-    {
-        if (scoreAimPanel != null)
-            scoreAimPanel.SetActive(show);
-    }
-
-    public void ResetScore()
-    {
-        currentScore = 0;
-        UpdateScoreDisplay();
-    }
-
-    public void ResetHighScore()
-    {
-        highScore = 0;
-        UpdateScoreDisplay();
-    }
-
-    public bool IsTargetReached()
-    {
-        return currentScore >= targetScore;
-    }
-
-    #endregion
-
-    #region 辅助方法
-
-    private void UpdateScoreDisplay()
-    {
-        if (scoreText != null)
-            scoreText.text = $"分数: {currentScore}";
-        if (highScoreText != null)
-            highScoreText.text = $"最高分: {highScore}";
-    }
-
-    #endregion
-
     #region 协程方法
 
     /// <summary>打字机效果（保留，已移除面板渐变动画）</summary>
@@ -444,11 +358,6 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region 公共属性
-
-    public int CurrentScore => currentScore;
-    public int HighScore => highScore;
-    public int TargetScore => targetScore;
-    public string CurrentAim => currentAim;
     public bool IsTyping => isTyping;
 
     #endregion
@@ -465,13 +374,6 @@ public class UIManager : MonoBehaviour
     private void TestOthersDialog()
     {
         ShowOthersDialog("你好，旅行者！欢迎来到我们的世界。", "测试NPC");
-    }
-
-    [ContextMenu("测试分数系统")]
-    private void TestScoreSystem()
-    {
-        AddScore(100);
-        SetAimText("新目标：找到隐藏的宝藏");
     }
 
     [ContextMenu("隐藏所有对话框")]
