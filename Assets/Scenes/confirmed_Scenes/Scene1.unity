@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.6738472, g: 0.7356836, b: 0.92518127, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -488,7 +487,7 @@ PrefabInstance:
     - target: {fileID: 760523661740530865, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1226321147593326779, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
@@ -498,7 +497,7 @@ PrefabInstance:
     - target: {fileID: 2523323614358868798, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3052659735873810932, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
@@ -523,7 +522,12 @@ PrefabInstance:
     - target: {fileID: 4943777708662371542, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4954311308539337838, guid: 7940f436866528e449df02f6a1bc2082,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5852200540182983929, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
@@ -619,12 +623,17 @@ PrefabInstance:
     - target: {fileID: 7369367202477946883, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8318992872717555208, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8780950669385739251, guid: 7940f436866528e449df02f6a1bc2082,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9969,6 +9978,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8477477680821523469, guid: 18ddb545287c546e19cc77dc9fbb2189,
+        type: 3}
+      propertyPath: m_HandTrackingCapability
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
