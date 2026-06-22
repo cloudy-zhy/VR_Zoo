@@ -9,7 +9,7 @@ namespace StarlightCollect
     /// <summary>
     /// 星光法杖。发射起点沿用法杖端点，方向使用主摄像机 forward。
     /// </summary>
-    [RequireComponent(typeof(XRGrabInteractable))]
+    [RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable))]
     public class StarScepter : GrabbableBase
     {
         [Header("Shot")]
@@ -37,7 +37,7 @@ namespace StarlightCollect
         [SerializeField] private float shotLineOffsetMultiplier = 1.0f;
         [SerializeField] private float shotLineDuration = 0.08f;
 
-        private XRGrabInteractable _grabInteractable;
+        private UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable _grabInteractable;
         private float _nextShotTime;
         private bool _isHeld;
         private Coroutine _shotLineCoroutine;
@@ -49,7 +49,7 @@ namespace StarlightCollect
         {
             base.Start();
 
-            _grabInteractable = GetComponent<XRGrabInteractable>();
+            _grabInteractable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
             _grabInteractable.selectEntered.AddListener(OnSelectEntered);
             _grabInteractable.selectExited.AddListener(OnSelectExited);
 

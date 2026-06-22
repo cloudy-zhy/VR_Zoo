@@ -22,7 +22,7 @@ namespace Entity.DodoBird
     // [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Animator))]
-    [RequireComponent(typeof(XRGrabInteractable))]
+    [RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable))]
     public class DodoBird : MonoBehaviour, IAnimator, IAudioSource, ICurStateType<DodoBirdStateType>
     {
         # region Components
@@ -31,7 +31,7 @@ namespace Entity.DodoBird
         public Rigidbody         Rb          { get; private set; }
         public NavMeshAgent      NavAgent    { get; private set; }
         public Animator          ani        { get; private set; }
-        public XRGrabInteractable GrabInteractable { get; private set; }
+        public UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable GrabInteractable { get; private set; }
         public Collider         Collider     { get; private set; }
         public AudioSource       aus          { get; private set; }
         
@@ -130,7 +130,7 @@ namespace Entity.DodoBird
             Rb               = GetComponent<Rigidbody>();
             NavAgent         = GetComponent<NavMeshAgent>();
             ani             = GetComponent<Animator>();
-            GrabInteractable = GetComponent<XRGrabInteractable>();
+            GrabInteractable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
             Collider         = GetComponent<Collider>();
             aus               = GetComponent<AudioSource>();
         }

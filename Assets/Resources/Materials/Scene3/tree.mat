@@ -163,7 +163,7 @@ Material:
     - _GlossStrength: 90
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _MatcapIntensity: 1
+    - _MatcapIntensity: 0.912
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _OutlineWidth: 0
@@ -199,7 +199,7 @@ Material:
     - _EnvralColor: {r: 1, g: 0.68867916, b: 0.68867916, a: 1}
     - _LightColor: {r: 0.54772353, g: 0.76729554, b: 0.7190458, a: 1}
     - _MainColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MatcapColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
+    - _MatcapColor: {r: 0.23885551, g: 0.23137255, b: 0.3019608, a: 1}
     - _OutlineColor: {r: 0.40251565, g: 0.27342275, b: 0.24176252, a: 1}
     - _RalColor: {r: 0.9811321, g: 0.96442044, b: 0.7003678, a: 1}
     - _ShadowColor: {r: 0.07119967, g: 0.3018868, b: 0.16682751, a: 1}

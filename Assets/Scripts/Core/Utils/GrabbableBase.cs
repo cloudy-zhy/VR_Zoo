@@ -3,12 +3,12 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Core.Utils
 {
-    [RequireComponent(typeof(XRGrabInteractable))]
+    [RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable))]
     public class GrabbableBase : MonoBehaviour
     {
         protected virtual void Start()
         {
-            var grab = GetComponent<XRGrabInteractable>();
+            var grab = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable>();
             grab.activated.AddListener(OnActivated);
             grab.deactivated.AddListener(OnDeactivated);
         }
