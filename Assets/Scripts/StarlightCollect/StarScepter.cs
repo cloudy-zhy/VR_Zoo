@@ -65,19 +65,20 @@ namespace StarlightCollect
             if (_isHeld)
             {
                 UpdateLandMarker();
+
+                if (Time.time >= _nextShotTime)
+                {
+                    _nextShotTime = Time.time + shotCoolDown;
+                    ExecuteShot();
+                }
                 return;
             }
 
             SetLandMarkerVisible(false);
         }
 
-        protected override void OnActivated(ActivateEventArgs args)
+        private void ExecuteShot()
         {
-            if (Time.time < _nextShotTime)
-                return;
-
-            _nextShotTime = Time.time + shotCoolDown;
-
             Vector3 origin = shotTransform.position;
             Vector3 direction = _camTran.forward;
             bool hasHit = Physics.Raycast(
