@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fea894361bde054fbfc4de741aa3483, type: 3}
-  m_Name: PXR_HandPoseConfig_FistPose
+  m_Name: PXR_HandPoseConfig_Pointing_at_the_sky_with_your_index_finger
   m_EditorClassIdentifier: 
   shapesRecognizer:
     thumb:
@@ -22,65 +22,65 @@ MonoBehaviour:
         flexionConfigs:
           min: 90
           max: 120
-          width: 20
+          width: 10
         curlConfigs:
           min: 45
-          max: 90
+          max: 180
           width: 20
         abductionConfigs:
           mid: 13
-          width: 20
+          width: 6
     index:
       handFinger: 1
-      flexion: 2
-      curl: 2
-      abduction: 0
+      flexion: 1
+      curl: 1
+      abduction: 1
       fingerConfigs:
         flexionConfigs:
-          min: 90
-          max: 126
-          width: 20
+          min: 144
+          max: 180
+          width: 10
         curlConfigs:
-          min: 0
-          max: 73
+          min: 107
+          max: 180
           width: 20
         abductionConfigs:
           mid: 10
-          width: 20
+          width: 6
     middle:
       handFinger: 2
       flexion: 2
       curl: 2
-      abduction: 0
+      abduction: 2
       fingerConfigs:
         flexionConfigs:
           min: 90
           max: 126
-          width: 20
+          width: 10
         curlConfigs:
           min: 0
           max: 73
           width: 20
         abductionConfigs:
           mid: 10
-          width: 20
+          width: 6
     ring:
       handFinger: 3
       flexion: 2
       curl: 2
-      abduction: 0
+      abduction: 2
       fingerConfigs:
         flexionConfigs:
           min: 90
           max: 126
-          width: 20
+          width: 10
         curlConfigs:
           min: 0
           max: 73
           width: 20
         abductionConfigs:
           mid: 10
-          width: 20
+          width: 6
     pinky:
       handFinger: 4
       flexion: 2
@@ -90,7 +90,7 @@ MonoBehaviour:
         flexionConfigs:
           min: 90
           max: 126
-          width: 20
+          width: 10
         curlConfigs:
           min: 0
           max: 73
@@ -105,7 +105,7 @@ MonoBehaviour:
   transRecognizer:
     trackAxis: 0
     spaceType: 0
-    trackTarget: 1
+    trackTarget: 0
     angleThreshold: 35
     thresholdWidth: 10
     holdDuration: 0.022

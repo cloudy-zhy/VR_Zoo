@@ -152,11 +152,12 @@ MonoBehaviour:
   m_enabled: 1
   nameUi: Hand Tracking Subsystem
   version: 0.0.1
-  featureIdInternal: com.unity.openxr.feature.input.handtracking
+  featureIdInternal: com.unity.openxr.feature.input.handtrackingsubsystem
   openxrExtensionStrings: XR_EXT_hand_tracking
   company: Unity
   priority: -100
   required: 0
+  m_AutoStartSubsystem: 1
 --- !u!114 &-4472122598527903468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -678,11 +679,12 @@ MonoBehaviour:
   m_enabled: 0
   nameUi: Hand Tracking Subsystem
   version: 0.0.1
-  featureIdInternal: com.unity.openxr.feature.input.handtracking
+  featureIdInternal: com.unity.openxr.feature.input.handtrackingsubsystem
   openxrExtensionStrings: XR_EXT_hand_tracking
   company: Unity
   priority: -100
   required: 0
+  m_AutoStartSubsystem: 1
 --- !u!114 &3409927185564703554
 MonoBehaviour:
   m_ObjectHideFlags: 0
