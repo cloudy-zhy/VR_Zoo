@@ -18,7 +18,7 @@ namespace TimelineSignal
         void Awake()
         {
             // director = GetComponent<PlayableDirector>();
-            endDetector.OnPlayerEnterArea += OnEnterEnd;
+            endDetector.OnPlayerEnterArea.AddListener(OnEnterEnd);
         }
 
         public void StartDialogueSequence()

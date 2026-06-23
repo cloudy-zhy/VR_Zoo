@@ -46,8 +46,8 @@ namespace Slingshot
         void Awake()
         {
             // _director = GetComponent<PlayableDirector>();
-            beginDetector.OnPlayerEnterArea += OnEnterBegin;
-            endDetector.OnPlayerEnterArea += OnEnterEnd;
+            beginDetector.OnPlayerEnterArea.AddListener(OnEnterBegin);
+            endDetector.OnPlayerEnterArea.AddListener(OnEnterEnd);
         }
 
         #endregion

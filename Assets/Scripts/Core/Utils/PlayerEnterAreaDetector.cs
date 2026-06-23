@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Core.Utils
 {
@@ -10,8 +10,8 @@ namespace Core.Utils
         private float _epsilon = 0.001f;
         private bool _isInside;
         
-        public event Action OnPlayerEnterArea;
-        public event Action OnPlayerExitArea;
+        public UnityEvent OnPlayerEnterArea;
+        public UnityEvent OnPlayerExitArea;
 
         private void Awake()
         {
