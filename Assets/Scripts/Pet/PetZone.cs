@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace Pet
 {
@@ -18,6 +19,8 @@ namespace Pet
         [Header("交互过滤")]
         [Tooltip("开启后只允许 XRDirectInteractor 触发，避免射线远距离误触摸头。")]
         [SerializeField] private bool onlyDirectInteractor = true;
+        [Tooltip("onlyDirectInteractor 开启时，允许触发抚摸的最大物理距离（手与摸头区中心）。超过此距离将被视为远距离射线。")]
+        [SerializeField] private float maxDirectDistance = 0.6f;
 
         [Header("摸头判定")]
         [Tooltip("手或控制器在区域内累计移动超过该距离后，视为一次有效摸头。")]
@@ -65,6 +68,18 @@ namespace Pet
             if (_activeInteractor == null)
                 return;
 
+            if (onlyDirectInteractor)
+            {
+                float distance = Vector3.Distance(transform.position, _activeInteractor.position);
+                if (distance > maxDirectDistance)
+                {
+                    _strokeDistance = 0f;
+                    _hoverStartTime = Time.time;
+                    _lastInteractorPosition = _activeInteractor.position;
+                    return;
+                }
+            }
+
             Vector3 currentPosition = _activeInteractor.position;
             _strokeDistance += Vector3.Distance(_lastInteractorPosition, currentPosition);
             _lastInteractorPosition = currentPosition;
@@ -86,6 +101,7 @@ namespace Pet
             minStrokeDistance = Mathf.Max(0f, minStrokeDistance);
             minHoverDuration = Mathf.Max(0f, minHoverDuration);
             cooldown = Mathf.Max(0f, cooldown);
+            maxDirectDistance = Mathf.Max(0f, maxDirectDistance);
 
             if (_collider == null)
                 _collider = GetComponent<Collider>();
@@ -97,8 +113,15 @@ namespace Pet
                 return;
 
             Transform interactorTransform = args.interactorObject.transform;
-            if (onlyDirectInteractor && interactorTransform.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactors.XRDirectInteractor>() == null)
-                return;
+            if (onlyDirectInteractor)
+            {
+                var direct = interactorTransform.GetComponent<XRDirectInteractor>();
+                var nearFar = interactorTransform.GetComponent<NearFarInteractor>();
+                var poke = interactorTransform.GetComponent<XRPokeInteractor>();
+
+                if (direct == null && nearFar == null && poke == null)
+                    return;
+            }
 
             //CachePettable();
             _activeInteractor = interactorTransform;
