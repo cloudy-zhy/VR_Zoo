@@ -1,10 +1,10 @@
-﻿Shader "Universal Render Pipeline/Custom/Matcap"
+Shader "Universal Render Pipeline/Custom/Matcap"
 {
     Properties
     {
         [Header(Base Texture)]
         _MainTex ("Texture", 2D) = "white" {}
-        _Color ("Color Tint", Color) = (1,1,1,1)
+        _BaseColor ("Color Tint", Color) = (1,1,1,1)
         
         [Header(Toon Shading)]
         _ShadowColor ("Shadow Color", Color) = (0.5,0.5,0.5,1)
@@ -46,7 +46,7 @@
         
         CBUFFER_START(UnityPerMaterial)
             float4 _MainTex_ST;
-            float4 _Color;
+            float4 _BaseColor;
             float4 _ShadowColor;
             float _ShadowStep;
             float _ShadowFeather;
@@ -209,7 +209,7 @@
                 clip(_Distance - dissolveDist);
 
                 // 采样主纹理
-                half4 baseColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv) * _Color;
+                half4 baseColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv) * _BaseColor;
                 
                 // 获取主光源
                 Light mainLight = GetMainLight(input.shadowCoord);
