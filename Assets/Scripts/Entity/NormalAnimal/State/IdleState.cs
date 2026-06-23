@@ -16,8 +16,30 @@ namespace Entity.NormalAnimal.State
         
         private bool TryGetRandomDestination(out Vector3 destination)
         {
-            Bounds bounds = owner.moveableArea.bounds;
             destination = Vector3.zero;
+
+            // 如果不限制移动区域，则在动物当前位置周围进行 NavMesh 随机采样
+            if (!owner.LimitMoveArea)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Vector2 randomCircle = Random.insideUnitCircle * owner.maxDistance;
+                    Vector3 randomPoint = owner.transform.position + new Vector3(randomCircle.x, 0, randomCircle.y);
+
+                    if (NavMesh.SamplePosition(
+                            randomPoint,
+                            out NavMeshHit hit,
+                            owner.maxDistance,
+                            NavMesh.AllAreas))
+                    {
+                        destination = hit.position;
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            Bounds bounds = owner.moveableArea.bounds;
             for (int i = 0; i < 10; i++)
             {
                 Vector3 randomPoint = new Vector3(
