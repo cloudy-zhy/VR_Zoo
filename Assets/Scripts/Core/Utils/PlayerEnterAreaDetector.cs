@@ -12,6 +12,7 @@ namespace Core.Utils
         
         public UnityEvent OnPlayerEnterArea;
         public UnityEvent OnPlayerExitArea;
+        public bool canDetect { get; set; } = true;
 
         private void Awake()
         {
@@ -21,7 +22,7 @@ namespace Core.Utils
         
         private void Update()
         {
-            if (!_playerTrans || !_areaCollider) return;
+            if (!canDetect || !_playerTrans || !_areaCollider) return;
 
             Vector3 closest = _areaCollider.ClosestPoint(_playerTrans.position);
             bool inside = (closest - _playerTrans.position).sqrMagnitude <= _epsilon * _epsilon;
