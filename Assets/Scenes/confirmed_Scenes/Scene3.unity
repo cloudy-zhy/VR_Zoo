@@ -13015,12 +13015,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1902533913}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1904090698 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 938738128132961185, guid: 72a00e6784e137245bfaf4dd7c1276c5,
-    type: 3}
-  m_PrefabInstance: {fileID: 2068433813}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1908844606
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13747,6 +13741,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9199283817961586154, guid: 72a00e6784e137245bfaf4dd7c1276c5,
+        type: 3}
+      propertyPath: shotLine
+      value: 
+      objectReference: {fileID: 2068433818}
+    - target: {fileID: 9199283817961586154, guid: 72a00e6784e137245bfaf4dd7c1276c5,
+        type: 3}
+      propertyPath: shotLineOffsetMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13763,10 +13767,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2068433818}
-    - targetCorrespondingSourceObject: {fileID: 5167402055036370014, guid: 72a00e6784e137245bfaf4dd7c1276c5,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2068433817}
   m_SourcePrefab: {fileID: 100100000, guid: 72a00e6784e137245bfaf4dd7c1276c5, type: 3}
 --- !u!4 &2068433814 stripped
 Transform:
@@ -13774,36 +13774,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2068433813}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2068433817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 616103451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0aefbf562a7488eb6f7dc53694e657e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shotTransform: {fileID: 1904090698}
-  shotMaxDistance: 30
-  shotCoolDown: 1
-  shottableLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
-  markerLayerMask:
-    serializedVersion: 2
-    m_Bits: 192
-  landMarker: {fileID: 0}
-  generatedLandMarkerScale: 0.18
-  generatedLandMarkerColor: {r: 0, g: 1, b: 1, a: 1}
-  shotLine: {fileID: 2068433818}
-  shotLineMaterial: {fileID: 2100000, guid: 6db423ac428c4d940a3fd0d14b7f6586, type: 2}
-  shotLineColor: {r: 0, g: 1, b: 1, a: 1}
-  shotLineWidth: 0.5
-  shotLineOffsetMultiplier: 1
-  shotLineDuration: 2
 --- !u!120 &2068433818
 LineRenderer:
   serializedVersion: 2
