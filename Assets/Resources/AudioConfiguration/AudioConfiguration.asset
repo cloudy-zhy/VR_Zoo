@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioTypes:
   - Source: {fileID: 0}
-    Clip: {fileID: 0}
-    Group: {fileID: 0}
-    Name: 
+    Clip: {fileID: 8300000, guid: 125827b50ccd9ca4b8925324df07e758, type: 3}
+    Group: {fileID: 7812596682055953328, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: hit
     Volume: 1
-    Pitch: 0
+    Pitch: 1
     Loop: 0
     SpatialBlend: 1
