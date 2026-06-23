@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -72,7 +73,7 @@ public class UIManager : MonoBehaviour
     private void Update()
     {
         // 检测点击跳过打字机效果
-        if (isTyping && Input.GetMouseButtonDown(0))
+        if (isTyping && Mouse.current.leftButton.wasPressedThisFrame)
         {
             SkipTyping();
         }

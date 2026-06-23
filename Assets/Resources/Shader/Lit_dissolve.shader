@@ -155,6 +155,8 @@
             // Includes
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            // 添加 LODCrossFade 支持
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
 
             // Force world space position (needed for dissolve)
             #define REQUIRES_WORLD_SPACE_POS_INTERPOLATOR
@@ -396,6 +398,8 @@
             #pragma multi_compile_instancing
             #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
 
+            // 添加 Core.hlsl 以解决 LerpWhiteTo 未定义
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
 
@@ -509,13 +513,14 @@
                 float2 uv           : TEXCOORD0;
                 float4 positionCS   : SV_POSITION;
                 float3 positionWS   : TEXCOORD1;
+                // 注意：这里没有 UNITY_VERTEX_OUTPUT_STEREO，因为我们移除了 Stereo 宏调用
             };
 
             Varyings DepthDissolveVertex(Attributes input)
             {
                 Varyings output = (Varyings)0;
                 UNITY_SETUP_INSTANCE_ID(input);
-                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+                // 移除了 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output); 以避免 VR 宏错误
 
                 output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
                 output.positionWS = TransformObjectToWorld(input.positionOS.xyz);
@@ -525,7 +530,7 @@
 
             half4 DepthDissolveFragment(Varyings input) : SV_Target
             {
-                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+                // 移除了 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
                 // Dissolve clip
                 float dissolveDist = distance(input.positionWS, _Center.xyz);
@@ -574,6 +579,8 @@
 
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitDepthNormalsPass.hlsl"
+            // 添加 LODCrossFade 支持
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/LODCrossFade.hlsl"
 
             // Override vertex to pass world position
             float4 _Center;
@@ -672,7 +679,7 @@
         }
 
         // ------------------------------------------------------------------
-        // Meta pass with dissolve
+        // Meta pass with dissolve (manually implemented to avoid signature issues)
         Pass
         {
             Name "Meta"
@@ -687,7 +694,7 @@
             #pragma target 2.0
 
             #pragma vertex UniversalVertexMeta
-            #pragma fragment UniversalFragmentMetaLitDissolve
+            #pragma fragment CustomMetaFragment
 
             #pragma shader_feature_local_fragment _SPECULAR_SETUP
             #pragma shader_feature_local_fragment _EMISSION
@@ -701,11 +708,9 @@
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitMetaPass.hlsl"
 
-            half4 UniversalFragmentMetaLitDissolve(Varyings input) : SV_Target
+            // 自定义片段着色器，手动实现 Meta 输出
+            half4 CustomMetaFragment(Varyings input) : SV_Target
             {
-                // The Meta pass doesn't have world position in Varyings.
-                // Dissolve in Meta pass (lightmap baking) is less critical but we add basic support.
-                // Since we can't get world position here easily, we skip dissolve for Meta pass.
                 SurfaceData surfaceData;
                 InitializeStandardLitSurfaceData(input.uv, surfaceData);
 
@@ -754,4 +759,3 @@
     FallBack "Hidden/Universal Render Pipeline/FallbackError"
     CustomEditor "UnityEditor.Rendering.Universal.ShaderGUI.LitShader"
 }
-
