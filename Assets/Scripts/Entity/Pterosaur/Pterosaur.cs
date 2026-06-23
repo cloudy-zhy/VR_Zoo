@@ -38,17 +38,14 @@ namespace Entity.Pterosaur
             }
         }
         // public bool IsArrived { get; private set; }
-        public bool IsCalled  { get; private set; }
         public bool HadDestination { get; private set; }
         public bool HadRequest => _remainReqs != 0;
 
-        public Vector3 Destination { get; private set; }
+        public Vector3 Destination { get; set; }
         public StarLight StarLightCatchTarget { get; private set; }
-        public Vector3 StarLightReturnPosition { get; private set; }
-        public float StarLightChaseSpeed => starLightChaseSpeed;
-        public float StarLightReturnSpeed => starLightReturnSpeed;
-        public float StarLightCatchDistance => starLightCatchDistance;
-        public float StarLightReturnDistance => starLightReturnDistance;
+        public float AirMoveSpeed => airMoveSpeed;
+        public PterosaurStateType NextStateType { get; set; } = PterosaurStateType.Idle;
+        public Transform IdlePosition => idlePosition;
         public bool IsCarryingStarLight { get; private set; }
         public bool HasStarLightTask => StarLightCatchTarget != null ||
                                         IsCarryingStarLight ||
@@ -62,8 +59,9 @@ namespace Entity.Pterosaur
         
         private StateMachine<PterosaurStateType> _fsm;
         private int _remainReqs;
-        private bool _isFsmInitialized;
-        public PterosaurStateType CurrentStateType => _fsm != null ? _fsm.CurrentKey : PterosaurStateType.Idle;
+        private Transform _cam;
+
+        public PterosaurStateType CurrentStateType => _fsm?.CurrentKey ?? PterosaurStateType.Idle;
         Enum ICurStateType.CurrentStateTypeEnum => CurrentStateType;
 
         #endregion
@@ -77,18 +75,12 @@ namespace Entity.Pterosaur
         [SerializeField] private int randomRetryTimes = 20;
 
         [Header("接星光")]
-        [FormerlySerializedAs("giftChaseSpeed")]
-        [SerializeField] private float starLightChaseSpeed = 6f;
-        [FormerlySerializedAs("giftCatchReturnSpeed")]
-        [SerializeField] private float starLightReturnSpeed = 5f;
-        [FormerlySerializedAs("giftCatchRotateSpeed")]
-        [SerializeField] private float starLightCatchRotateSpeed = 540f;
-        [FormerlySerializedAs("giftCatchDistance")]
-        [SerializeField] private float starLightCatchDistance = 0.35f;
-        [FormerlySerializedAs("giftCatchReturnDistance")]
-        [SerializeField] private float starLightReturnDistance = 0.4f;
         [FormerlySerializedAs("giftCatchReturnRadius")]
         [SerializeField] private float starLightReturnRadius = 2f;
+
+        [Header("空中漫游")]
+        [SerializeField] private float airMoveSpeed = 5f;
+        [SerializeField] private Transform idlePosition;
 
         #endregion
         
@@ -103,10 +95,12 @@ namespace Entity.Pterosaur
         private void Start()
         {
             _fsm.Initialize(PterosaurStateType.Idle);
-            _isFsmInitialized = true;
+
             if (autoMove)
                 SetRandomDestination();
             GameManager.Event.Register(StarlightConstant.GameEnd, OnGameEnd);
+
+            _cam = Camera.main.transform;
         }
 
         private void OnDestroy()
@@ -138,8 +132,9 @@ namespace Entity.Pterosaur
             _fsm.AddState(PterosaurStateType.Idle, new IdleState(this, _fsm, "Idle"));
             _fsm.AddState(PterosaurStateType.Move, new MoveState(this, _fsm, "Move"));
             _fsm.AddState(PterosaurStateType.Throw, new ThrowState(this, _fsm, "Throw"));
-            _fsm.AddState(PterosaurStateType.Chase, new StarLightChaseState(this, _fsm, "Fly"));
-            _fsm.AddState(PterosaurStateType.Return, new ReturnToPlayerState(this, _fsm, "Fly"));
+            _fsm.AddState(PterosaurStateType.Chase, new ChaseState(this, _fsm, "Birdlike"));
+            _fsm.AddState(PterosaurStateType.Return, new ReturnState(this, _fsm, "Dash"));
+            _fsm.AddState(PterosaurStateType.MoveAir, new MoveAirState(this, _fsm, "Fly"));
             // _fsm.OnStateChanged += (from, to) =>
             //     Debug.Log($"[Pterosaur:{name}] {from} → {to}");
         }
@@ -169,11 +164,6 @@ namespace Entity.Pterosaur
             }
         }
 
-        public void CallDown()
-        {
-            IsCalled = true;
-        }
-
         public void AddRequest()
         {
             _remainReqs += 1;
@@ -185,16 +175,15 @@ namespace Entity.Pterosaur
         }
 
         /// <summary>
-        /// 尝试让翼龙进入星光追取任务。
+        /// 尝试为翼龙指派星光追取任务。
         /// </summary>
-        public bool TryStartStarLightCatchTask(StarLight starLight)
+        public bool TryAssignStarLightTask(StarLight starLight)
         {
-            if (starLight.IsNull() || _fsm == null || !_isFsmInitialized || HasStarLightTask)
+            if (starLight.IsNull() || HasStarLightTask)
                 return false;
 
             StarLightCatchTarget = starLight;
             IsCarryingStarLight = false;
-            _fsm.ChangeState(PterosaurStateType.Chase);
             return true;
         }
 
@@ -221,49 +210,14 @@ namespace Entity.Pterosaur
         /// </summary>
         public void CreateStarLightReturnPosition()
         {
-            Transform player = Camera.main != null ? Camera.main.transform : transform;
             Vector2 offset = Random.insideUnitCircle * starLightReturnRadius;
-            Vector3 playerPosition = player.position;
+            Vector3 playerPosition = _cam.position;
 
-            StarLightReturnPosition = new Vector3(
+            Destination = new Vector3(
                 playerPosition.x + offset.x,
-                -1,
+                playerPosition.y - 0.3f, // 玩家同高度附近向下一点点偏移
                 playerPosition.z + offset.y
             );
-        }
-
-        /// <summary>
-        /// 用非 NavMesh 的方式直接朝目标点飞行。
-        /// </summary>
-        public void MoveDirectlyTowards(Vector3 targetPosition, float speed)
-        {
-            Transform self = transform;
-            Vector3 currentPosition = self.position;
-            Vector3 direction = targetPosition - currentPosition;
-
-            self.position = Vector3.MoveTowards(
-                currentPosition,
-                targetPosition,
-                speed * Time.deltaTime
-            );
-
-            if (direction.sqrMagnitude <= 0.0001f)
-                return;
-
-            Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
-            self.rotation = Quaternion.RotateTowards(
-                self.rotation,
-                targetRotation,
-                starLightCatchRotateSpeed * Time.deltaTime
-            );
-        }
-
-        /// <summary>
-        /// 判断翼龙是否已经进入目标点指定半径。
-        /// </summary>
-        public bool IsNearPosition(Vector3 position, float distance)
-        {
-            return (transform.position - position).sqrMagnitude <= distance * distance;
         }
 
         #endregion

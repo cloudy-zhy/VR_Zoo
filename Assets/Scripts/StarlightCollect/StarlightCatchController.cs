@@ -61,7 +61,7 @@ namespace StarlightCollect
             if (TryPopAvailable(out Pterosaur pterosaur))
             {
                 starlight.Locked();
-                pterosaur.TryStartStarLightCatchTask(starlight);
+                pterosaur.TryAssignStarLightTask(starlight);
             }
         }
 

@@ -81,13 +81,5 @@ namespace StarlightCollect
                 director.Play();
             }
         }
-        
-        public void TmpGameEnd() => StartCoroutine(TmpGameEndCoroutine());
-
-        private IEnumerator TmpGameEndCoroutine()
-        {
-            yield return new WaitForSeconds(2f);
-            SceneManager.LoadScene("EndScene");
-        }
     }
 }

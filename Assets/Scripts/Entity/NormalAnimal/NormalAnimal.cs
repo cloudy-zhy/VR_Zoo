@@ -46,6 +46,7 @@ namespace Entity.NormalAnimal
             }
         }
         public Vector3 Destination { get; set; }
+        public bool LimitMoveArea { get; private set; }
         
         #endregion
         
@@ -71,8 +72,7 @@ namespace Entity.NormalAnimal
             aus = GetComponentInChildren<AudioSource>();
             nav = GetComponentInParent<NavMeshAgent>();
             
-            if (moveableArea.IsNull())
-                Debug.LogError("未设置可移动区域！");
+            LimitMoveArea = moveableArea != null;
         }
 
         private void Start()
