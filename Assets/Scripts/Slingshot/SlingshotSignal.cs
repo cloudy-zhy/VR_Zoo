@@ -31,6 +31,8 @@ namespace Slingshot
         [SerializeField] private float goToFinalPosTime;
         [SerializeField] private GameObject chiefUI;
 
+        public string toScene;
+
         #endregion
         
         #region Private Variables
@@ -130,11 +132,10 @@ namespace Slingshot
 
         private async void OnEnterEnd()
         {
-            string targetSceneName = "Scene1-2";
             endDetector.gameObject.SetActive(false);
             // 小等一会，也可以不等，后面写跳转逻辑
             await UniTask.WaitForSeconds(2.5f);
-            SceneManager.LoadScene(targetSceneName);
+            SceneManager.LoadScene(toScene);
         }
         
         public async void AllBirdsMoveToPlayer()
@@ -143,6 +144,7 @@ namespace Slingshot
             for (int i = 0; i < finalPos.Length; i++)
             {
                 allBirds[i].StopStateMachine();
+                allBirds[i].Collider.enabled = false;
                 allBirds[i].GrabInteractable.enabled = false;
                 allBirds[i].ani.SetBool("Idle", false);
                 allBirds[i].ani.SetBool("Move", true);
