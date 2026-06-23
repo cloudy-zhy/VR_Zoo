@@ -101,7 +101,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: yilong_bone|dash_birdlike
+      name: yilong_bone|birdlike
       takeName: yilong_bone|dash_birdlike
       internalID: 7809948378308473839
       firstFrame: 0
@@ -112,7 +112,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -130,7 +130,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: yilong_bone|dash_birdlike_to_dash
+      name: yilong_bone|birdlike_to_dash
       takeName: yilong_bone|dash_birdlike_to_dash
       internalID: -123153315542100813
       firstFrame: 0
@@ -159,7 +159,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: yilong_bone|dash_birdlike_to_fly
+      name: yilong_bone|birdlike_to_fly
       takeName: yilong_bone|dash_birdlike_to_fly
       internalID: 8662410698407026566
       firstFrame: 0
@@ -188,7 +188,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: yilong_bone|dash_birdlike_to_glide
+      name: yilong_bone|birdlike_to_glide
       takeName: yilong_bone|dash_birdlike_to_glide
       internalID: 1050915874522763389
       firstFrame: 0
@@ -217,7 +217,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: yilong_bone|dash_to_birdlikedash
+      name: yilong_bone|dash_to_birdlike
       takeName: yilong_bone|dash_to_birdlikedash
       internalID: 6228742509962189239
       firstFrame: 0
@@ -275,7 +275,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: yilong_bone|fly_to_birdlikedash
+      name: yilong_bone|fly_to_birdlike
       takeName: yilong_bone|fly_to_birdlikedash
       internalID: 4203977278149022684
       firstFrame: 0
