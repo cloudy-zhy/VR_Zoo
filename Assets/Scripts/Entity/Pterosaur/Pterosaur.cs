@@ -38,7 +38,6 @@ namespace Entity.Pterosaur
             }
         }
         // public bool IsArrived { get; private set; }
-        public bool IsCalled  { get; private set; }
         public bool HadDestination { get; private set; }
         public bool HadRequest => _remainReqs != 0;
 
@@ -62,7 +61,8 @@ namespace Entity.Pterosaur
         
         private StateMachine<PterosaurStateType> _fsm;
         private int _remainReqs;
-        private bool _isFsmInitialized;
+        private Transform _cam;
+
         public PterosaurStateType CurrentStateType => _fsm != null ? _fsm.CurrentKey : PterosaurStateType.Idle;
         Enum ICurStateType.CurrentStateTypeEnum => CurrentStateType;
 
@@ -103,10 +103,12 @@ namespace Entity.Pterosaur
         private void Start()
         {
             _fsm.Initialize(PterosaurStateType.Idle);
-            _isFsmInitialized = true;
+
             if (autoMove)
                 SetRandomDestination();
             GameManager.Event.Register(StarlightConstant.GameEnd, OnGameEnd);
+
+            _cam = Camera.main.transform;
         }
 
         private void OnDestroy()
@@ -169,10 +171,7 @@ namespace Entity.Pterosaur
             }
         }
 
-        public void CallDown()
-        {
-            IsCalled = true;
-        }
+
 
         public void AddRequest()
         {
@@ -185,16 +184,15 @@ namespace Entity.Pterosaur
         }
 
         /// <summary>
-        /// 尝试让翼龙进入星光追取任务。
+        /// 尝试为翼龙指派星光追取任务。
         /// </summary>
-        public bool TryStartStarLightCatchTask(StarLight starLight)
+        public bool TryAssignStarLightTask(StarLight starLight)
         {
-            if (starLight.IsNull() || _fsm == null || !_isFsmInitialized || HasStarLightTask)
+            if (starLight.IsNull() || HasStarLightTask)
                 return false;
 
             StarLightCatchTarget = starLight;
             IsCarryingStarLight = false;
-            _fsm.ChangeState(PterosaurStateType.Chase);
             return true;
         }
 
@@ -221,9 +219,8 @@ namespace Entity.Pterosaur
         /// </summary>
         public void CreateStarLightReturnPosition()
         {
-            Transform player = Camera.main != null ? Camera.main.transform : transform;
             Vector2 offset = Random.insideUnitCircle * starLightReturnRadius;
-            Vector3 playerPosition = player.position;
+            Vector3 playerPosition = _cam.position;
 
             StarLightReturnPosition = new Vector3(
                 playerPosition.x + offset.x,

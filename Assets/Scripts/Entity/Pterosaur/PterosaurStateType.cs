@@ -5,9 +5,6 @@ namespace Entity.Pterosaur
         Idle,
         Move,
         Throw,
-        Fly,
-        Stay,
-        Touched,
         Chase,
         Return,
     }

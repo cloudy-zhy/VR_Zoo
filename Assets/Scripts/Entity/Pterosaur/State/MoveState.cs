@@ -21,6 +21,13 @@ namespace Entity.Pterosaur.State
         public override void OnUpdate()
         {
             base.OnUpdate();
+
+            if (owner.StarLightCatchTarget != null)
+            {
+                stateMachine.ChangeState(PterosaurStateType.Chase);
+                return;
+            }
+
             if (owner.IsReached)
             {
                 if (owner.HadRequest)

@@ -12,12 +12,17 @@ namespace Entity.Pterosaur.State
         public override void OnUpdate()
         {
             base.OnUpdate();
-            // else if (owner.IsHovered)
-            //     stateMachine.ChangeState(PterosaurStateType.Touched);
-            // else if (owner.IsCalled)
-            //     stateMachine.ChangeState(PterosaurStateType.Fly);
+
+            if (owner.StarLightCatchTarget != null)
+            {
+                stateMachine.ChangeState(PterosaurStateType.Chase);
+                return;
+            }
+
             if (owner.HadDestination)  // 这种情况说明随机路径点选取失败
+            {
                 stateMachine.ChangeState(PterosaurStateType.Move);
+            }
         }
 
         public override void OnExit()
