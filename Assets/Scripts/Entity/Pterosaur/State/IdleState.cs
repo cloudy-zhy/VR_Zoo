@@ -15,7 +15,9 @@ namespace Entity.Pterosaur.State
 
             if (owner.StarLightCatchTarget != null)
             {
-                stateMachine.ChangeState(PterosaurStateType.Chase);
+                owner.Destination = owner.StarLightCatchTarget.transform.position;
+                owner.NextStateType = PterosaurStateType.Chase;
+                stateMachine.ChangeState(PterosaurStateType.MoveAir);
                 return;
             }
 

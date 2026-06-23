@@ -7,5 +7,6 @@ namespace Entity.Pterosaur
         Throw,
         Chase,
         Return,
+        MoveAir,
     }
 }
