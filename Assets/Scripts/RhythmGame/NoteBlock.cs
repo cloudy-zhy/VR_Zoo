@@ -94,7 +94,7 @@ namespace RhythmGame
 
             // SuppressAutoDestroy=true 时由外部（HoldNote）负责销毁
             if (!SuppressAutoDestroy)
-                StartCoroutine(DestroyAfter(1f)); // 粒子效果有1s
+                StartCoroutine(DestroyAfter(0.3f)); // 粒子效果有1s
         }
 
         private void Miss()
@@ -106,7 +106,7 @@ namespace RhythmGame
                 noteRenderer.material.color = missedColor;
 
             OnMissed.Invoke(this);
-            StartCoroutine(DestroyAfter(1f));
+            StartCoroutine(DestroyAfter(0.4f));
         }
 
         private IEnumerator DestroyAfter(float delay)
