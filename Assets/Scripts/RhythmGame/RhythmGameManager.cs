@@ -166,6 +166,7 @@ namespace RhythmGame
 
         private void OnNoteCaught(NoteBlock note)
         {
+            AudioManagerGlobal.Instance.Play("hit");
             hitCount++;          // ← 新增
             Combo++;
             if (Combo > MaxCombo) MaxCombo = Combo;   // ← 新增
