@@ -1229,6 +1229,12 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
+      propertyPath: dialogueAudioMixerGroup
+      value: 
+      objectReference: {fileID: -8297473194290705033, guid: 0250116c199135a4486867393bf38824,
+        type: 2}
+    - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
+        type: 3}
       propertyPath: dialogueSequence.Array.size
       value: 12
       objectReference: {fileID: 0}
@@ -7835,7 +7841,8 @@ AudioSource:
   m_GameObject: {fileID: 993475790}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -737599633395567625, guid: 0250116c199135a4486867393bf38824,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -7882,7 +7889,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -8445,9 +8452,10 @@ AudioSource:
   m_GameObject: {fileID: 1117323318}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8297473194290705033, guid: 0250116c199135a4486867393bf38824,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

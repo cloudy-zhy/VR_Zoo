@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -93,5 +92,16 @@ public class AudioManagerGlobal : PersistentSingleton<AudioManagerGlobal>
             type.Source.Play();
             return;
         }
+    }
+
+    public float GetLength(string name)
+    {
+        if (audioDictionary.TryGetValue(name, out AudioType type))
+        {
+            return type.Clip.length;
+        }
+
+        Debug.LogError("AudioManagerGlobal.GetLength: " + name + " not found");
+        return 0;
     }
 }

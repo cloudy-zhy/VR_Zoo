@@ -21,3 +21,35 @@ MonoBehaviour:
     Pitch: 1
     Loop: 0
     SpatialBlend: 1
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: 4885bb3bfe406a44ab63462c4440da59, type: 3}
+    Group: {fileID: -432378192415937847, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: uiclick
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    SpatialBlend: 0
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: c6dd68b4c268b8b48bb866311bf7ede6, type: 3}
+    Group: {fileID: -432378192415937847, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: uihoverenter
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    SpatialBlend: 0
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: c00193f69f150124cbf3f5671b986b63, type: 3}
+    Group: {fileID: -432378192415937847, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: uihoverexit
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    SpatialBlend: 0
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: d4f878dc6e4d44447a792ab489e9bdbd, type: 3}
+    Group: {fileID: -737599633395567625, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: invitation
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    SpatialBlend: 1
