@@ -3448,6 +3448,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 169427926}
     m_Modifications:
+    - target: {fileID: 5046021817348220820, guid: 219739e7a4c76204db26eb173d59dcbd,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8338641498997986285, guid: 219739e7a4c76204db26eb173d59dcbd,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -5721,6 +5726,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 169427926}
     m_Modifications:
+    - target: {fileID: 5046021817348220820, guid: 219739e7a4c76204db26eb173d59dcbd,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8338641498997986285, guid: 219739e7a4c76204db26eb173d59dcbd,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -8681,6 +8691,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6060857401766657390, guid: 9043eb2beb4f731428721fac903fc71f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10618,7 +10633,7 @@ PrefabInstance:
     - target: {fileID: 5046021817348220820, guid: 219739e7a4c76204db26eb173d59dcbd,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8338641498997986285, guid: 219739e7a4c76204db26eb173d59dcbd,
         type: 3}
@@ -14784,7 +14799,7 @@ PrefabInstance:
     - target: {fileID: 5046021817348220820, guid: 219739e7a4c76204db26eb173d59dcbd,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8338641498997986285, guid: 219739e7a4c76204db26eb173d59dcbd,
         type: 3}
@@ -15335,7 +15350,7 @@ PrefabInstance:
     - target: {fileID: 5046021817348220820, guid: 219739e7a4c76204db26eb173d59dcbd,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8338641498997986285, guid: 219739e7a4c76204db26eb173d59dcbd,
         type: 3}
@@ -24537,6 +24552,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1351652114}
     m_Modifications:
+    - target: {fileID: 2109709745044380960, guid: d661f645c81f29b4aa596207971ae441,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 16fba6d30ed741d4a9fdd6e79ee2f3ac, type: 3}
+    - target: {fileID: 2109709745044380960, guid: d661f645c81f29b4aa596207971ae441,
+        type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: -737599633395567625, guid: 0250116c199135a4486867393bf38824,
+        type: 2}
     - target: {fileID: 2130331530761912218, guid: d661f645c81f29b4aa596207971ae441,
         type: 3}
       propertyPath: m_InteractionManager

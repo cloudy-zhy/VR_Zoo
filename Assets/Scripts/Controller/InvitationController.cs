@@ -26,7 +26,8 @@ public class InvitationController : MonoBehaviour
 
     private RectTransform m_rectTransform;
     private Image m_inviteImage;
-    private AudioSource m_voiceAudio;
+    // private AudioSource m_voiceAudio;
+    private const string invitationAudioName = "invitation";
     private GameObject m_inviteGameObject;
     
     private Tween m_floatTween;
@@ -36,7 +37,7 @@ public class InvitationController : MonoBehaviour
         m_inviteGameObject = transform.GetChild(0).gameObject;
         m_rectTransform = m_inviteGameObject.GetComponent<RectTransform>();
         m_inviteImage = m_inviteGameObject.GetComponent<Image>();
-        m_voiceAudio = m_inviteGameObject.GetComponent<AudioSource>();
+        // m_voiceAudio = m_inviteGameObject.GetComponent<AudioSource>();
         m_inviteGameObject.SetActive(false);
         GameManager.Event.Register("MenuBtn.StartGame", PlayIntro);
     }
@@ -94,9 +95,9 @@ public class InvitationController : MonoBehaviour
 
     private void PlayVoiceAndFade()
     {
-        m_voiceAudio.Play();
+        AudioManagerGlobal.Instance.PlayInThisGameObject(invitationAudioName, m_inviteGameObject);
 
-        float totalTime = m_voiceAudio.clip.length;
+        float totalTime = AudioManagerGlobal.Instance.GetLength(invitationAudioName);
         float fadeDelay = Mathf.Max(0f, totalTime - fadeStartBeforeEnd);
 
         // 使用 Sequence 处理淡出，并在完成后 Kill 掉浮动动画
