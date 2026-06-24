@@ -497,7 +497,7 @@ PrefabInstance:
     - target: {fileID: 1226321147593326779, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 2523323614358868798, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
@@ -1356,7 +1356,7 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[0].dialogueText
-      value: "\u7528\u5C04\u7EBF\u7784\u51C6\u6E21\u6E21\u9E1F\uFF0C\u63E1\u4F4F\u63E1\u628A\u952E\u6293\u4F4F\u5B83\u3002"
+      value: "\u7528\u5C04\u7EBF\u7784\u51C6\u6E21\u6E21\u9E1F\uFF0C\u63E1\u7D27\u62F3\u5934\u6293\u4F4F\u5B83\u3002"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -1376,12 +1376,12 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[1].dialogueText
-      value: "\u628A\u5B83\u653E\u5230\u5F39\u5F13\u4E0A\uFF0C\u677E\u5F00\u63E1\u628A\u952E\u653E\u4E0A\u53BB\u3002"
+      value: "\u628A\u5B83\u653E\u5230\u5F39\u5F13\u4E0A\uFF0C\u677E\u5F00\u62F3\u5934\u653E\u4E0A\u53BB\u3002"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[2].dialogueText
-      value: "\u518D\u6B21\u6309\u4F4F\u63E1\u628A\u952E\u6293\u4F4F\u5B83\uFF0C\u7528\u529B\u5411\u540E\u62C9\uFF01"
+      value: "\u518D\u6B21\u63E1\u7D27\u62F3\u5934\u6293\u4F4F\u5B83\uFF0C\u7528\u529B\u5411\u540E\u62C9\uFF01"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -1391,7 +1391,7 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.data[4].dialogueText
-      value: "\u597D\uFF01\u73B0\u5728\u677E\u5F00\u63E1\u628A\u952E\uFF0C\u53D1\u5C04\uFF01"
+      value: "\u597D\uFF01\u73B0\u5728\u677E\u5F00\u62F3\u5934\uFF0C\u53D1\u5C04\uFF01"
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
@@ -9996,7 +9996,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8477477680821523469, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
