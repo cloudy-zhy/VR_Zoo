@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+
 /// <summary>
 /// 星星闪烁组件
 /// </summary>
+[RequireComponent(typeof(XRGrabInteractable))]
 public class StarTwinkle : MonoBehaviour
 {
     public float delay = 0f;
@@ -13,10 +16,12 @@ public class StarTwinkle : MonoBehaviour
     private float timer;
     private bool started;
     private Color baseColor;
-
+    private XRGrabInteractable interactable;
+    private Rigidbody rb;
     void Awake()
     {
         Renderer rend = GetComponent<Renderer>();
+        interactable = GetComponent<XRGrabInteractable>();
         if (rend != null)
             mat = rend.material;
     }

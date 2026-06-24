@@ -88,7 +88,7 @@ public class Portal : MonoBehaviour
             linkedPortal.screen.material.SetTexture("_MainTex", viewTexture);
     }
 
-    void LateUpdate() { HandleTravellers(); }
+    void FixedUpdate() { HandleTravellers(); }
 
     public void PrePortalRender() { foreach (var t in trackedTravellers) UpdateSliceParams(t); }
     public void Render() { }
@@ -117,11 +117,18 @@ public class Portal : MonoBehaviour
             int sOld = System.Math.Sign(Vector3.Dot(t.previousOffsetFromPortal, transform.forward));
             if (s != sOld)
             {
-                var po = tt.position; var ro = tt.rotation;
+                var po = tt.position; 
+                var ro = tt.rotation;
                 t.Teleport(transform, linkedPortal.transform, m.GetColumn(3), m.rotation);
+                Material skybox = linkedPortal.GetComponentInParent<SimLevel>().skybox;
+                if (playerCam.TryGetComponent(out Skybox skybox1))
+                    skybox1.material = skybox;
+                else
+                    playerCam.gameObject.AddComponent<Skybox>().material = skybox;
                 if (t.graphicsClone != null) t.graphicsClone.transform.SetPositionAndRotation(po, ro);
                 linkedPortal.OnTravellerEnterPortal(t);
-                trackedTravellers.RemoveAt(i); i--;
+                trackedTravellers.RemoveAt(i); 
+                i--;
             }
             else
             {

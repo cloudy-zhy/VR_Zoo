@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99cc3fb6e916466abad3ffb3cabc6e16, type: 3}
+  m_Name: Scene4_01
+  m_EditorClassIdentifier: 
+  characterName: "\u5C0F\u7FFC\u9F99"
+  dialogText: "\u5C31\u662F\u8FD9\u91CC\u4E86\u3002\u4F60\u628A\u661F\u5149\u80FD\u91CF\u6C47\u8FDB\u53BB\uFF0C\u4EEA\u5F0F\u5C31\u5F00\u59CB\u4E86\u3002"
+  characterPortrait: {fileID: -190112076, guid: db24072550f2c4b499e0fdf5fc3f9747,
+    type: 3}
+  characterState: default
+  voiceClip: {fileID: 0}
+  useAudioDuration: 1
+  fixedDuration: 3
+  endPadding: 0.15

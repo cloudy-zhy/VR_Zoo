@@ -3,6 +3,7 @@ using UnityEngine.Playables;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using DG.Tweening;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace TimelineSignal
 {
