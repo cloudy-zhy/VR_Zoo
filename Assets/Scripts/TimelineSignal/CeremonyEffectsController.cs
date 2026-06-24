@@ -28,14 +28,20 @@ namespace TimelineSignal
         [SerializeField] private Transform explosionPoint;
 
         [Header("hoshi sora")]
-        [SerializeField] private GameObject starfieldRoot;
-        [SerializeField] private GameObject starPrefab;
-        [SerializeField] private int starCount = 80;
+        [Tooltip("场景中预置的动物物体（失活状态），每个一种动物")]
+        [SerializeField] private GameObject[] animalObjects;
+        [Tooltip("每个动物在星空中使用的 Shadow 材质")]
+        [SerializeField] private Material animalShadowMaterial;
+        [Tooltip("星空球壳半径")]
         [SerializeField] private float starfieldRadius = 60f;
+        [Tooltip("星空最低高度")]
         [SerializeField] private float starMinHeight = 15f;
+        [Tooltip("星空最高高度")]
         [SerializeField] private float starMaxHeight = 50f;
-        [SerializeField] private float starfieldSpawnDuration = 3f;
-        [SerializeField] private Texture2D[] animalSilhouetteTextures;
+        [Tooltip("星星逐个出现的间隔（秒）")]
+        [SerializeField] private float starfieldSpawnInterval = 0.1f;
+        [Tooltip("每个动物的 SpiritSummonConfig（和 animalObjects 一一对应）")]
+        [SerializeField] private StarlightCollect.SpiritSummonConfig[] spiritConfigs;
 
         [Header("Timeline")]
         [SerializeField] private PlayableDirector ceremonyDirector;
@@ -48,8 +54,8 @@ namespace TimelineSignal
         #region Private
 
         private GameObject beamInstance;
-        private List<GameObject> starInstances = new List<GameObject>();
         private bool isPlaying;
+        private Transform starfieldRoot;
 
         #endregion
 
@@ -67,20 +73,17 @@ namespace TimelineSignal
                 return;
             }
 
-            // 实例化光束
-            beamInstance = beamPrefab != null 
+            beamInstance = beamPrefab != null
                 ? Instantiate(beamPrefab, altarCenter.position, Quaternion.identity, altarCenter)
                 : CreateBeamDefault();
 
             beamInstance.transform.localPosition = altarCenter.position;
             beamInstance.transform.localScale = new Vector3(beamStartWidth, 0.01f, beamStartWidth);
 
-            // 光束冲天
             await beamInstance.transform.DOScaleY(beamMaxHeight, beamRiseDuration)
                 .SetEase(Ease.OutQuad)
                 .AsyncWaitForCompletion();
 
-            // 光束尖端收窄
             await beamInstance.transform.DOScaleX(beamEndWidth, 0.3f).SetEase(Ease.InQuad).AsyncWaitForCompletion();
             await beamInstance.transform.DOScaleZ(beamEndWidth, 0.3f).SetEase(Ease.InQuad).AsyncWaitForCompletion();
         }
@@ -90,7 +93,6 @@ namespace TimelineSignal
         /// </summary>
         public async void ExplodeBeam()
         {
-            // 播放爆炸粒子
             if (explosionParticle != null)
             {
                 if (explosionPoint != null)
@@ -101,66 +103,108 @@ namespace TimelineSignal
                 explosionParticle.Play();
             }
 
-            // 光束消散
             if (beamInstance != null)
             {
                 Material beamMat = beamInstance.GetComponent<Renderer>()?.material;
                 if (beamMat != null)
-                {
                     await beamMat.DOFade(0f, 0.8f).AsyncWaitForCompletion();
-                }
                 else
-                {
                     await UniTask.WaitForSeconds(0.8f);
-                }
+
                 Destroy(beamInstance);
                 beamInstance = null;
             }
         }
 
         /// <summary>
-        /// Phase 3: 黑夜散满璀璨星河，星光是不同动物的剪影
+        /// Phase 3: 激活预置的动物剪影物体，随机放置到祭坛上空，绕祭坛旋转
         /// </summary>
         public async void SpawnStarfield()
         {
+            if (animalObjects == null || animalObjects.Length == 0)
+            {
+                Debug.LogWarning("[CeremonyEffects] animalObjects 未设置");
+                return;
+            }
+
+            // 创建星空根节点
             if (starfieldRoot == null)
             {
-                starfieldRoot = new GameObject("StarfieldRoot");
-                starfieldRoot.transform.position = altarCenter != null ? altarCenter.position : Vector3.zero;
+                starfieldRoot = new GameObject("StarfieldRoot").transform;
+                starfieldRoot.position = altarCenter != null ? altarCenter.position : Vector3.zero;
             }
 
-            starfieldRoot.SetActive(true);
+            Vector3 center = starfieldRoot.position;
 
-            Vector3 center = starfieldRoot.transform.position;
-
-            for (int i = 0; i < starCount; i++)
+            for (int i = 0; i < animalObjects.Length; i++)
             {
-                SpawnStar(center, i);
-                // 分批生成，避免卡顿
-                if (i % 10 == 0)
-                    await UniTask.Yield();
-            }
+                GameObject obj = animalObjects[i];
+                if (obj == null) continue;
 
-            // 总持续时间
-            float elapsed = 0f;
-            while (elapsed < starfieldSpawnDuration)
-            {
-                elapsed += Time.deltaTime;
-                await UniTask.Yield();
+                // 随机星空位置（上半球壳）
+                Vector3 randomDir = Random.onUnitSphere;
+                randomDir.y = Mathf.Abs(randomDir.y);
+                randomDir.Normalize();
+
+                float radius = Random.Range(starfieldRadius * 0.4f, starfieldRadius);
+                Vector3 pos = center + randomDir * radius;
+                pos.y = center.y + Random.Range(starMinHeight, starMaxHeight);
+
+                // 激活并配置
+                obj.transform.position = pos;
+                obj.transform.rotation = Quaternion.identity;
+
+                // 获取或添加 StarTwinkleInteraction
+                var interaction = obj.GetComponent<StarTwinkleInteraction>();
+                if (interaction == null)
+                    interaction = obj.AddComponent<StarTwinkleInteraction>();
+
+                // 分配 Shadow 材质和配置
+                if (animalShadowMaterial != null)
+                    interaction.shadowMaterial = animalShadowMaterial;
+
+                if (spiritConfigs != null && i < spiritConfigs.Length && spiritConfigs[i] != null)
+                    interaction.summonConfig = spiritConfigs[i];
+
+                // 放入星空
+                interaction.PlaceInSky(starfieldRoot, pos);
+
+                // 添加闪烁
+                var twinkle = obj.GetComponent<StarTwinkle>();
+                if (twinkle == null)
+                    twinkle = obj.AddComponent<StarTwinkle>();
+                twinkle.delay = Random.Range(0f, 1.5f);
+                twinkle.twinkleSpeed = Random.Range(0.5f, 1.5f);
+
+                // 添加 XRGrabInteractable（如果没有）
+                var grab = obj.GetComponent<XRGrabInteractable>();
+                if (grab == null) grab = obj.AddComponent<XRGrabInteractable>();
+                grab.throwOnDetach = false;
+                grab.trackRotation = false;
+                grab.trackPosition = false;
+
+                // 添加 Rigidbody（如果没有）
+                var rb = obj.GetComponent<Rigidbody>();
+                if (rb == null) rb = obj.AddComponent<Rigidbody>();
+                rb.isKinematic = true;
+                rb.useGravity = false;
+
+                await UniTask.WaitForSeconds(starfieldSpawnInterval);
             }
         }
 
         /// <summary>
-        /// Phase 4: 星星开始闪烁
+        /// Phase 4: 所有星星开始闪烁
         /// </summary>
         public void BeginTwinkle()
         {
-            foreach (var star in starInstances)
+            if (animalObjects == null) return;
+            foreach (var obj in animalObjects)
             {
-                if (star == null) continue;
-                StarTwinkle starTwinkle = star.GetComponent<StarTwinkle>();
-                if (starTwinkle != null)
-                    starTwinkle.StartTwinkle();
+                if (obj == null || !obj.activeSelf) continue;
+                var twinkle = obj.GetComponent<StarTwinkle>();
+                if (twinkle != null)
+                    twinkle.StartTwinkle();
             }
         }
 
@@ -181,24 +225,29 @@ namespace TimelineSignal
             if (explosionParticle != null)
                 explosionParticle.Stop();
 
-            foreach (var star in starInstances)
+            if (animalObjects != null)
             {
-                if (star != null)
-                    star.transform.DOKill();
+                foreach (var obj in animalObjects)
+                {
+                    if (obj != null)
+                        obj.transform.DOKill();
+                }
             }
         }
 
         /// <summary>
-        /// 清理星空
+        /// 清理星空（失活所有动物剪影）
         /// </summary>
         public void ClearStarfield()
         {
-            foreach (var star in starInstances)
+            if (animalObjects != null)
             {
-                if (star != null)
-                    Destroy(star);
+                foreach (var obj in animalObjects)
+                {
+                    if (obj != null)
+                        obj.SetActive(false);
+                }
             }
-            starInstances.Clear();
         }
 
         #endregion
@@ -210,10 +259,8 @@ namespace TimelineSignal
             GameObject beam = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             beam.name = "CeremonyBeam";
 
-            // 移除碰撞体
             Destroy(beam.GetComponent<Collider>());
 
-            // 创建发光材质
             Material beamMat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
             beamMat.SetColor("_BaseColor", new Color(1f, 1f, 1f, 0.9f));
             beamMat.EnableKeyword("_EMISSION");
@@ -221,76 +268,6 @@ namespace TimelineSignal
             beam.GetComponent<Renderer>().material = beamMat;
 
             return beam;
-        }
-
-        private void SpawnStar(Vector3 center, int index)
-        {
-            // 球壳上随机分布
-            Vector3 randomDir = Random.onUnitSphere;
-            randomDir.y = Mathf.Abs(randomDir.y); // 上半球
-            randomDir.Normalize();
-
-            float radius = Random.Range(starfieldRadius * 0.3f, starfieldRadius);
-            Vector3 pos = center + randomDir * radius;
-            pos.y = center.y + Random.Range(starMinHeight, starMaxHeight);
-
-            GameObject star;
-            if (starPrefab != null)
-            {
-                star = Instantiate(starPrefab, pos, Quaternion.identity, starfieldRoot.transform);
-            }
-            else
-            {
-                star = CreateStarDefault(pos);
-            }
-
-            // 随机大小
-            float scale = Random.Range(0.3f, 1.5f);
-            star.transform.localScale = Vector3.one * scale;
-
-            // 面向下方（祭坛方向）
-            star.transform.LookAt(center);
-            star.transform.Rotate(90f, 0f, 0f); // 让平面面向下方
-
-            // 随机动物剪影
-            if (animalSilhouetteTextures != null && animalSilhouetteTextures.Length > 0)
-            {
-                Texture2D tex = animalSilhouetteTextures[Random.Range(0, animalSilhouetteTextures.Length)];
-                Renderer rend = star.GetComponent<Renderer>();
-                if (rend != null && rend.material != null)
-                {
-                    rend.material.SetTexture("_BaseMap", tex);
-                    rend.material.SetTexture("_MainTex", tex);
-                }
-            }
-
-            // 添加闪烁组件
-            StarTwinkle twinkle = star.GetComponent<StarTwinkle>();
-            if (twinkle == null)
-                twinkle = star.AddComponent<StarTwinkle>();
-            twinkle.delay = Random.Range(0f, 2f);
-            twinkle.twinkleSpeed = Random.Range(0.5f, 2f);
-
-            starInstances.Add(star);
-        }
-
-        private GameObject CreateStarDefault(Vector3 position)
-        {
-            GameObject star = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            star.name = "CeremonyStar";
-            star.transform.position = position;
-            star.transform.SetParent(starfieldRoot != null ? starfieldRoot.transform : null);
-
-            Destroy(star.GetComponent<Collider>());
-
-            Material starMat = new Material(Shader.Find("Universal Render Pipeline/Particles/Unlit"));
-            starMat.SetColor("_BaseColor", new Color(1f, 1f, 0.9f, 0.8f));
-            starMat.EnableKeyword("_EMISSION");
-            starMat.SetColor("_EmissionColor", new Color(1f, 0.95f, 0.8f) * 1.5f);
-            starMat.SetFloat("_Blend", 0f);
-            star.GetComponent<Renderer>().material = starMat;
-
-            return star;
         }
 
         #endregion

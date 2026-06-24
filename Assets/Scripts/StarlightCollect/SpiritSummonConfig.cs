@@ -15,8 +15,8 @@ namespace StarlightCollect
         [Tooltip("出现时的介绍文本")]
         [TextArea(2, 5)]
         public string introductionText = "一只神秘的动物出现了……";
-        [Tooltip("剪影纹理（用在星空中显示）")]
-        public Texture2D silhouetteTexture;
+        // [Tooltip("剪影纹理（用在星空中显示）")]
+        // public Texture2D silhouetteTexture;
 
         [Header("Summon Effect")]
         [Tooltip("从星空坠落阶段的持续时间")]
@@ -31,8 +31,8 @@ namespace StarlightCollect
         public Vector3 landOffset = new Vector3(0f, 0f, 2f);
 
         [Header("Spirit Entity")]
-        [Tooltip("灵魂实体预制体（暂时可用一个半透明球/模型代替）")]
-        public GameObject spiritPrefab;
+        // [Tooltip("灵魂实体预制体（暂时可用一个半透明球/模型代替）")]
+        // public GameObject spiritPrefab;
         [Tooltip("实体初始缩放")]
         public float spiritScale = 1f;
         [Tooltip("挥手动画时长")]

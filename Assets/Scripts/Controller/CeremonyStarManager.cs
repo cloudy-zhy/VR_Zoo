@@ -76,9 +76,9 @@ public class CeremonyStarManager : MonoBehaviour
             if (star == null) continue;
 
             // 显示星星
-            if (star.starRenderer != null)
+            if (star.mainRenderer != null)
             {
-                star.starRenderer.enabled = true;
+                star.mainRenderer.enabled = true;
                 // 重新启动闪烁
                 var twinkle = star.GetComponent<StarTwinkle>();
                 if (twinkle != null)
