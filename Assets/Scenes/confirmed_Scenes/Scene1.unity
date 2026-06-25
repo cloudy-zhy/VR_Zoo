@@ -4472,7 +4472,7 @@ MonoBehaviour:
   - {fileID: 802530828}
   goToFinalPosTime: 5
   chiefUI: {fileID: 2028438472}
-  toScene: "Scene2_\u97F3\u6E38"
+  toScene: Scene1-2
 --- !u!1 &619049495
 GameObject:
   m_ObjectHideFlags: 0
