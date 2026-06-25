@@ -3,6 +3,7 @@ using RhythmGame;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using static UnityEngine.Rendering.BoolParameter;
 
 public class Scene2Manager : MonoBehaviour
@@ -15,12 +16,19 @@ public class Scene2Manager : MonoBehaviour
     public GameObject billboard;                 // 进度条示例
     public List<float> ChapterDuration;          // 每一关的时长
 
+    [SerializeField] private PlayableDirector opening;
+
     void Start()
     {
         dialogueController = DialogueController.Instance;
         rhythmGameManager = FindObjectOfType<RhythmGameManager>();
-        StartCoroutine(ExecuteSequence());
+        // StartCoroutine(ExecuteSequence());
+        opening.Play();
         progressBar = billboard.GetComponent<BillboardProgressBar>();
+    }
+    public void StartExecuteSequence()
+    {
+        StartCoroutine(ExecuteSequence());
     }
 
     IEnumerator ExecuteSequence()
