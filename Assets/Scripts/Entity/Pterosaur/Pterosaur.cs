@@ -63,6 +63,7 @@ namespace Entity.Pterosaur
 
         public PterosaurStateType CurrentStateType => _fsm?.CurrentKey ?? PterosaurStateType.Idle;
         Enum ICurStateType.CurrentStateTypeEnum => CurrentStateType;
+        private int m_areaMask;
 
         #endregion
 
@@ -95,7 +96,8 @@ namespace Entity.Pterosaur
         private void Start()
         {
             _fsm.Initialize(PterosaurStateType.Idle);
-
+            
+            m_areaMask = 1 << NavMesh.GetAreaFromName("Fly");
             if (autoMove)
                 SetRandomDestination();
             GameManager.Event.Register(StarlightConstant.GameEnd, OnGameEnd);
@@ -155,7 +157,7 @@ namespace Entity.Pterosaur
                     randomCircle.y
                 );
 
-                if (NavMesh.SamplePosition(random, out NavMeshHit hit, 5f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(random, out NavMeshHit hit, 5f, m_areaMask))
                 {
                     HadDestination = true;
                     Destination = hit.position;
