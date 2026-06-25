@@ -13181,7 +13181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &736353578
 Transform:
   m_ObjectHideFlags: 0
@@ -14250,7 +14250,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 736353579}
           m_TargetAssemblyTypeName: Controller.LadderRevealController, Assembly-CSharp
-          m_MethodName: PlayReveal
+          m_MethodName: 
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -36980,20 +36980,12 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2864716898367820767, guid: 9474770ef9204ee419ec40d582b1d80d,
         type: 3}
-      insertIndex: -1
+      insertIndex: 2
       addedObject: {fileID: 2721895960221057583}
     - targetCorrespondingSourceObject: {fileID: 2864716898367820767, guid: 9474770ef9204ee419ec40d582b1d80d,
         type: 3}
-      insertIndex: -1
+      insertIndex: 3
       addedObject: {fileID: 2721895960221057582}
-    - targetCorrespondingSourceObject: {fileID: 2864716898367820767, guid: 9474770ef9204ee419ec40d582b1d80d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2721895960221057581}
-    - targetCorrespondingSourceObject: {fileID: 2864716898367820767, guid: 9474770ef9204ee419ec40d582b1d80d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2721895960221057580}
   m_SourcePrefab: {fileID: 100100000, guid: 9474770ef9204ee419ec40d582b1d80d, type: 3}
 --- !u!4 &2721895960221057577 stripped
 Transform:
@@ -37013,41 +37005,6 @@ BoxCollider:
     type: 3}
   m_PrefabInstance: {fileID: 2721895960221057576}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2721895960221057580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2721895960221057578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0a1302d0d134fa8a2a5b3bf4aec3c20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PermittedDisplacementAxes: -1
-  m_ConstrainedAxisDisplacementMode: 1
-  m_TwoHandedRotationMode: 1
-  m_AllowOneHandedScaling: 1
-  m_AllowTwoHandedScaling: 0
-  m_OneHandedScaleSpeed: 0.5
-  m_ThresholdMoveRatioForScale: 0.05
-  m_ClampScaling: 1
-  m_MinimumScaleRatio: 0.25
-  m_MaximumScaleRatio: 2
-  m_ScaleMultiplier: 0.25
---- !u!114 &2721895960221057581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2721895960221057578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b175d279a32e4d939abc38eafc829a91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2721895960221057582
 MonoBehaviour:
   m_ObjectHideFlags: 0
