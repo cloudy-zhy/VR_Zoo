@@ -455,6 +455,7 @@ MonoBehaviour:
   beatmap:
   - {fileID: 11400000, guid: 11acbfdeeeab23943985e0dfbcf4706e, type: 2}
   - {fileID: 11400000, guid: b1ec9d6f4a9077b49868e7a1aa461660, type: 2}
+  - {fileID: 11400000, guid: 5e57c216eea3a2849bcf00ebfa71d2d3, type: 2}
   tracks:
   - {fileID: 1390763407}
   - {fileID: 86219460}
@@ -1678,6 +1679,7 @@ MonoBehaviour:
   ChapterDuration:
   - 5
   - 90
+  - 169
 --- !u!4 &749909171
 Transform:
   m_ObjectHideFlags: 0

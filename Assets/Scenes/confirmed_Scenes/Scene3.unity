@@ -35863,6 +35863,11 @@ PrefabInstance:
       objectReference: {fileID: 2068433818}
     - target: {fileID: 9199283817961586154, guid: 72a00e6784e137245bfaf4dd7c1276c5,
         type: 3}
+      propertyPath: shotCoolDown
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9199283817961586154, guid: 72a00e6784e137245bfaf4dd7c1276c5,
+        type: 3}
       propertyPath: shotLineOffsetMultiplier
       value: 2
       objectReference: {fileID: 0}
