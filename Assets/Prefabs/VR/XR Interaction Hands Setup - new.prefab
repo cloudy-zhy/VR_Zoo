@@ -13623,6 +13623,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hand Menu
       objectReference: {fileID: 0}
+    - target: {fileID: 5830189613322687471, guid: 30194602712a0eb4980318e2379d1bb8,
+        type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830189613322687471, guid: 30194602712a0eb4980318e2379d1bb8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6e9eee718cda80c46a3d2474b5261788,
+        type: 3}
+    - target: {fileID: 5830189613322687471, guid: 30194602712a0eb4980318e2379d1bb8,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830189613322687471, guid: 30194602712a0eb4980318e2379d1bb8,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830189613322687471, guid: 30194602712a0eb4980318e2379d1bb8,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6265241855250672022, guid: 30194602712a0eb4980318e2379d1bb8,
         type: 3}
       propertyPath: m_AnchorMax.y

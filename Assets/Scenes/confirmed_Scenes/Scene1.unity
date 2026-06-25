@@ -504,6 +504,11 @@ PrefabInstance:
       propertyPath: far clip plane
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 2196939988081740487, guid: 7940f436866528e449df02f6a1bc2082,
+        type: 3}
+      propertyPath: m_Text
+      value: "\u5F53\u524D\u7AD9\u70B9\uFF1A\u6BDB\u91CC\u6C42\u65AF\u6C99\u6EE9"
+      objectReference: {fileID: 0}
     - target: {fileID: 2523323614358868798, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
       propertyPath: m_IsActive
