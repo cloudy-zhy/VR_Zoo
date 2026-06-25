@@ -518,6 +518,7 @@ MonoBehaviour:
   beatmap:
   - {fileID: 11400000, guid: 11acbfdeeeab23943985e0dfbcf4706e, type: 2}
   - {fileID: 11400000, guid: b1ec9d6f4a9077b49868e7a1aa461660, type: 2}
+  - {fileID: 11400000, guid: 5e57c216eea3a2849bcf00ebfa71d2d3, type: 2}
   tracks:
   - {fileID: 1390763407}
   - {fileID: 86219460}
@@ -1609,7 +1610,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: 2d221f28044c63e49aaeebf690b717d9, type: 3}
+      objectReference: {fileID: 8300000, guid: 18256a960242cf74b86c50543962e8bc, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[2]
@@ -1866,7 +1867,8 @@ MonoBehaviour:
   ChapterDuration:
   - 5
   - 90
-  opening: {fileID: 0}
+  - 164
+  opening: {fileID: 33084330}
 --- !u!4 &749909171
 Transform:
   m_ObjectHideFlags: 0

@@ -16,116 +16,48 @@ MonoBehaviour:
   music: {fileID: 8300000, guid: cb133f176e42db94a93f59260c368b30, type: 3}
   bpm: 143.6
   notes:
-  - track: 0
-    hitTime: 1.37
-    isHold: 0
-    holdDuration: 0
-  - track: 1
+  - track: 2
     hitTime: 1.602
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 1.834
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 2.252
-    isHold: 0
-    holdDuration: 0
-  - track: 0
+  - track: 1
     hitTime: 2.647
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 2.879
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 3.065
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 3.251
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 3.437
     isHold: 0
     holdDuration: 0
-  - track: 1
+  - track: 2
     hitTime: 3.878
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 4.296
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 4.505
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 4.69
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 4.899
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 5.085
+    hitTime: 4.296
     isHold: 0
     holdDuration: 0
   - track: 3
     hitTime: 5.503
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 5.944
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 6.153
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 6.362
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 6.571
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 6.803
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 7.291
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 7.709
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 2
     hitTime: 7.941
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 8.15
-    isHold: 0
-    holdDuration: 0
   - track: 1
-    hitTime: 8.313
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 8.522
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 8.94
     isHold: 0
     holdDuration: 0
   - track: 0
@@ -136,14 +68,6 @@ MonoBehaviour:
     hitTime: 9.567
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 9.776
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 9.961
-    isHold: 0
-    holdDuration: 0
   - track: 0
     hitTime: 10.147
     isHold: 0
@@ -152,27 +76,19 @@ MonoBehaviour:
     hitTime: 10.565
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 11.029
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 11.262
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 11.447
+    hitTime: 11.029
     isHold: 0
     holdDuration: 0
   - track: 1
     hitTime: 11.68
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 11.935
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 1
     hitTime: 12.492
     isHold: 0
     holdDuration: 0
@@ -180,104 +96,28 @@ MonoBehaviour:
     hitTime: 13.142
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 13.491
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 13.769
-    isHold: 0
-    holdDuration: 0
   - track: 3
     hitTime: 14.303
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 14.721
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 15.093
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 15.464
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 15.999
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 17.647
-    isHold: 0
-    holdDuration: 0
-  - track: 1
     hitTime: 18.135
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 18.46
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 18.831
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 18.947
-    isHold: 0
-    holdDuration: 0
-  - track: 1
     hitTime: 19.458
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 1
     hitTime: 19.853
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 0
     hitTime: 20.132
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 1
     hitTime: 20.364
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 20.643
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 20.921
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 21.153
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 21.293
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 21.78
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 22.221
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 22.5
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 22.756
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 23.336
     isHold: 0
     holdDuration: 0
   - track: 2
@@ -288,43 +128,19 @@ MonoBehaviour:
     hitTime: 24.242
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 24.52
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 24.776
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 25.008
+    hitTime: 24.776
     isHold: 0
     holdDuration: 0
   - track: 3
     hitTime: 25.24
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 25.472
-    isHold: 0
-    holdDuration: 0
-  - track: 1
+  - track: 2
     hitTime: 25.728
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 26.03
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 26.494
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 26.982
-    isHold: 0
-    holdDuration: 0
-  - track: 1
     hitTime: 27.423
     isHold: 0
     holdDuration: 0
@@ -332,35 +148,15 @@ MonoBehaviour:
     hitTime: 27.771
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 27.934
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 28.096
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 28.282
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 28.491
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 28.839
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 29.443
     isHold: 0
     holdDuration: 0
   - track: 1
     hitTime: 29.791
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 30.047
     isHold: 0
     holdDuration: 0
@@ -368,75 +164,23 @@ MonoBehaviour:
     hitTime: 30.395
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 31.672
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 32.113
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 32.369
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 32.624
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 32.949
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 33.344
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 33.739
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 33.971
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 34.18
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 34.505
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 34.807
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 35.109
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 35.248
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 35.527
+    hitTime: 34.319
     isHold: 0
     holdDuration: 0
   - track: 2
     hitTime: 35.782
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 36.014
-    isHold: 0
-    holdDuration: 0
-  - track: 0
+  - track: 1
     hitTime: 36.153
     isHold: 0
     holdDuration: 0
-  - track: 1
+  - track: 3
     hitTime: 36.432
     isHold: 0
     holdDuration: 0
@@ -445,135 +189,75 @@ MonoBehaviour:
     isHold: 0
     holdDuration: 0
   - track: 3
-    hitTime: 36.897
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 37.105
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 37.338
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 37.57
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 37.825
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 38.104
     isHold: 0
     holdDuration: 0
-  - track: 1
+  - track: 0
     hitTime: 38.475
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 1
     hitTime: 38.893
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 0
     hitTime: 39.219
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 39.451
-    isHold: 0
-    holdDuration: 0
   - track: 1
-    hitTime: 40.147
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 40.426
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 40.728
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 41.076
+    hitTime: 40.728
     isHold: 0
     holdDuration: 0
   - track: 1
     hitTime: 41.332
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 41.958
-    isHold: 0
-    holdDuration: 0
-  - track: 3
+  - track: 0
     hitTime: 42.191
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 3
     hitTime: 42.446
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 42.701
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 43.096
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 0
     hitTime: 43.398
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 44.071
-    isHold: 0
-    holdDuration: 0
   - track: 1
-    hitTime: 44.234
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 44.466
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 44.768
     isHold: 0
     holdDuration: 0
   - track: 0
     hitTime: 45.14
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 45.465
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 46.417
+    hitTime: 45.465
     isHold: 0
     holdDuration: 0
   - track: 3
     hitTime: 46.765
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 47.02
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 47.299
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 47.578
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 48.158
     isHold: 0
     holdDuration: 0
   - track: 0
@@ -581,15 +265,7 @@ MonoBehaviour:
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 48.669
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 49.017
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 49.412
     isHold: 0
     holdDuration: 0
   - track: 0
@@ -597,14 +273,6 @@ MonoBehaviour:
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 50.039
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 50.341
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 50.55
     isHold: 0
     holdDuration: 0
@@ -613,30 +281,14 @@ MonoBehaviour:
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 51.107
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 51.548
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 0
     hitTime: 51.827
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 52.524
-    isHold: 0
-    holdDuration: 0
   - track: 1
-    hitTime: 52.663
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 52.965
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 53.267
     isHold: 0
     holdDuration: 0
@@ -648,20 +300,8 @@ MonoBehaviour:
     hitTime: 54.102
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 54.544
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 55.124
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 55.496
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 55.798
     isHold: 0
     holdDuration: 0
   - track: 2
@@ -669,311 +309,135 @@ MonoBehaviour:
     isHold: 0
     holdDuration: 0
   - track: 3
-    hitTime: 56.61
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 57.678
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 58.073
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 58.514
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 59.164
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 59.629
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 60.488
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 60.743
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 60.999
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 61.254
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 61.579
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 61.881
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 62.09
+    hitTime: 62.02
     isHold: 0
     holdDuration: 0
   - track: 0
     hitTime: 62.833
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 63.065
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 63.483
+    hitTime: 63.065
     isHold: 0
     holdDuration: 0
   - track: 3
     hitTime: 63.692
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 63.901
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 64.087
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 64.342
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 0
     hitTime: 65.202
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 65.596
-    isHold: 0
-    holdDuration: 0
   - track: 1
-    hitTime: 65.805
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 66.038
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 66.247
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 66.456
-    isHold: 0
-    holdDuration: 0
-  - track: 1
+  - track: 3
     hitTime: 66.664
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 66.873
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 67.082
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 67.268
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 67.5
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 67.709
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 67.918
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 68.151
+  - track: 3
+    hitTime: 68.336
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 68.36
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 68.569
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 68.894
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 69.358
+    hitTime: 68.894
     isHold: 0
     holdDuration: 0
   - track: 1
     hitTime: 70.078
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 70.333
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 70.751
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 70.983
-    isHold: 0
-    holdDuration: 0
   - track: 1
-    hitTime: 71.192
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 71.401
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 0
     hitTime: 71.61
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 1
     hitTime: 72.469
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 72.887
-    isHold: 0
-    holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 73.12
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 73.329
-    isHold: 0
-    holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 73.538
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 73.77
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 73.956
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 74.165
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 74.606
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 74.815
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 75.047
+    hitTime: 74.165
     isHold: 0
     holdDuration: 0
   - track: 3
     hitTime: 75.256
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 75.488
-    isHold: 0
-    holdDuration: 0
-  - track: 1
+  - track: 2
     hitTime: 75.697
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 75.906
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 76.579
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 76.788
-    isHold: 0
-    holdDuration: 0
   - track: 1
-    hitTime: 76.997
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 77.206
+    hitTime: 75.906
     isHold: 0
     holdDuration: 0
   - track: 3
     hitTime: 77.415
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 77.601
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 78.019
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 78.391
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 78.878
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 79.366
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 80.55
+    hitTime: 78.391
     isHold: 0
     holdDuration: 0
   - track: 2
     hitTime: 80.968
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 0
     hitTime: 81.734
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 3
     hitTime: 82.013
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 82.408
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 82.686
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 82.872
     isHold: 0
     holdDuration: 0
   - track: 0
@@ -984,91 +448,51 @@ MonoBehaviour:
     hitTime: 83.336
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 84.242
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 84.544
-    isHold: 0
-    holdDuration: 0
-  - track: 0
+  - track: 1
     hitTime: 84.66
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 84.869
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 85.101
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 85.31
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 85.542
+    hitTime: 85.31
     isHold: 0
     holdDuration: 0
   - track: 1
     hitTime: 85.728
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 85.96
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 86.355
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 86.587
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 87.052
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 87.284
+    hitTime: 86.355
     isHold: 0
     holdDuration: 0
   - track: 3
     hitTime: 87.47
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 1
     hitTime: 87.702
     isHold: 0
     holdDuration: 0
-  - track: 1
+  - track: 0
     hitTime: 88.097
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 88.329
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 88.607
-    isHold: 0
-    holdDuration: 0
-  - track: 0
+  - track: 1
     hitTime: 89.42
     isHold: 0
     holdDuration: 0
-  - track: 1
+  - track: 0
     hitTime: 89.745
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 90.21
-    isHold: 0
-    holdDuration: 0
-  - track: 3
+  - track: 1
     hitTime: 90.442
     isHold: 0
     holdDuration: 0
@@ -1077,59 +501,27 @@ MonoBehaviour:
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 90.86
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 91.092
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 0
     hitTime: 92.021
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 92.439
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 92.694
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 92.903
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 93.112
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 93.344
-    isHold: 0
-    holdDuration: 0
-  - track: 1
+  - track: 3
     hitTime: 93.553
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 1
     hitTime: 93.785
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 94.227
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 94.459
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 94.9
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 95.132
+    hitTime: 94.459
     isHold: 0
     holdDuration: 0
   - track: 3
@@ -1141,87 +533,39 @@ MonoBehaviour:
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 96.27
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 96.502
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 96.711
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 97.129
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 97.64
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 97.872
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 98.569
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 99.544
-    isHold: 0
-    holdDuration: 0
-  - track: 1
     hitTime: 99.823
     isHold: 0
     holdDuration: 0
   - track: 2
-    hitTime: 100.148
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 100.357
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 100.542
-    isHold: 0
-    holdDuration: 0
-  - track: 1
     hitTime: 100.659
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 100.984
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 1
     hitTime: 101.378
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 3
     hitTime: 101.936
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 102.145
-    isHold: 0
-    holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 102.354
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 102.609
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 102.795
-    isHold: 0
-    holdDuration: 0
   - track: 1
-    hitTime: 103.12
+    hitTime: 102.795
     isHold: 0
     holdDuration: 0
   - track: 2
@@ -1229,126 +573,54 @@ MonoBehaviour:
     isHold: 0
     holdDuration: 0
   - track: 3
-    hitTime: 103.561
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 104.095
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 104.42
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 104.815
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 105.001
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 105.233
-    isHold: 0
-    holdDuration: 0
-  - track: 1
+  - track: 2
     hitTime: 105.488
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 105.999
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 106.208
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 106.417
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 106.649
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 106.858
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 107.276
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 107.578
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 107.694
-    isHold: 0
-    holdDuration: 0
-  - track: 2
+  - track: 3
     hitTime: 108.089
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 2
     hitTime: 108.275
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 108.507
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 108.739
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 108.971
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 109.366
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 109.761
     isHold: 0
     holdDuration: 0
-  - track: 1
+  - track: 0
     hitTime: 109.97
     isHold: 0
     holdDuration: 0
   - track: 2
-    hitTime: 110.364
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 111.549
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 111.943
     isHold: 0
     holdDuration: 0
-  - track: 1
+  - track: 3
     hitTime: 112.152
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 1
     hitTime: 112.965
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 2
     hitTime: 113.174
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 113.569
-    isHold: 0
-    holdDuration: 0
-  - track: 1
+  - track: 3
     hitTime: 113.801
     isHold: 0
     holdDuration: 0
@@ -1361,22 +633,6 @@ MonoBehaviour:
     isHold: 0
     holdDuration: 0
   - track: 0
-    hitTime: 115.032
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 115.31
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 115.682
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 116.378
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 116.564
     isHold: 0
     holdDuration: 0
@@ -1384,11 +640,11 @@ MonoBehaviour:
     hitTime: 116.773
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 116.982
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 1
     hitTime: 117.423
     isHold: 0
     holdDuration: 0
@@ -1400,99 +656,23 @@ MonoBehaviour:
     hitTime: 118.143
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 118.352
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 118.677
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 119.908
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 120.465
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 120.813
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 121.231
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 121.696
-    isHold: 0
-    holdDuration: 0
-  - track: 1
     hitTime: 121.858
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 1
     hitTime: 122.23
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 122.485
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 122.671
+    hitTime: 122.485
     isHold: 0
     holdDuration: 0
   - track: 1
     hitTime: 122.926
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 123.228
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 123.553
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 124.18
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 124.413
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 124.923
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 125.225
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 125.527
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 125.852
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 126.224
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 126.386
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 126.688
-    isHold: 0
-    holdDuration: 0
-  - track: 1
     hitTime: 126.92
     isHold: 0
     holdDuration: 0
@@ -1500,175 +680,31 @@ MonoBehaviour:
     hitTime: 127.129
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 1
     hitTime: 127.269
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 127.431
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 127.71
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 127.965
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 128.244
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 128.476
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 128.708
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 129.01
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 129.985
-    isHold: 0
-    holdDuration: 0
   - track: 0
-    hitTime: 130.45
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 130.798
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 131.146
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 131.332
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 131.634
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 131.889
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 132.377
     isHold: 0
     holdDuration: 0
-  - track: 3
+  - track: 2
     hitTime: 132.702
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 133.19
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 133.584
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 134.676
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 134.838
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 135.303
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 135.605
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 135.883
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 136.185
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 136.789
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 137.021
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 137.323
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 137.625
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 137.81
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 138.019
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 138.391
     isHold: 0
     holdDuration: 0
   - track: 3
     hitTime: 138.716
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 138.879
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 139.204
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 139.529
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 139.923
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 140.179
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 140.318
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 140.55
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 140.852
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 141.084
-    isHold: 0
-    holdDuration: 0
-  - track: 1
     hitTime: 141.317
     isHold: 0
     holdDuration: 0
@@ -1676,64 +712,28 @@ MonoBehaviour:
     hitTime: 141.549
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 141.758
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 142.06
-    isHold: 0
-    holdDuration: 0
   - track: 1
-    hitTime: 142.78
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 143.081
+    hitTime: 141.758
     isHold: 0
     holdDuration: 0
   - track: 3
     hitTime: 143.197
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 143.476
     isHold: 0
     holdDuration: 0
-  - track: 1
+  - track: 3
+    hitTime: 143.615
+    isHold: 0
+    holdDuration: 0
+  - track: 2
     hitTime: 144.033
     isHold: 0
     holdDuration: 0
-  - track: 2
-    hitTime: 144.335
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 144.544
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 144.753
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 145.055
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 145.264
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 145.473
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 146.077
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 146.332
     isHold: 0
     holdDuration: 0
   - track: 2
@@ -1744,76 +744,32 @@ MonoBehaviour:
     hitTime: 146.959
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 147.261
-    isHold: 0
-    holdDuration: 0
-  - track: 1
+  - track: 2
     hitTime: 147.377
     isHold: 0
     holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 147.586
     isHold: 0
     holdDuration: 0
   - track: 3
-    hitTime: 147.772
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 147.981
-    isHold: 0
-    holdDuration: 0
-  - track: 1
     hitTime: 148.19
     isHold: 0
     holdDuration: 0
   - track: 2
-    hitTime: 148.608
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 148.979
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 149.188
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 149.374
-    isHold: 0
-    holdDuration: 0
-  - track: 2
+  - track: 3
     hitTime: 149.583
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 149.792
-    isHold: 0
-    holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 150.581
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 150.86
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 151.162
-    isHold: 0
-    holdDuration: 0
   - track: 3
-    hitTime: 151.371
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 152.23
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 152.532
+    hitTime: 150.86
     isHold: 0
     holdDuration: 0
   - track: 2
@@ -1824,163 +780,43 @@ MonoBehaviour:
     hitTime: 152.903
     isHold: 0
     holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 153.275
     isHold: 0
     holdDuration: 0
   - track: 1
-    hitTime: 153.461
-    isHold: 0
-    holdDuration: 0
-  - track: 2
     hitTime: 153.646
     isHold: 0
     holdDuration: 0
   - track: 3
-    hitTime: 153.832
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 154.041
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 154.227
-    isHold: 0
-    holdDuration: 0
   - track: 2
-    hitTime: 154.459
-    isHold: 0
-    holdDuration: 0
-  - track: 3
     hitTime: 155.249
     isHold: 0
     holdDuration: 0
-  - track: 0
-    hitTime: 155.458
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 155.643
-    isHold: 0
-    holdDuration: 0
-  - track: 2
+  - track: 3
     hitTime: 155.806
     isHold: 0
     holdDuration: 0
-  - track: 3
-    hitTime: 156.038
-    isHold: 0
-    holdDuration: 0
-  - track: 0
+  - track: 2
     hitTime: 156.897
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 157.269
+  - track: 3
+    hitTime: 157.037
     isHold: 0
     holdDuration: 0
   - track: 2
-    hitTime: 157.455
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 158.383
-    isHold: 0
-    holdDuration: 0
-  - track: 0
     hitTime: 158.546
     isHold: 0
     holdDuration: 0
-  - track: 1
-    hitTime: 158.755
-    isHold: 0
-    holdDuration: 0
-  - track: 2
+  - track: 0
     hitTime: 158.917
     isHold: 0
     holdDuration: 0
   - track: 3
     hitTime: 159.103
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 159.916
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 160.078
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 160.264
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 160.427
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 160.636
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 161.216
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 161.402
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 161.564
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 161.959
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 162.168
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 162.958
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 163.236
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 163.376
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 163.77
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 164.049
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 164.165
-    isHold: 0
-    holdDuration: 0
-  - track: 0
-    hitTime: 164.444
-    isHold: 0
-    holdDuration: 0
-  - track: 1
-    hitTime: 165.605
-    isHold: 0
-    holdDuration: 0
-  - track: 2
-    hitTime: 165.999
-    isHold: 0
-    holdDuration: 0
-  - track: 3
-    hitTime: 166.766
     isHold: 0
     holdDuration: 0
