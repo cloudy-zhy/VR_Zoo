@@ -2979,6 +2979,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26441a0478144c64b80db76ae42f642c, type: 2}
   - {fileID: 11400000, guid: 3d1a3ced748b87f4dbe38e7ca27a0b94, type: 2}
   - {fileID: 11400000, guid: 91c64c86f26218847b9e09902c7a09f5, type: 2}
+  - {fileID: 11400000, guid: c89c69f6723ed7f4590b197d4215c354, type: 2}
+  - {fileID: 11400000, guid: 3c091a144f8c55347a5fdae46f9da2d2, type: 2}
   - {fileID: 11400000, guid: 9e4c9a76ef7c53044a4983c188db9272, type: 2}
   currentLevelIndex: 0
   targetScore: 0
