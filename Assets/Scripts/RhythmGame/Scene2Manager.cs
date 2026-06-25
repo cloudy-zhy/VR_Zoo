@@ -3,6 +3,7 @@ using RhythmGame;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using static UnityEngine.Rendering.BoolParameter;
 
 public class Scene2Manager : MonoBehaviour
@@ -15,12 +16,19 @@ public class Scene2Manager : MonoBehaviour
     public GameObject billboard;                 // 进度条示例
     public List<float> ChapterDuration;          // 每一关的时长
 
+    [SerializeField] private PlayableDirector opening;
+
     void Start()
     {
         dialogueController = DialogueController.Instance;
         rhythmGameManager = FindObjectOfType<RhythmGameManager>();
-        StartCoroutine(ExecuteSequence());
+        // StartCoroutine(ExecuteSequence());
+        opening.Play();
         progressBar = billboard.GetComponent<BillboardProgressBar>();
+    }
+    public void StartExecuteSequence()
+    {
+        StartCoroutine(ExecuteSequence());
     }
 
     IEnumerator ExecuteSequence()
@@ -61,7 +69,17 @@ public class Scene2Manager : MonoBehaviour
         rhythmGameManager.StartGame();
         yield return new WaitUntil(() => gameEnded);
         rhythmGameManager.OnSongCompleted.RemoveListener(OnGameEnded);
-        Debug.Log("=====第二轮音游已经结束，即将执行3、4对话=====，当前索引：" + dialogueController.GetCurrentDialogueIndex());
+        Debug.Log("=====第二轮音游已经结束，即将执行第三轮=====，当前索引：" + dialogueController.GetCurrentDialogueIndex());
+
+        billboard.SetActive(true);
+        progressBar.SetDuration(ChapterDuration[2]);
+        // 第三次节奏游戏
+        gameEnded = false;
+        rhythmGameManager.OnSongCompleted.AddListener(OnGameEnded);
+        rhythmGameManager.StartGame();
+        yield return new WaitUntil(() => gameEnded);
+        rhythmGameManager.OnSongCompleted.RemoveListener(OnGameEnded);
+        Debug.Log("=====第三轮音游已经结束，即将执行3、4对话=====，当前索引：" + dialogueController.GetCurrentDialogueIndex());
 
         // 连续两句 3、4
         Debug.Log("准备弹出第3句");

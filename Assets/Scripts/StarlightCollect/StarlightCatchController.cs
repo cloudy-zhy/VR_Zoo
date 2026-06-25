@@ -57,11 +57,19 @@ namespace StarlightCollect
         private void OnStarLightMarked(EventContext<StarLight> context)
         {
             var starlight = context.Payload;
-            if (starlight.IsNull() || starlight.IsShotLocked) return;
+            if (starlight.IsNull() || starlight.IsShotLocked)
+            {
+                print("starlight is null or is shot locked!");
+                return;
+            }
             if (TryPopAvailable(out Pterosaur pterosaur))
             {
                 starlight.Locked();
                 pterosaur.TryAssignStarLightTask(starlight);
+            }
+            else
+            {
+                print("cannot pop a avaliable pterosaur!");
             }
         }
 
@@ -81,6 +89,8 @@ namespace StarlightCollect
                 if (pterosaur.IsNotNull() && _managedSet.Contains(pterosaur) && !pterosaur.HasStarLightTask)
                     return true;
             }
+            print(_availablePterosaurs.Count);
+            print(_managedSet.Count);
             return false;
         }
 

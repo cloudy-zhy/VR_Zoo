@@ -17,19 +17,19 @@ MonoBehaviour:
   notes:
   - track: 0
     hitTime: 0.41
-    isHold: 1
+    isHold: 0
     holdDuration: 0.7
   - track: 0
     hitTime: 1.64
-    isHold: 1
+    isHold: 0
     holdDuration: 0.7
   - track: 1
     hitTime: 2.94
-    isHold: 1
+    isHold: 0
     holdDuration: 0.7
   - track: 1
     hitTime: 4.28
-    isHold: 1
+    isHold: 0
     holdDuration: 0.7
   - track: 0
     hitTime: 5.63
@@ -145,7 +145,7 @@ MonoBehaviour:
     holdDuration: 0
   - track: 1
     hitTime: 20.18
-    isHold: 1
+    isHold: 0
     holdDuration: 1.1
   - track: 0
     hitTime: 21.87
@@ -301,7 +301,7 @@ MonoBehaviour:
     holdDuration: 0
   - track: 1
     hitTime: 41.68
-    isHold: 1
+    isHold: 0
     holdDuration: 0.98
   - track: 0
     hitTime: 43.19
@@ -389,7 +389,7 @@ MonoBehaviour:
     holdDuration: 0
   - track: 1
     hitTime: 52.54
-    isHold: 1
+    isHold: 0
     holdDuration: 0.99
   - track: 3
     hitTime: 54.07
@@ -469,7 +469,7 @@ MonoBehaviour:
     holdDuration: 0
   - track: 1
     hitTime: 63.31
-    isHold: 1
+    isHold: 0
     holdDuration: 1.24
   - track: 0
     hitTime: 65.22
@@ -577,11 +577,11 @@ MonoBehaviour:
     holdDuration: 0
   - track: 1
     hitTime: 74.42
-    isHold: 1
+    isHold: 0
     holdDuration: 1.1
   - track: 0
     hitTime: 76.11
-    isHold: 1
+    isHold: 0
     holdDuration: 0.8
   - track: 1
     hitTime: 77.25
@@ -641,9 +641,9 @@ MonoBehaviour:
     holdDuration: 0
   - track: 1
     hitTime: 85.72
-    isHold: 1
+    isHold: 0
     holdDuration: 1.09
   - track: 0
     hitTime: 87.39
-    isHold: 1
+    isHold: 0
     holdDuration: 2.5

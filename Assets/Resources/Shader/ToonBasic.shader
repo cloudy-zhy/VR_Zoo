@@ -59,7 +59,7 @@
         SAMPLER(sampler_MainTex);
         ENDHLSL
         
-        // 第一个Pass：轮廓线
+       // 第一个Pass：轮廓线
         Pass
         {
             Name "Outline"
@@ -85,12 +85,22 @@
             {
                 Varyings output = (Varyings)0;
                 
+                // 获取顶点位置和法线
                 float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
                 float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
                 
+                // 获取观察位置
+                float3 viewPos = GetWorldSpaceViewDir(positionWS);
+                float3 viewDir = normalize(viewPos);
+                
+                // 计算轮廓线扩展方向
+                // 使用法线和观察方向的点积来决定扩展方向
                 float3 outlineOffset = normalWS * _OutlineWidth;
+                
+                // 将偏移应用到世界位置
                 positionWS += outlineOffset;
                 
+                // 转换到裁剪空间
                 output.positionCS = TransformWorldToHClip(positionWS);
                 return output;
             }
@@ -106,21 +116,22 @@
         Pass
         {
             Name "ForwardLit"
-            Tags { "LightMode" = "UniversalForward" }
+            Tags { 
+                "LightMode" = "UniversalForward"
+            }
             
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
             
+            // 添加接收阴影的关键字
             #pragma shader_feature _RECEIVE_SHADOW
-
-            // 主光源阴影（覆盖普通/级联/屏幕空间三种模式）
-            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
-            #pragma multi_compile_fragment _ _SHADOWS_SOFT
-            // 额外光源阴影（只取遮蔽值，不取颜色）
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS
-            #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
-
+            
+            // 让URP识别阴影宏
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile _ _SHADOWS_SOFT
+            
             struct Attributes
             {
                 float4 positionOS : POSITION;
@@ -134,25 +145,37 @@
                 float2 uv : TEXCOORD0;
                 float3 normalWS : TEXCOORD1;
                 float3 positionWS : TEXCOORD2;
-                // shadowCoord 移至 Fragment 阶段计算，此处不再需要
+                float4 shadowCoord : TEXCOORD3;
             };
             
             // 计算上、侧、下环境光
             half3 CalculateEnvironmentLight(float3 worldNormal)
             {
-                float upFactor   = saturate(worldNormal.y);
-                float upWeight   = pow(upFactor, _EnvFalloff);
-                float downWeight = pow(saturate(-worldNormal.y), _EnvFalloff);
-                float sideWeight = pow(1.0 - abs(worldNormal.y), _EnvFalloff);
+                // 获取法线的Y分量（向上方向）
+                float upFactor = saturate(worldNormal.y);
                 
+                // 计算上、侧、下三个方向的权重
+                // 上环境光：法线指向正上方时最强
+                float upWeight = pow(upFactor, _EnvFalloff);
+                
+                // 下环境光：法线指向正下方时最强
+                float downWeight = pow(saturate(-worldNormal.y), _EnvFalloff);
+                
+                // 侧环境光：法线水平时最强
+                // 通过1-abs(N.y)来获取水平方向的权重
+                float sideWeight = 1.0 - abs(worldNormal.y);
+                sideWeight = pow(sideWeight, _EnvFalloff);
+                
+                // 标准化权重，使总和为1
                 float totalWeight = upWeight + sideWeight + downWeight;
-                upWeight   /= totalWeight;
+                upWeight /= totalWeight;
                 sideWeight /= totalWeight;
                 downWeight /= totalWeight;
                 
-                half3 envLight = _EnvUpColor.rgb   * upWeight   +
-                                 _EnvSideColor.rgb * sideWeight +
-                                 _EnvDownColor.rgb * downWeight;
+                // 混合三个方向的环境光
+                half3 envLight = _EnvUpColor.rgb * upWeight +
+                               _EnvSideColor.rgb * sideWeight +
+                               _EnvDownColor.rgb * downWeight;
                 
                 return envLight * _EnvIntensity;
             }
@@ -162,73 +185,72 @@
                 Varyings output = (Varyings)0;
                 
                 VertexPositionInputs positionInputs = GetVertexPositionInputs(input.positionOS.xyz);
-                VertexNormalInputs normalInputs     = GetVertexNormalInputs(input.normalOS);
+                VertexNormalInputs normalInputs = GetVertexNormalInputs(input.normalOS);
                 
                 output.positionCS = positionInputs.positionCS;
                 output.positionWS = positionInputs.positionWS;
-                output.normalWS   = normalInputs.normalWS;
-                output.uv         = TRANSFORM_TEX(input.texcoord, _MainTex);
+                output.normalWS = normalInputs.normalWS;
+                output.uv = TRANSFORM_TEX(input.texcoord, _MainTex);
+                
+                // 计算阴影坐标
+                output.shadowCoord = TransformWorldToShadowCoord(output.positionWS);
                 
                 return output;
             }
             
-
             half4 frag(Varyings input) : SV_Target
             {
                 // 基础颜色
                 half4 baseColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, input.uv) * _Color;
+                
+                // 获取法线
                 float3 normalWS = normalize(input.normalWS);
                 
-                // 在 Fragment 阶段计算 shadowCoord，避免级联边界精度问题
-                float4 shadowCoord = TransformWorldToShadowCoord(input.positionWS);
-                Light mainLight    = GetMainLight(shadowCoord);
+                // 获取主光源
+                Light mainLight = GetMainLight(input.shadowCoord);
                 
+                // 计算兰伯特光照
                 float NdotL = dot(normalWS, mainLight.direction);
                 
-                // 合并所有阴影遮蔽，统一进入卡通 Ramp
-                float combinedShadow = NdotL;
+                // 硬阴影过渡
+                float shadowMask = smoothstep(_ShadowStep - _ShadowFeather, 
+                                             _ShadowStep + _ShadowFeather, 
+                                             NdotL);
                 
-                #if defined(_RECEIVE_SHADOW)
-                    // 主光源投影
-                    combinedShadow *= mainLight.shadowAttenuation;
-                    
-                    // 额外光源投影：只取 shadowAttenuation，完全忽略颜色和强度
-                    #if defined(_ADDITIONAL_LIGHT_SHADOWS)
-                        uint additionalLightCount = GetAdditionalLightsCount();
-                        for (uint i = 0; i < additionalLightCount; i++)
-                        {
-                            Light additionalLight  = GetAdditionalLight(i, input.positionWS);
-                            combinedShadow        *= additionalLight.shadowAttenuation;
-                        }
-                    #endif
+                // 接收阴影
+                #if defined(_RECEIVE_SHADOW) && defined(_MAIN_LIGHT_SHADOWS)
+                float shadow = mainLight.shadowAttenuation;
+                shadowMask *= shadow;
                 #endif
                 
-                // 所有阴影统一过同一个卡通 Ramp，边缘风格完全一致
-                float shadowMask = smoothstep(
-                    _ShadowStep - _ShadowFeather,
-                    _ShadowStep + _ShadowFeather,
-                    combinedShadow
-                );
+                // 三渲二颜色混合
+                half3 litColor = baseColor.rgb * mainLight.color;
+                half3 shadowColor = baseColor.rgb * mainLight.color * _ShadowColor.rgb;
+                half3 diffuse = lerp(shadowColor, litColor, shadowMask);
                 
-                half3 envLight     = CalculateEnvironmentLight(normalWS);
-                half3 ambient      = SampleSH(normalWS) * baseColor.rgb;
+                // 计算模拟环境光
+                half3 envLight = CalculateEnvironmentLight(normalWS);
+                
+                // 获取URP环境光
+                half3 ambient = SampleSH(normalWS) * baseColor.rgb;
+                
+                // 结合所有光照
+                // 环境光分为两部分：URP的球谐光照和我们的模拟环境光
                 half3 finalAmbient = ambient + envLight * baseColor.rgb;
-
-                // 环境光参与明暗两侧的 lerp，暗部环境光同样被压暗
-                half3 litColor    = baseColor.rgb * mainLight.color + finalAmbient;
-                half3 shadowColor = baseColor.rgb * mainLight.color * _ShadowColor.rgb + finalAmbient * _ShadowColor.rgb;
-
-                half3 finalColor = lerp(shadowColor, litColor, shadowMask);
+                
+                half3 finalColor = diffuse + finalAmbient;
                 return half4(finalColor, baseColor.a);
             }
             ENDHLSL
         }
         
-        // ShadowCaster Pass（让物体能投射阴影）
+        // ShadowCaster Pass (让物体能投射阴影)
         Pass
         {
             Name "ShadowCaster"
-            Tags { "LightMode" = "ShadowCaster" }
+            Tags { 
+                "LightMode" = "ShadowCaster"
+            }
             
             ZWrite On
             ZTest LEqual
@@ -258,7 +280,7 @@
             float4 GetShadowPositionHClip(Attributes input)
             {
                 float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
-                float3 normalWS   = TransformObjectToWorldNormal(input.normalOS);
+                float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
                 
                 float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, _LightDirection));
                 
@@ -285,11 +307,13 @@
             ENDHLSL
         }
         
-        // DepthOnly Pass（用于深度写入）
+        // DepthOnly Pass (可选，用于深度写入)
         Pass
         {
             Name "DepthOnly"
-            Tags { "LightMode" = "DepthOnly" }
+            Tags { 
+                "LightMode" = "DepthOnly"
+            }
             
             ZWrite On
             ColorMask 0
