@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: db24072550f2c4b499e0fdf5fc3f9747
+guid: ec08b8130cb309f4f887540965be87f7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -115,17 +115,17 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1080
-        height: 1080
+        width: 2048
+        height: 2048
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 60738074ae2003843893ee85fd0f14d6
-      internalID: -190112076
+      spriteID: cf38ab4ca8adc1c4e8f08db8cab38207
+      internalID: -167074900
       vertices: []
       indices: 
       edges: []
@@ -133,7 +133,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 9dee81f8bc3224444adb3a2190c44592
+    spriteID: 1da562bcc85ed154399c055303fd30c2
     internalID: 0
     vertices: []
     indices: 
@@ -141,7 +141,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      pterosaur_default: -190112076
+      pterosaur_default: -167074900
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

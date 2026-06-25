@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99cc3fb6e916466abad3ffb3cabc6e16, type: 3}
   m_Name: Scene3_04
   m_EditorClassIdentifier: 
-  characterName: "\u8BFA\u8BFA"
-  dialogText: "\u6211\u4EEC\u628A\u4E09\u6837\u90FD\u96C6\u9F50\u4E86\u3002\u679C\u5B9E\u3001\u65CB\u5F8B\u3001\u661F\u5149\u3002\u6700\u540E\u4E00\u6B65\uFF0C\u9700\u8981\u4F60\u6765\u505A\u3002"
-  characterPortrait: {fileID: -388127676, guid: 549e03a1ae9a4874bb2a2fdbe1570595,
+  characterName: "\u5C0F\u7FFC\u9F99"
+  dialogText: "\u4E3E\u8D77\u63D0\u706F\u4E0E\u9B54\u6756\uFF0C\u9B54\u6CD5\u7684\u5149\u8292\u4F1A\u8FFD\u968F\u4F60\u7684\u89C6\u7EBF\u3002\u7784\u51C6\u661F\u5149\u80FD\u91CF\uFF0C\u4E3A\u7FFC\u9F99\u5927\u961F\u7167\u4EAE\u524D\u8DEF\uFF01"
+  characterPortrait: {fileID: -167074900, guid: ec08b8130cb309f4f887540965be87f7,
     type: 3}
   characterState: default
   voiceClip: {fileID: 8300000, guid: f6c377b3f2284c14d8c62af7d73f3872, type: 3}

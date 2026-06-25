@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: "\u5C0F\u7FFC\u9F99"
   dialogText: "\u2026\u2026\u6BCF\u5E74\u5230\u8FD9\u4E00\u523B\uFF0C\u6211\u90FD\u89C9\u5F97\u6574\u4E2A\u8C37\u5B50\u90FD\u5728\u5C4F\u6C14\u51DD\u795E\u3002\u8FDE\u6700\u5435\u7684\u526F\u6809\u9F99\u90FD\u4E0D\u53EB\u4E86\u3002"
-  characterPortrait: {fileID: -190112076, guid: db24072550f2c4b499e0fdf5fc3f9747,
+  characterPortrait: {fileID: -167074900, guid: ec08b8130cb309f4f887540965be87f7,
     type: 3}
   characterState: default
   voiceClip: {fileID: 8300000, guid: 49108744d4c901a4aa5219270b9f914b, type: 3}
