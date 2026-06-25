@@ -15,12 +15,12 @@ MonoBehaviour:
   levelName: tutorial2
   targetScore: 60
   fruits:
-  - position: {x: -25.15082649, y: 1.4108628700000008, z: -4.0800009500000005}
+  - position: {x: -22.89882649, y: 1.4108628700000008, z: -4.0800009500000005}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 1
-  - position: {x: -25.75582649, y: 1.2308628700000002, z: 1.3399990499999994}
+  - position: {x: -23.50382649, y: 1.2308628700000002, z: 1.3399990499999994}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 0
-  - position: {x: -26.31082649, y: 1.03086287, z: -1.1600009500000006}
+  - position: {x: -24.05882649, y: 1.03086287, z: -1.1600009500000006}
     rotationEuler: {x: -90, y: 0, z: 0}
     prefabIndex: 2

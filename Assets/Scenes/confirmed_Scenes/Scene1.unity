@@ -1236,28 +1236,28 @@ PrefabInstance:
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueSequence.Array.size
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.size
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: fc18c2451453fc94bbd24dc304865e53, type: 3}
+      objectReference: {fileID: 8300000, guid: 8409d78eb4773684cad8b02b2c3fcec0, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[1]
       value: 
-      objectReference: {fileID: 8300000, guid: a81686d6c648e3f4b89da9e1ae3f6030, type: 3}
+      objectReference: {fileID: 8300000, guid: 328dfb4f64459ba4b8fe0672db694644, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[2]
       value: 
-      objectReference: {fileID: 8300000, guid: 74d195cc927291844ba869eb7c3c54d0, type: 3}
+      objectReference: {fileID: 8300000, guid: b31cd933fa3b67249bfcf3e07c962fea, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[3]
@@ -1267,7 +1267,7 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[4]
       value: 
-      objectReference: {fileID: 8300000, guid: 4afe22a14d682174dbd42ba541dfcfed, type: 3}
+      objectReference: {fileID: 8300000, guid: 8ac4c3fb04ad90b40abc54c102634d7f, type: 3}
     - target: {fileID: 8844573248469640820, guid: ff7c2eab641c2dd4f81edf147cd2a752,
         type: 3}
       propertyPath: dialogueAudioClips.Array.data[5]
@@ -7781,7 +7781,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &993475791
 MonoBehaviour:
   m_ObjectHideFlags: 0
