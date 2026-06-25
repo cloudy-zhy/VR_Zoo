@@ -16,8 +16,11 @@ namespace Entity.Pterosaur.State
 
         public override void OnEnter()
         {
-            owner.Broadcast(StarlightConstant.PterosaurThrow, owner.transform.position);
-            owner.ani.SetTrigger(animBoolName);
+            if(owner!=null)
+            {
+                owner.Broadcast(StarlightConstant.PterosaurThrow, owner.transform.position);
+                owner.ani.SetTrigger(animBoolName);
+            }
         }
 
         public override void OnUpdate()
