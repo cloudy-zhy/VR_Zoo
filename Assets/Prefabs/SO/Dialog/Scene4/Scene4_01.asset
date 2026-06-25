@@ -17,7 +17,7 @@ MonoBehaviour:
   characterPortrait: {fileID: -190112076, guid: db24072550f2c4b499e0fdf5fc3f9747,
     type: 3}
   characterState: default
-  voiceClip: {fileID: 0}
+  voiceClip: {fileID: 8300000, guid: 835eb1d85b90e38409dc894ed3ba2a42, type: 3}
   useAudioDuration: 1
   fixedDuration: 3
   endPadding: 0.15

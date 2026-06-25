@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Scene4_02
   m_EditorClassIdentifier: 
   characterName: "\u5C0F\u7FFC\u9F99"
-  dialogText: "\u8FD9\u91CC\u7684\u6BCF\u4E00\u6761\u8F68\u8FF9\uFF0C\u90FD\u662F\u73B0\u5B9E\u4E16\u754C\u91CC\u2026\u2026\u5BF9\u4E00\u79CD\u751F\u547D\u7684\u8BB0\u5FC6\u3002\u4F46\u5982\u679C\u6CA1\u4EBA\u518D\u8BB0\u5F97\u6211\u4EEC\uFF0C\u8FD9\u4E9B\u5149\u2026\u2026\u5C31\u4F1A\u5F7B\u5E95\u7184\u706D\u3002"
+  dialogText: "\u6309\u4E0B\u6309\u94AE\uFF0C\u6C47\u5165\u661F\u5149\u80FD\u91CF\u3002"
   characterPortrait: {fileID: -190112076, guid: db24072550f2c4b499e0fdf5fc3f9747,
     type: 3}
   characterState: default
-  voiceClip: {fileID: 0}
+  voiceClip: {fileID: 8300000, guid: ac2c2d848c9c8a440a3e8ff7100e1847, type: 3}
   useAudioDuration: 1
   fixedDuration: 3
   endPadding: 0.15
