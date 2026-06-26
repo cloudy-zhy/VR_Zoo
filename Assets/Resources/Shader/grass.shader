@@ -26,13 +26,21 @@ Shader "Unlit/grass"
        [Header(Lighting)]
        _LightIntensity("光照影响强度", Range(0, 2)) = 1.0
        _ShadowColor("阴影颜色", Color) = (0.3, 0.3, 0.3, 1.0)   // 新增阴影颜色
+       
+       [Header(Dissolve)]
+       [HDR] _DissolveEdgeColor ("Dissolve Edge Color", Color) = (1, 1, 1, 1)
+       _DissolveEdgeWidth ("Dissolve Edge Width", Range(0, 1)) = 0.1
+
+       // Dissolve中心点和距离 (由 DissolutionCenter.cs 运行时设置)
+       [HideInInspector] _Center ("Dissolve Center (World)", Vector) = (0, 0, 0, 0)
+       [HideInInspector] _Distance ("Dissolve Distance", Float) = 1000.0
     }
     SubShader
     {
        Tags{"RenderPipeline" = "UniversalPipeline" "Queue"="Geometry" "RenderType"="Opaque"}
        LOD 100
 
-       // --------------------------- MAIN PASS (增加光照和阴影颜色) ---------------------------
+       // --------------------------- MAIN PASS ---------------------------
        Pass
        {
           HLSLPROGRAM
@@ -78,7 +86,13 @@ Shader "Unlit/grass"
           float _WorldScale;
           float _WorldRotation;
           float _LightIntensity;
-          float4 _ShadowColor;          // 阴影颜色
+          float4 _ShadowColor;
+          
+          // 溶解常量映射
+          float4 _DissolveEdgeColor;
+          float _DissolveEdgeWidth;
+          float4 _Center;
+          float _Distance;
           CBUFFER_END
 
           v2f vert(appdata v)
@@ -98,6 +112,10 @@ Shader "Unlit/grass"
 
           half4 frag(v2f i) : SV_Target
           {
+             // 0. 溶解裁剪（最先处理，确保溶解区域完全剔除）
+             float dissolveDist = distance(i.worldPos, _Center.xyz);
+             clip(_Distance - dissolveDist);
+
              // 1. 获取UV
              float2 uv;
     #ifdef USE_WC
@@ -124,7 +142,7 @@ Shader "Unlit/grass"
              float3 lightDir = normalize(mainLight.direction);
              float3 worldNormal = normalize(i.worldNormal);
              float ndotl = max(0, dot(worldNormal, lightDir));
-
+             
              // 计算混合系数：强度为0时完全不受光照影响，强度为1时标准漫反射
              float blend = clamp(lerp(1.0, ndotl, _LightIntensity), 0, 1);
              // 最终颜色 = 插值(阴影颜色×原始颜色 , 原始颜色 , 混合系数)
@@ -137,36 +155,85 @@ Shader "Unlit/grass"
     #endif
 
              col = MixFog(col, i.fogCoord);
+
+             // 4. 溶解边缘发光融合
+             float dissolveEdge = 1.0 - smoothstep(0.0, _DissolveEdgeWidth, _Distance - dissolveDist);
+             col = lerp(col, _DissolveEdgeColor.rgb, dissolveEdge * _DissolveEdgeColor.a);
+
              return half4(col, 1);
           }
           ENDHLSL
        }
 
-       // 以下 Pass 与原代码完全相同（DepthNormalsOnly，ShadowCaster，DepthOnly），为节省篇幅略写，
-       // 实际使用时请保留原文件中的这些 Pass。
-       // 此处仅为示意，您可以直接复制之前版本中的对应 Pass 内容。
-       // 为保持完整性，下面给出 ShadowCaster 的完整版本（其余 Pass 不变，请参照上文或原文件）。
-       
+       // --------------------------- DepthNormalsOnly PASS ---------------------------
        Pass
        {
           Name "DepthNormalsOnly"
           Tags { "LightMode" = "DepthNormalsOnly" }
           ZWrite On
+          
           HLSLPROGRAM
-          #pragma vertex DepthNormalsVertex
-          #pragma fragment DepthNormalsFragment
+          #pragma vertex vert
+          #pragma fragment frag
           #pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
           #pragma multi_compile_instancing
-          #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
-          #include "Packages/com.unity.render-pipelines.universal/Shaders/UnlitDepthNormalsPass.hlsl"
+          #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+          struct appdata 
+          {
+             float4 vertex : POSITION;
+             float3 normal : NORMAL;
+             UNITY_VERTEX_INPUT_INSTANCE_ID
+          };
+          
+          struct v2f 
+          {
+             float4 pos : SV_POSITION;
+             float3 normalWS : TEXCOORD0;
+             float3 worldPos : TEXCOORD1;
+             UNITY_VERTEX_INPUT_INSTANCE_ID
+          };
+
+          CBUFFER_START(UnityPerMaterial)
+          // 需要在此声明溶解变量，供当前 Pass 读取
+          float4 _Center;
+          float _Distance;
+          CBUFFER_END
+
+          v2f vert(appdata v) 
+          {
+             v2f o;
+             UNITY_SETUP_INSTANCE_ID(v);
+             o.worldPos = TransformObjectToWorld(v.vertex.xyz);
+             o.pos = TransformWorldToHClip(o.worldPos);
+             o.normalWS = TransformObjectToWorldNormal(v.normal);
+             return o;
+          }
+
+          half4 frag(v2f i) : SV_Target 
+          {
+             // 溶解裁剪
+             float dissolveDist = distance(i.worldPos, _Center.xyz);
+             clip(_Distance - dissolveDist);
+
+             // 写入 URP 默认的法线深度格式
+             #if defined(_GBUFFER_NORMALS_OCT)
+             float2 packNormal = PackNormalOctQuadEncode(normalize(i.normalWS));
+             return half4(packNormal, 0.0, 0.0);
+             #else
+             return half4(normalize(i.normalWS) * 0.5 + 0.5, 0.0);
+             #endif
+          }
           ENDHLSL
        }
 
+       // --------------------------- ShadowCaster PASS ---------------------------
        Pass
        {
           Name "ShadowCaster"
           Tags { "LightMode" = "ShadowCaster" }
           ZWrite On ZTest LEqual ColorMask 0 Cull Off
+          
           HLSLPROGRAM
           #pragma vertex vert
           #pragma fragment frag
@@ -174,11 +241,33 @@ Shader "Unlit/grass"
           #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
           #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
           #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
-          struct appdata { float4 vertex : POSITION; float3 normal : NORMAL; UNITY_VERTEX_INPUT_INSTANCE_ID };
-          struct v2f { float4 pos : SV_POSITION; UNITY_VERTEX_INPUT_INSTANCE_ID };
-          v2f vert(appdata v) {
-             v2f o; UNITY_SETUP_INSTANCE_ID(v);
+          
+          struct appdata 
+          { 
+             float4 vertex : POSITION;
+             float3 normal : NORMAL; 
+             UNITY_VERTEX_INPUT_INSTANCE_ID 
+          };
+          
+          struct v2f 
+          { 
+             float4 pos : SV_POSITION; 
+             float3 worldPos : TEXCOORD0;
+             UNITY_VERTEX_INPUT_INSTANCE_ID 
+          };
+
+          CBUFFER_START(UnityPerMaterial)
+          float4 _Center;
+          float _Distance;
+          CBUFFER_END
+
+          v2f vert(appdata v) 
+          {
+             v2f o; 
+             UNITY_SETUP_INSTANCE_ID(v);
              float3 positionWS = TransformObjectToWorld(v.vertex.xyz);
+             o.worldPos = positionWS; // 传出世界坐标
+             
              float3 normalWS = TransformObjectToWorldNormal(v.normal);
              float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, _MainLightPosition.xyz));
              #if UNITY_REVERSED_Z
@@ -186,26 +275,67 @@ Shader "Unlit/grass"
              #else
                 positionCS.z = max(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
              #endif
-             o.pos = positionCS; return o;
+             o.pos = positionCS; 
+             return o;
           }
-          half4 frag(v2f i) : SV_Target { return 0; }
+
+          half4 frag(v2f i) : SV_Target 
+          { 
+             // 阴影裁剪：超出溶解距离则剔除投射的阴影
+             float dissolveDist = distance(i.worldPos, _Center.xyz);
+             clip(_Distance - dissolveDist);
+             return 0;
+          }
           ENDHLSL
        }
 
+       // --------------------------- DepthOnly PASS ---------------------------
        Pass
        {
           Name "DepthOnly"
           Tags { "LightMode" = "DepthOnly" }
           ZWrite On ColorMask 0
+          
           HLSLPROGRAM
           #pragma vertex vert
           #pragma fragment frag
           #pragma multi_compile_instancing
           #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-          struct appdata { float4 vertex : POSITION; UNITY_VERTEX_INPUT_INSTANCE_ID };
-          struct v2f { float4 pos : SV_POSITION; UNITY_VERTEX_INPUT_INSTANCE_ID };
-          v2f vert(appdata v) { v2f o; UNITY_SETUP_INSTANCE_ID(v); o.pos = GetVertexPositionInputs(v.vertex.xyz).positionCS; return o; }
-          half4 frag(v2f i) : SV_Target { return 0; }
+          
+          struct appdata 
+          { 
+             float4 vertex : POSITION;
+             UNITY_VERTEX_INPUT_INSTANCE_ID 
+          };
+          
+          struct v2f 
+          { 
+             float4 pos : SV_POSITION; 
+             float3 worldPos : TEXCOORD0;
+             UNITY_VERTEX_INPUT_INSTANCE_ID 
+          };
+
+          CBUFFER_START(UnityPerMaterial)
+          float4 _Center;
+          float _Distance;
+          CBUFFER_END
+
+          v2f vert(appdata v) 
+          { 
+             v2f o; 
+             UNITY_SETUP_INSTANCE_ID(v);
+             o.worldPos = TransformObjectToWorld(v.vertex.xyz);
+             o.pos = TransformWorldToHClip(o.worldPos); 
+             return o; 
+          }
+
+          half4 frag(v2f i) : SV_Target 
+          { 
+             // 深度图裁剪：防止出现隐形物体的剔除错误
+             float dissolveDist = distance(i.worldPos, _Center.xyz);
+             clip(_Distance - dissolveDist);
+             return 0;
+          }
           ENDHLSL
        }
     }

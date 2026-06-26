@@ -113,7 +113,7 @@ Material:
     - _SilhouetteRotation: 0
     - _SilhouetteSoftness: 0.05
     - _SilhouetteStrength: 1
-    - _SilhouetteThreshold: 0.075
+    - _SilhouetteThreshold: 0
     - _SkyIntensity: 3
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
