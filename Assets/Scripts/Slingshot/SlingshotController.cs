@@ -169,8 +169,17 @@ namespace Slingshot
             _ropeRenderer.SetProjectile(dodoBird.transform);
             _ropeRenderer.BeginPull();
             GetComponent<GameAudioManager>().PlaySound("Pull");
+            Invoke("PlayPowerLoop",1f);
         }
 
+        private void PlayPowerLoop()
+        {
+            AudioManagerGlobal.Instance.Play("powerloop");
+        }
+        private void StopPowerLoop()
+        {
+            AudioManagerGlobal.Instance.Stop("powerloop");
+        }
         private void OnRelease(EventContext<DodoBird> context)
         {
             DodoBird dodoBird = context.Payload;
@@ -187,7 +196,9 @@ namespace Slingshot
             ClearLockedTarget();
             _ropeRenderer.ResetInstant();
             CallNextBird();
+            StopPowerLoop();
             GetComponent<GameAudioManager>().PlaySound("Shoot");
+            Invoke("StopPowerLoop",1f);
         }
 
         /// <summary>
