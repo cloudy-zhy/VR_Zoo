@@ -56,7 +56,6 @@ namespace TimelineSignal
         #region Private
 
         private GameObject beamInstance;
-        private bool isPlaying;
         private Transform starfieldRoot;
 
         #endregion
@@ -229,7 +228,6 @@ namespace TimelineSignal
         /// </summary>
         public void StopAllEffects()
         {
-            isPlaying = false;
 
             if (beamInstance != null)
             {

@@ -53,3 +53,11 @@ MonoBehaviour:
     Pitch: 1
     Loop: 0
     SpatialBlend: 1
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: 25602d7e1c0c0af4bafc1c1fe2fffa94, type: 3}
+    Group: {fileID: -737599633395567625, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: powerloop
+    Volume: 1
+    Pitch: 1
+    Loop: 1
+    SpatialBlend: 1
