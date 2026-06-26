@@ -1,7 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
 using Cysharp.Threading.Tasks;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
@@ -27,7 +27,9 @@ namespace TimelineSignal
         [SerializeField] private ParticleSystem explosionParticle;
         [SerializeField] private Transform explosionPoint;
 
-        [Header("hoshi sora")]
+        [Header("hoshi sora")] [SerializeField]
+        private Material animalSky;
+        private float showingTime = 240f;
         [Tooltip("场景中预置的动物物体（失活状态），每个一种动物")]
         [SerializeField] private GameObject[] animalObjects;
         [Tooltip("每个动物在星空中使用的 Shadow 材质")]
@@ -121,6 +123,10 @@ namespace TimelineSignal
         /// </summary>
         public async void SpawnStarfield()
         {
+            if (animalSky != null)
+            {
+                StartCoroutine(ShowingAnimalSky());
+            }
             if (animalObjects == null || animalObjects.Length == 0)
             {
                 Debug.LogWarning("[CeremonyEffects] animalObjects 未设置");
@@ -193,6 +199,16 @@ namespace TimelineSignal
             }
         }
 
+        IEnumerator ShowingAnimalSky()
+        {
+            float t = 0;
+            while (t < 1f)
+            {
+                animalSky.SetFloat("_SilhouetteStrength", t);
+                t += 1.0f / showingTime;
+                yield return null;
+            }
+        }
         /// <summary>
         /// Phase 4: 所有星星开始闪烁
         /// </summary>

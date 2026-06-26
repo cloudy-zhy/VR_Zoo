@@ -2902,6 +2902,7 @@ MonoBehaviour:
   beamEndWidth: 0.05
   explosionParticle: {fileID: 0}
   explosionPoint: {fileID: 0}
+  animalSky: {fileID: 2100000, guid: b9dd090c07a6f20429da2388f2b36ea2, type: 2}
   animalObjects:
   - {fileID: 1409072765}
   - {fileID: 1033462661}
@@ -12315,6 +12316,8 @@ PlayableDirector:
     value: {fileID: 823068361}
   - key: {fileID: -6832604047084585678, guid: 0878e6c5ca8328040a0876a495f2cb68, type: 2}
     value: {fileID: 823068360}
+  - key: {fileID: 3283701268095847008, guid: 0878e6c5ca8328040a0876a495f2cb68, type: 2}
+    value: {fileID: 153323509}
   m_ExposedReferences:
     m_References: []
 --- !u!1001 &712106381
@@ -14522,6 +14525,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1226321147593326779, guid: 7940f436866528e449df02f6a1bc2082,
+        type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 1058106503}
     - targetCorrespondingSourceObject: {fileID: 7033428237805242727, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
       insertIndex: -1
@@ -14530,10 +14537,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1232718462}
-    - targetCorrespondingSourceObject: {fileID: 7033428237805242727, guid: 7940f436866528e449df02f6a1bc2082,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1058106503}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 537615821834063764, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
@@ -19375,7 +19378,7 @@ RectTransform:
   m_Children:
   - {fileID: 1388815500}
   - {fileID: 493985537}
-  m_Father: {fileID: 667497492}
+  m_Father: {fileID: 1762428816}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -21242,7 +21245,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1150512193
 Transform:
   m_ObjectHideFlags: 0
@@ -32246,7 +32249,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 84a972c5b68252a43b11064a10cc0a12, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -33872,6 +33875,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d93249ab2f3f474459bef1149fb47d2c,
     type: 3}
   m_PrefabInstance: {fileID: 465798365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1762428816 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1226321147593326779, guid: 7940f436866528e449df02f6a1bc2082,
+    type: 3}
+  m_PrefabInstance: {fileID: 823068356}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1764955232
 GameObject:
