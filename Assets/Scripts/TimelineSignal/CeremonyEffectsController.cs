@@ -208,6 +208,18 @@ namespace TimelineSignal
                 yield return null;
             }
         }
+
+        public void Takeoff(GameObject animal)
+        {
+            MeshRenderer meshRenderer = animal.GetComponent<MeshRenderer>();
+            for (int i = 0; i < meshRenderer.materials.Length; i++)
+            {
+                meshRenderer.materials[i] = animalShadowMaterial;
+            }
+            Transform currentTransform = animal.transform;
+            animal.transform.DOMoveY(currentTransform.position.y + 10f, 5f);
+        }
+        
         /// <summary>
         /// Phase 4: 所有星星开始闪烁
         /// </summary>
