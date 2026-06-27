@@ -11,6 +11,8 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
         [Header(Detail)]
         [NoScaleOffset] _DetailTex ("Detail Texture", 2D) = "white" {}
         _DetailStrength ("Detail Strength", Range(0, 1)) = 0.0
+        [NoScaleOffset] [Normal] _NormalMap ("Normal Map", 2D) = "bump" {}
+        _NormalScale ("Normal Scale", Range(0, 2)) = 1.0
 
         [Header(World UV)]
         [Toggle(_USE_WORLD_UV)] _UseWorldUV ("Use World UV", Float) = 0
@@ -50,6 +52,7 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
             float4 _MaskColorWhite;
             float4 _BaseColor;
             float _DetailStrength;
+            float _NormalScale;
             float _UseWorldUV;
             float _WorldScale;
             float _WorldRotation;
@@ -67,6 +70,8 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
         SAMPLER(sampler_MaskTex);
         TEXTURE2D(_DetailTex);
         SAMPLER(sampler_DetailTex);
+        TEXTURE2D(_NormalMap);
+        SAMPLER(sampler_NormalMap);
 
         float2 RotateUV(float2 uv, float degrees)
         {
@@ -104,12 +109,15 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
             #pragma multi_compile_instancing
             #pragma shader_feature_local _USE_WORLD_UV
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
 
             struct Attributes
             {
                 float4 positionOS : POSITION;
                 float3 normalOS : NORMAL;
+                float4 tangentOS : TANGENT;
                 float2 uv : TEXCOORD0;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
             };
@@ -120,7 +128,9 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
                 float2 uv : TEXCOORD0;
                 float3 positionWS : TEXCOORD1;
                 float3 normalWS : TEXCOORD2;
-                float fogCoord : TEXCOORD3;
+                float3 tangentWS : TEXCOORD3;
+                float3 bitangentWS : TEXCOORD4;
+                float fogCoord : TEXCOORD5;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 UNITY_VERTEX_OUTPUT_STEREO
             };
@@ -133,11 +143,13 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
                 VertexPositionInputs positionInput = GetVertexPositionInputs(input.positionOS.xyz);
-                VertexNormalInputs normalInput = GetVertexNormalInputs(input.normalOS);
+                VertexNormalInputs normalInput = GetVertexNormalInputs(input.normalOS, input.tangentOS);
 
                 output.positionCS = positionInput.positionCS;
                 output.positionWS = positionInput.positionWS;
                 output.normalWS = normalInput.normalWS;
+                output.tangentWS = normalInput.tangentWS;
+                output.bitangentWS = normalInput.bitangentWS;
                 output.uv = input.uv;
                 output.fogCoord = ComputeFogFactor(positionInput.positionCS.z);
                 return output;
@@ -147,8 +159,10 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
             {
                 UNITY_SETUP_INSTANCE_ID(input);
 
-                float3 normalWS = normalize(input.normalWS);
                 float2 groundUV = GetGroundUV(input.uv, input.positionWS);
+                half3 normalTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, groundUV), _NormalScale);
+                float3 normalWS = TransformTangentToWorld(normalTS, half3x3(input.tangentWS, input.bitangentWS, input.normalWS));
+                normalWS = normalize(normalWS);
 
                 half mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, groundUV).r;
                 half3 maskColor = lerp(_MaskColorBlack.rgb, _MaskColorWhite.rgb, mask);
@@ -176,7 +190,24 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
                 toonDirect = lerp(litDirect, toonDirect, _ShadowStrength);
                 toonDirect = lerp(toonDirect, shadowDirect, castShadowMask * _ShadowStrength);
 
-                half3 finalColor = ambientColor + toonDirect;
+                half3 additionalDirect = 0.0h;
+            #if defined(_ADDITIONAL_LIGHTS)
+                uint pixelLightCount = GetAdditionalLightsCount();
+                LIGHT_LOOP_BEGIN(pixelLightCount)
+                    Light additionalLight = GetAdditionalLight(lightIndex, input.positionWS);
+                    half additionalNdotL = saturate(dot(normalWS, additionalLight.direction));
+                    half additionalRamp = smoothstep(_ShadowStep - feather, _ShadowStep + feather, additionalNdotL);
+                    half additionalShadow = lerp(1.0h, additionalLight.shadowAttenuation, receiveShadow);
+                    half additionalAttenuation = additionalLight.distanceAttenuation * additionalShadow;
+
+                    half3 additionalLit = baseColor * additionalLight.color * _DirectLightIntensity * additionalAttenuation;
+                    half3 additionalShadowed = additionalLit * _ShadowColor.rgb;
+                    half3 additionalToon = lerp(additionalShadowed, additionalLit, additionalRamp);
+                    additionalDirect += lerp(additionalLit, additionalToon, _ShadowStrength);
+                LIGHT_LOOP_END
+            #endif
+
+                half3 finalColor = ambientColor + toonDirect + additionalDirect;
 
                 finalColor = MixFog(finalColor, input.fogCoord);
                 return half4(finalColor, _BaseColor.a);
@@ -197,8 +228,12 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
             #pragma vertex ShadowPassVertex
             #pragma fragment ShadowPassFragment
             #pragma multi_compile_instancing
+            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
+
+            float3 _LightDirection;
+            float3 _LightPosition;
 
             struct Attributes
             {
@@ -223,7 +258,12 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
 
                 float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
                 float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
-                float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, _MainLightPosition.xyz));
+            #if defined(_CASTING_PUNCTUAL_LIGHT_SHADOW)
+                float3 lightDirectionWS = normalize(_LightPosition - positionWS);
+            #else
+                float3 lightDirectionWS = _LightDirection;
+            #endif
+                float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, lightDirectionWS));
 
             #if UNITY_REVERSED_Z
                 positionCS.z = min(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
