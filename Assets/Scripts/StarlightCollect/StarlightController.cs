@@ -81,5 +81,11 @@ namespace StarlightCollect
                 director.Play();
             }
         }
+
+        public void TimeOutPass()   //  时间到了通关
+        {
+            this.Broadcast(StarlightConstant.GameEnd);
+            director.Play();
+        }
     }
 }
