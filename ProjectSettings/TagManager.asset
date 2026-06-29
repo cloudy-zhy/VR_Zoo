@@ -10,6 +10,7 @@ TagManager:
   - DodoBird
   - Fruit
   - Train
+  - Lantern
   layers:
   - Default
   - TransparentFX

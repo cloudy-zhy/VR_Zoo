@@ -30,6 +30,13 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
         _ShadowColor ("Shadow Color", Color) = (0.45, 0.45, 0.45, 1.0)
         _ShadowStep ("Shadow Step", Range(0, 1)) = 0.5
         _ShadowFeather ("Shadow Feather", Range(0, 0.2)) = 0.025
+
+        [Header(Dissolve)]
+        [HDR] _DissolveEdgeColor ("Dissolve Edge Color", Color) = (1, 1, 1, 1)
+        _DissolveEdgeWidth ("Dissolve Edge Width", Range(0, 1)) = 0.1
+
+        [HideInInspector] _Center ("Dissolve Center (World)", Vector) = (0, 0, 0, 0)
+        [HideInInspector] _Distance ("Dissolve Distance", Float) = 1000.0
     }
 
     SubShader
@@ -64,6 +71,11 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
             float4 _ShadowColor;
             float _ShadowStep;
             float _ShadowFeather;
+
+            float4 _DissolveEdgeColor;
+            float _DissolveEdgeWidth;
+            float4 _Center;
+            float _Distance;
         CBUFFER_END
 
         TEXTURE2D(_MaskTex);
@@ -209,6 +221,12 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
 
                 half3 finalColor = ambientColor + toonDirect + additionalDirect;
 
+                // ===== Dissolve =====
+                float dissolveDist = distance(input.positionWS, _Center.xyz);
+                clip(_Distance - dissolveDist);
+                float dissolveEdge = 1.0 - smoothstep(0.0, _DissolveEdgeWidth, _Distance - dissolveDist);
+                finalColor = lerp(finalColor, _DissolveEdgeColor.rgb, dissolveEdge * _DissolveEdgeColor.a);
+
                 finalColor = MixFog(finalColor, input.fogCoord);
                 return half4(finalColor, _BaseColor.a);
             }
@@ -245,6 +263,7 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
+                float3 positionWS : TEXCOORD0;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 UNITY_VERTEX_OUTPUT_STEREO
             };
@@ -258,6 +277,7 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
 
                 float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
                 float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
+                output.positionWS = positionWS;
             #if defined(_CASTING_PUNCTUAL_LIGHT_SHADOW)
                 float3 lightDirectionWS = normalize(_LightPosition - positionWS);
             #else
@@ -277,6 +297,8 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
 
             half4 ShadowPassFragment(Varyings input) : SV_Target
             {
+                float dissolveDist = distance(input.positionWS, _Center.xyz);
+                clip(_Distance - dissolveDist);
                 return 0;
             }
             ENDHLSL
@@ -304,6 +326,7 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
             struct Varyings
             {
                 float4 positionCS : SV_POSITION;
+                float3 positionWS : TEXCOORD0;
                 UNITY_VERTEX_INPUT_INSTANCE_ID
                 UNITY_VERTEX_OUTPUT_STEREO
             };
@@ -315,12 +338,15 @@ Shader "Universal Render Pipeline/Custom/GroundMaskLit"
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
+                output.positionWS = TransformObjectToWorld(input.positionOS.xyz);
                 output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
                 return output;
             }
 
             half4 DepthOnlyFragment(Varyings input) : SV_Target
             {
+                float dissolveDist = distance(input.positionWS, _Center.xyz);
+                clip(_Distance - dissolveDist);
                 return 0;
             }
             ENDHLSL

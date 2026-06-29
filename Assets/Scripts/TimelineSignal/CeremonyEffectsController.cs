@@ -1,311 +1,138 @@
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 using UnityEngine;
 using UnityEngine.Playables;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-namespace TimelineSignal
+public enum AnimalType
 {
-    /// <summary>
-    /// Scene4 祭坛仪式特效控制器
-    /// 由 Scene4_ceremony Timeline 的 Signal Track 驱动各阶段特效
-    /// </summary>
-    public class CeremonyEffectsController : MonoBehaviour
+    Dodo, Moose, Mammoth, Zuolong, LittleDragonHunter, LiangLong, Triceratops, Pterodactyl
+}
+
+/// <summary>
+/// 单个动物的材质替换配置。
+/// targetMaterials 按顺序对应 animalObject 下所有 MeshRenderer 的 sharedMaterials 槽位。
+/// </summary>
+[System.Serializable]
+public class AnimalMaterialEntry
+{
+    [Tooltip("动物类型")]
+    public AnimalType animalType;
+
+    [Tooltip("动物根 GameObject（会查找自身及子物体的所有 MeshRenderer）")]
+    public GameObject animalObject;
+
+    [Tooltip("目标材质数组，按 MeshRenderer 顺序逐槽位对应")]
+    public Material[] targetMaterials;
+}
+
+public class CeremonyEffectsController : MonoBehaviour
+{
+    #region SerializedFields
+
+    [Header("Animal Materials")]
+    [SerializeField] private List<AnimalMaterialEntry> animalMaterials = new List<AnimalMaterialEntry>();
+
+    [Header("hoshi sora")]
+    [SerializeField] private Material animalSky;
+    private float showingTime = 2f;
+
+    [Header("Timeline")]
+    [SerializeField] private PlayableDirector ceremonyDirector;
+
+    [Header("dissolve")]
+    [SerializeField] private DissolutionCenter dissolutionCenter;
+
+    #endregion
+
+    #region Timeline Signal Methods（无参，供 Signal 调用）
+
+    public void ShowAnimalSky()
     {
-        #region SerializedFields
-
-        [Header("altar and beam")]
-        [SerializeField] private Transform altarCenter;
-        [SerializeField] private GameObject beamPrefab;
-        [SerializeField] private float beamRiseDuration = 1.5f;
-        [SerializeField] private float beamMaxHeight = 80f;
-        [SerializeField] private float beamStartWidth = 0.3f;
-        [SerializeField] private float beamEndWidth = 0.05f;
-
-        [Header("boom vfx")]
-        [SerializeField] private ParticleSystem explosionParticle;
-        [SerializeField] private Transform explosionPoint;
-
-        [Header("hoshi sora")] [SerializeField]
-        private Material animalSky;
-        private float showingTime = 240f;
-        [Tooltip("场景中预置的动物物体（失活状态），每个一种动物")]
-        [SerializeField] private GameObject[] animalObjects;
-        [Tooltip("每个动物在星空中使用的 Shadow 材质")]
-        [SerializeField] private Material animalShadowMaterial;
-        [Tooltip("星空球壳半径")]
-        [SerializeField] private float starfieldRadius = 60f;
-        [Tooltip("星空最低高度")]
-        [SerializeField] private float starMinHeight = 15f;
-        [Tooltip("星空最高高度")]
-        [SerializeField] private float starMaxHeight = 50f;
-        [Tooltip("星星逐个出现的间隔（秒）")]
-        [SerializeField] private float starfieldSpawnInterval = 0.1f;
-        [Tooltip("每个动物的 SpiritSummonConfig（和 animalObjects 一一对应）")]
-        [SerializeField] private StarlightCollect.SpiritSummonConfig[] spiritConfigs;
-
-        [Header("Timeline")]
-        [SerializeField] private PlayableDirector ceremonyDirector;
-
-        [Header("dissolve")]
-        [SerializeField] private DissolutionCenter dissolutionCenter;
-
-        #endregion
-
-        #region Private
-
-        private GameObject beamInstance;
-        private Transform starfieldRoot;
-
-        #endregion
-
-        #region Timeline Signal Methods
-
-        /// <summary>
-        /// Phase 1: 祭坛中心汇聚白光，如流星般射向夜空
-        /// </summary>
-        public async void FireBeam()
-        {
-            if (beamInstance != null) return;
-            if (altarCenter == null)
-            {
-                Debug.LogWarning("[CeremonyEffects] altarCenter 未设置");
-                return;
-            }
-
-            beamInstance = beamPrefab != null
-                ? Instantiate(beamPrefab, altarCenter.position, Quaternion.identity, altarCenter)
-                : CreateBeamDefault();
-
-            beamInstance.transform.localPosition = altarCenter.position;
-            beamInstance.transform.localScale = new Vector3(beamStartWidth, 0.01f, beamStartWidth);
-
-            await beamInstance.transform.DOScaleY(beamMaxHeight, beamRiseDuration)
-                .SetEase(Ease.OutQuad)
-                .AsyncWaitForCompletion();
-
-            await beamInstance.transform.DOScaleX(beamEndWidth, 0.3f).SetEase(Ease.InQuad).AsyncWaitForCompletion();
-            await beamInstance.transform.DOScaleZ(beamEndWidth, 0.3f).SetEase(Ease.InQuad).AsyncWaitForCompletion();
-        }
-
-        /// <summary>
-        /// Phase 2: 光束在极高处炸开，如烟花般绽放
-        /// </summary>
-        public async void ExplodeBeam()
-        {
-            if (explosionParticle != null)
-            {
-                if (explosionPoint != null)
-                    explosionParticle.transform.position = explosionPoint.position;
-                else if (beamInstance != null)
-                    explosionParticle.transform.position = beamInstance.transform.position + Vector3.up * beamMaxHeight;
-
-                explosionParticle.Play();
-            }
-
-            if (beamInstance != null)
-            {
-                Material beamMat = beamInstance.GetComponent<Renderer>()?.material;
-                if (beamMat != null)
-                    await beamMat.DOFade(0f, 0.8f).AsyncWaitForCompletion();
-                else
-                    await UniTask.WaitForSeconds(0.8f);
-
-                Destroy(beamInstance);
-                beamInstance = null;
-            }
-        }
-
-        /// <summary>
-        /// Phase 3: 激活预置的动物剪影物体，随机放置到祭坛上空，绕祭坛旋转
-        /// </summary>
-        public async void SpawnStarfield()
-        {
-            if (animalSky != null)
-            {
-                StartCoroutine(ShowingAnimalSky());
-            }
-            if (animalObjects == null || animalObjects.Length == 0)
-            {
-                Debug.LogWarning("[CeremonyEffects] animalObjects 未设置");
-                return;
-            }
-
-            // 创建星空根节点
-            if (starfieldRoot == null)
-            {
-                starfieldRoot = new GameObject("StarfieldRoot").transform;
-                starfieldRoot.position = altarCenter != null ? altarCenter.position : Vector3.zero;
-            }
-
-            Vector3 center = starfieldRoot.position;
-
-            for (int i = 0; i < animalObjects.Length; i++)
-            {
-                GameObject obj = animalObjects[i];
-                if (obj == null) continue;
-
-                // 随机星空位置（上半球壳）
-                Vector3 randomDir = Random.onUnitSphere;
-                randomDir.y = Mathf.Abs(randomDir.y);
-                randomDir.Normalize();
-
-                float radius = Random.Range(starfieldRadius * 0.4f, starfieldRadius);
-                Vector3 pos = center + randomDir * radius;
-                pos.y = center.y + Random.Range(starMinHeight, starMaxHeight);
-
-                // 激活并配置
-                obj.transform.position = pos;
-                obj.transform.rotation = Quaternion.identity;
-
-                // 获取或添加 StarTwinkleInteraction
-                var interaction = obj.GetComponent<StarTwinkleInteraction>();
-                if (interaction == null)
-                    interaction = obj.AddComponent<StarTwinkleInteraction>();
-
-                // 分配 Shadow 材质和配置
-                if (animalShadowMaterial != null)
-                    interaction.shadowMaterial = animalShadowMaterial;
-
-                if (spiritConfigs != null && i < spiritConfigs.Length && spiritConfigs[i] != null)
-                    interaction.summonConfig = spiritConfigs[i];
-
-                // 放入星空
-                interaction.PlaceInSky(starfieldRoot, pos);
-
-                // 添加闪烁
-                var twinkle = obj.GetComponent<StarTwinkle>();
-                if (twinkle == null)
-                    twinkle = obj.AddComponent<StarTwinkle>();
-                twinkle.delay = Random.Range(0f, 1.5f);
-                twinkle.twinkleSpeed = Random.Range(0.5f, 1.5f);
-
-                // 添加 XRGrabInteractable（如果没有）
-                var grab = obj.GetComponent<XRGrabInteractable>();
-                if (grab == null) grab = obj.AddComponent<XRGrabInteractable>();
-                grab.throwOnDetach = false;
-                grab.trackRotation = false;
-                grab.trackPosition = false;
-
-                // 添加 Rigidbody（如果没有）
-                var rb = obj.GetComponent<Rigidbody>();
-                if (rb == null) rb = obj.AddComponent<Rigidbody>();
-                rb.isKinematic = true;
-                rb.useGravity = false;
-
-                await UniTask.WaitForSeconds(starfieldSpawnInterval);
-            }
-        }
-
-        IEnumerator ShowingAnimalSky()
-        {
-            float t = 0;
-            while (t < 1f)
-            {
-                animalSky.SetFloat("_SilhouetteStrength", t);
-                t += 1.0f / showingTime;
-                yield return null;
-            }
-        }
-
-        public void Takeoff(GameObject animal)
-        {
-            MeshRenderer meshRenderer = animal.GetComponent<MeshRenderer>();
-            for (int i = 0; i < meshRenderer.materials.Length; i++)
-            {
-                meshRenderer.materials[i] = animalShadowMaterial;
-            }
-            Transform currentTransform = animal.transform;
-            animal.transform.DOMoveY(currentTransform.position.y + 10f, 5f);
-        }
-        
-        /// <summary>
-        /// Phase 4: 所有星星开始闪烁
-        /// </summary>
-        public void BeginTwinkle()
-        {
-            if (animalObjects == null) return;
-            foreach (var obj in animalObjects)
-            {
-                if (obj == null || !obj.activeSelf) continue;
-                var twinkle = obj.GetComponent<StarTwinkle>();
-                if (twinkle != null)
-                    twinkle.StartTwinkle();
-            }
-        }
-
-        /// <summary>
-        /// 停止所有特效
-        /// </summary>
-        public void StopAllEffects()
-        {
-
-            if (beamInstance != null)
-            {
-                beamInstance.transform.DOKill();
-                Destroy(beamInstance);
-                beamInstance = null;
-            }
-
-            if (explosionParticle != null)
-                explosionParticle.Stop();
-
-            if (animalObjects != null)
-            {
-                foreach (var obj in animalObjects)
-                {
-                    if (obj != null)
-                        obj.transform.DOKill();
-                }
-            }
-        }
-
-        /// <summary>
-        /// 清理星空（失活所有动物剪影）
-        /// </summary>
-        public void ClearStarfield()
-        {
-            if (animalObjects != null)
-            {
-                foreach (var obj in animalObjects)
-                {
-                    if (obj != null)
-                        obj.SetActive(false);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Private Helpers
-
-        private GameObject CreateBeamDefault()
-        {
-            GameObject beam = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            beam.name = "CeremonyBeam";
-
-            Destroy(beam.GetComponent<Collider>());
-
-            Material beamMat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-            beamMat.SetColor("_BaseColor", new Color(1f, 1f, 1f, 0.9f));
-            beamMat.EnableKeyword("_EMISSION");
-            beamMat.SetColor("_EmissionColor", new Color(1f, 1f, 0.95f) * 2f);
-            beam.GetComponent<Renderer>().material = beamMat;
-
-            return beam;
-        }
-
-        #endregion
-
-        #region Lifecycle
-
-        private void OnDestroy()
-        {
-            StopAllEffects();
-            ClearStarfield();
-        }
-
-        #endregion
+        animalSky.DOFloat(1f, "_SilhouetteStrength", showingTime);
     }
+
+    public void ChangeMaterialDodo()
+    {
+        Debug.Log("ChangeDodoMaterial");
+        ChangeAnimalMaterial(AnimalType.Dodo);
+    }
+
+    public void ChangeMaterialMoose()           => ChangeAnimalMaterial(AnimalType.Moose);
+    public void ChangeMaterialMammoth()         => ChangeAnimalMaterial(AnimalType.Mammoth);
+    public void ChangeMaterialZuolong()         => ChangeAnimalMaterial(AnimalType.Zuolong);
+    public void ChangeMaterialLittleDragonHunter() => ChangeAnimalMaterial(AnimalType.LittleDragonHunter);
+    public void ChangeMaterialLiangLong()       => ChangeAnimalMaterial(AnimalType.LiangLong);
+    public void ChangeMaterialTriceratops()     => ChangeAnimalMaterial(AnimalType.Triceratops);
+    public void ChangeMaterialPterodactyl()     => ChangeAnimalMaterial(AnimalType.Pterodactyl);
+
+    #endregion
+
+    #region Private
+
+    private void ChangeAnimalMaterial(AnimalType animalType)
+    {
+        Debug.Log($"[Ceremony] ChangeAnimalMaterial 被调用, animalType={animalType}, 配置数量={animalMaterials.Count}");
+
+        AnimalMaterialEntry entry = animalMaterials.Find(e => e.animalType == animalType);
+
+        if (entry == null)
+        {
+            Debug.LogWarning($"[Ceremony] 未找到 AnimalType.{animalType} 的材质配置");
+            return;
+        }
+
+        if (entry.animalObject == null)
+        {
+            Debug.LogWarning($"[Ceremony] AnimalType.{animalType} 的 animalObject 为空");
+            return;
+        }
+
+        if (entry.targetMaterials == null || entry.targetMaterials.Length == 0)
+        {
+            Debug.LogWarning($"[Ceremony] AnimalType.{animalType} 的 targetMaterials 为空");
+            return;
+        }
+
+        Debug.Log($"[Ceremony] animalObject={entry.animalObject.name}, targetMaterials数量={entry.targetMaterials.Length}");
+
+        Renderer[] renderers = entry.animalObject.GetComponentsInChildren<Renderer>(includeInactive: true);
+        Debug.Log($"[Ceremony] 找到 {renderers.Length} 个 Renderer");
+
+        int matIndex = 0;
+
+        foreach (Renderer r in renderers)
+        {
+            int slotCount = r.sharedMaterials.Length;
+            Debug.Log($"[Ceremony] Renderer '{r.name}' 有 {slotCount} 个材质槽");
+
+            if (slotCount <= 0) continue;
+
+            int remaining = entry.targetMaterials.Length - matIndex;
+            if (remaining <= 0)
+            {
+                Debug.LogWarning($"[Ceremony] targetMaterials 不够用，已用完 {entry.targetMaterials.Length} 个");
+                break;
+            }
+
+            int take = Mathf.Min(slotCount, remaining);
+            Material[] newMats = new Material[slotCount];
+
+            for (int i = 0; i < slotCount; i++)
+            {
+                newMats[i] = (i < take) ? entry.targetMaterials[matIndex + i] : r.sharedMaterials[i];
+            }
+
+            r.sharedMaterials = newMats;
+            matIndex += take;
+        }
+
+        Debug.Log($"[Ceremony] 完成：{animalType} 共替换 {matIndex} 个材质槽");
+    }
+
+    #endregion
 }
