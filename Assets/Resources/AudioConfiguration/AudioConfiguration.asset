@@ -61,3 +61,19 @@ MonoBehaviour:
     Pitch: 1
     Loop: 1
     SpatialBlend: 1
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: 2a11f07bd70372d4aa8438fbb378b0c4, type: 3}
+    Group: {fileID: -737599633395567625, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: Pull
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    SpatialBlend: 1
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: f66a2492442fe414da9105c78b15ea53, type: 3}
+    Group: {fileID: -737599633395567625, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: Shoot
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    SpatialBlend: 1

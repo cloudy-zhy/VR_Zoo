@@ -80,9 +80,10 @@ namespace Slingshot
         private Vector3 _lockedHitNormal = Vector3.up;
 
         private bool HasLockedTarget => _lockedTarget != null && _lockedTrajectoryResult != null;
+        public DodoBird CurrentBird => _queue.Count > 0 ? _queue[0] : null;
 
         #endregion
-        
+
         #region Lifecycle
 
         private async void Awake()
@@ -168,7 +169,8 @@ namespace Slingshot
             _trajectoryPredictor.ShowPreview();
             _ropeRenderer.SetProjectile(dodoBird.transform);
             _ropeRenderer.BeginPull();
-            GetComponent<GameAudioManager>().PlaySound("Pull");
+            //GetComponent<GameAudioManager>().PlaySound("Pull");
+            AudioManagerGlobal.Instance.Play("Pull");
             Invoke("PlayPowerLoop",1f);
         }
 
@@ -197,8 +199,9 @@ namespace Slingshot
             _ropeRenderer.ResetInstant();
             CallNextBird();
             StopPowerLoop();
-            GetComponent<GameAudioManager>().PlaySound("Shoot");
-            Invoke("StopPowerLoop",1f);
+            AudioManagerGlobal.Instance.Play("Shoot");
+            //GetComponent<GameAudioManager>().PlaySound("Shoot");
+            //Invoke("StopPowerLoop",1f);
         }
 
         /// <summary>
