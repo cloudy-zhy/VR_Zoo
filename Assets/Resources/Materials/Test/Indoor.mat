@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Indoor
+  m_Shader: {fileID: 4800000, guid: 36b386ff516b0ac4d99db21075947ada, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _NebulaTex:
+        m_Texture: {fileID: 2800000, guid: 9f2937a844913744c81cae68ad8433d3, type: 3}
+        m_Scale: {x: 0.3, y: 0.3}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 47d331e87b5397a4b924d25e60ef3186, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StarTex:
+        m_Texture: {fileID: 2800000, guid: 9f2937a844913744c81cae68ad8433d3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Alpha: 0.456
+    - _BackgroundAlpha: 1
+    - _DistortStrength: 0.103
+    - _EdgeFade: 0.001
+    - _NebulaIntensity: 9
+    - _StarIntensity: 9.5
+    - _StarSharpness: 0.84
+    - _SwirlSpeed: 0.4
+    - _SwirlStrength: -3.07
+    - _TwinkleStrength: 1
+    m_Colors:
+    - _BackgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ColorA: {r: 0, g: 0.2522936, b: 1, a: 1}
+    - _ColorB: {r: 1, g: 0.68867916, b: 0.9380619, a: 1}
+    - _NebulaSpeedA: {r: 0.03, g: 0.01, b: 0, a: 0}
+    - _NebulaSpeedB: {r: -0.015, g: 0.025, b: 0, a: 0}
+    - _NoiseSpeed: {r: 0.02, g: 0.21, b: 0, a: 0}
+    - _StarColor: {r: 1, g: 0.89638644, b: 0.78930813, a: 1}
+    - _StarSpeed: {r: 0.01, g: 0.035, b: 0, a: 0}
+    - _SwirlCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
+  m_BuildTextureStacks: []

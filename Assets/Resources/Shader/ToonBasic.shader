@@ -115,6 +115,7 @@
         // 第二个Pass：主渲染
         Pass
         {
+            Cull Off
             Name "ForwardLit"
             Tags { 
                 "LightMode" = "UniversalForward"

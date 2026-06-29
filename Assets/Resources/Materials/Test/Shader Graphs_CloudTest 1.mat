@@ -17,7 +17,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -38,15 +38,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CloudHeight: 0.02
-    - _CloudSpeed: 0.02
+    - _CloudHeight: 0.0007
+    - _CloudSpeed: 0.2
     - _EdgeLightWidth: 3
     - _QueueControl: 0
     - _QueueOffset: 0
     - _scale_1: 1
     - _scale_2: 80
     m_Colors:
-    - _CloudRepeat: {r: 1, g: 1, b: 0, a: 0}
+    - _CloudRepeat: {r: 1.8, g: 1.8, b: 0, a: 0}
     - _EdgeColor: {r: 1, g: 0.8333333, b: 0.9237939, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &1041790844368924881

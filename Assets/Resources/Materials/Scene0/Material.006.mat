@@ -8,17 +8,17 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Material.006
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: 4800000, guid: 3917493f0a3ac9a4e9b289e7f6f20f47, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _RECEIVE_SHADOW
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -99,6 +99,8 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
+    - _EnvFalloff: 2
+    - _EnvIntensity: 0.5
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -112,8 +114,8 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadow: 1
     - _ReceiveShadows: 1
-    - _ShadowFeather: 0.01
-    - _ShadowStep: 0.5
+    - _ShadowFeather: 0.0674
+    - _ShadowStep: 0.536
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -127,9 +129,12 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0.18238991, g: 0.13134366, b: 0.1807011, a: 1}
+    - _EnvDownColor: {r: 0.09999997, g: 0.09999997, b: 0.19999996, a: 1}
+    - _EnvSideColor: {r: 0.39999998, g: 0.39999998, b: 0.5, a: 1}
+    - _EnvUpColor: {r: 0.7, g: 0.7, b: 1, a: 1}
     - _MatcapColor: {r: 1, g: 0.75157225, b: 0.75157225, a: 1}
     - _OutlineColor: {r: 0.9123493, g: 0.64465404, b: 1, a: 1}
-    - _ShadowColor: {r: 0.46012804, g: 0.58800596, b: 0.8867924, a: 1}
+    - _ShadowColor: {r: 0.46012795, g: 0.5880059, b: 0.8867924, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &1332393554041092199
