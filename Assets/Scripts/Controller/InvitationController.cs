@@ -39,12 +39,11 @@ public class InvitationController : MonoBehaviour
         m_inviteImage = m_inviteGameObject.GetComponent<Image>();
         // m_voiceAudio = m_inviteGameObject.GetComponent<AudioSource>();
         m_inviteGameObject.SetActive(false);
-        GameManager.Event.Register("MenuBtn.StartGame", PlayIntro);
     }
 
-    private void OnDestroy()
+    private void Start()
     {
-        GameManager.Event.Unregister("MenuBtn.StartGame", PlayIntro);
+        PlayIntro(new EventContext());
     }
 
     [ContextMenu("PlayIntro")]
