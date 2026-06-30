@@ -194,32 +194,6 @@ MonoBehaviour:
   m_Markers:
     m_Objects:
     - {fileID: -3191046125442784755}
---- !u!114 &-6453494672887283973
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b46e36075dd1c124a8422c228e75e1fb, type: 3}
-  m_Name: Signal Track
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_AnimClip: {fileID: 0}
-  m_Locked: 0
-  m_Muted: 0
-  m_CustomPlayableFullTypename: 
-  m_Curves: {fileID: 0}
-  m_Parent: {fileID: 11400000}
-  m_Children: []
-  m_Clips: []
-  m_Markers:
-    m_Objects:
-    - {fileID: -5893602173480616788}
-    - {fileID: 7236388112431958143}
-    - {fileID: -2095874788763363148}
 --- !u!114 &-5893602173480616788
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -260,31 +234,6 @@ MonoBehaviour:
   m_Markers:
     m_Objects:
     - {fileID: -2833700964302035392}
---- !u!114 &-4886955303138880267
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b46e36075dd1c124a8422c228e75e1fb, type: 3}
-  m_Name: Signal Track (1)
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_AnimClip: {fileID: 0}
-  m_Locked: 0
-  m_Muted: 0
-  m_CustomPlayableFullTypename: 
-  m_Curves: {fileID: 0}
-  m_Parent: {fileID: 11400000}
-  m_Children: []
-  m_Clips: []
-  m_Markers:
-    m_Objects:
-    - {fileID: 4528841652666188121}
-    - {fileID: -2348647488864602678}
 --- !u!114 &-3191046125442784755
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -381,8 +330,6 @@ MonoBehaviour:
   m_Tracks:
   - {fileID: 1925514291947270699}
   - {fileID: 6558801966943768918}
-  - {fileID: -6453494672887283973}
-  - {fileID: -4886955303138880267}
   - {fileID: -5125275039017142005}
   - {fileID: -6832604047084585678}
   - {fileID: 6971245368032214363}
