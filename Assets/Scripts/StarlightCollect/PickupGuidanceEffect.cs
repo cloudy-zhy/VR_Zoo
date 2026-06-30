@@ -143,6 +143,11 @@ namespace StarlightCollect
                 boundObject.SetActive(false);
         }
 
+        public bool IsGuidanceVisible()
+        {
+            return guidanceEffect != null && guidanceEffect.activeSelf;
+        }
+
         #if UNITY_EDITOR
         [ContextMenu("Create Default Beam")]
         private void CreateDefaultBeam()
