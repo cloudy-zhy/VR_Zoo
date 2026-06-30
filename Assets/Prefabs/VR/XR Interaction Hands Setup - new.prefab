@@ -3084,7 +3084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8693657abb5062a40a80ba3cb86ef181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_XRHandTrackingEvents: {fileID: 0}
+  m_XRHandTrackingEvents: {fileID: 9125108236558717739}
   m_RayInteractor: {fileID: 0}
   m_NearFarInteractor: {fileID: 5220765921505858191}
   m_TargetRotation: {fileID: 4114764882261320192}
@@ -13178,7 +13178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8693657abb5062a40a80ba3cb86ef181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_XRHandTrackingEvents: {fileID: 0}
+  m_XRHandTrackingEvents: {fileID: 1961015321792022461}
   m_RayInteractor: {fileID: 0}
   m_NearFarInteractor: {fileID: 8005583187176365787}
   m_TargetRotation: {fileID: 6816947811312373273}
