@@ -8938,11 +8938,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1226321147593326779, guid: 7940f436866528e449df02f6a1bc2082,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 1998975630347048306, guid: 7940f436866528e449df02f6a1bc2082,
         type: 3}
       propertyPath: far clip plane
