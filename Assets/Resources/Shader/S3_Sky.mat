@@ -31,13 +31,13 @@ Material:
     - _CloudFeather2: 0.124
     - _CloudScale1: 3
     - _CloudScale2: 5
-    - _MidPoint: 0.55
+    - _MidPoint: 0.26
     m_Colors:
-    - _BottomColor: {r: 1, g: 0.70534235, b: 0.46855342, a: 1}
+    - _BottomColor: {r: 1, g: 0.7800368, b: 0.39308167, a: 1}
     - _CloudColor1: {r: 1, g: 1, b: 1, a: 0.5}
     - _CloudColor2: {r: 1, g: 1, b: 1, a: 0.8}
     - _CloudSpeed1: {r: 0.07, g: 0.005, b: 0, a: 0}
     - _CloudSpeed2: {r: -0.08, g: 0.01, b: 0, a: 0}
-    - _MidColor: {r: 0.56443566, g: 0.708049, b: 0.9496855, a: 1}
-    - _TopColor: {r: 0.079999976, g: 0.22999996, b: 0.53, a: 1}
+    - _MidColor: {r: 0.7611137, g: 0.8838278, b: 0.9490196, a: 1}
+    - _TopColor: {r: 0.4615922, g: 0.7240129, b: 0.8980392, a: 1}
   m_BuildTextureStacks: []
