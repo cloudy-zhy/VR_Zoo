@@ -25,7 +25,11 @@ Shader "Unlit/grass"
        // ---------- 光照属性 ----------
        [Header(Lighting)]
        _LightIntensity("光照影响强度", Range(0, 2)) = 1.0
-       _ShadowColor("阴影颜色", Color) = (0.3, 0.3, 0.3, 1.0)   // 新增阴影颜色
+       _ShadowColor("阴影颜色", Color) = (0.3, 0.3, 0.3, 1.0)   // 阴影颜色
+       
+       // 二次元卡通阴影控制参数
+       _ToonThreshold("卡通阴影阈值 (明暗分界线)", Range(0, 1)) = 0.5
+       _ToonSmoothness("卡通阴影过渡羽化值", Range(0.001, 0.5)) = 0.05
        
        [Header(Dissolve)]
        [HDR] _DissolveEdgeColor ("Dissolve Edge Color", Color) = (1, 1, 1, 1)
@@ -43,6 +47,7 @@ Shader "Unlit/grass"
        // --------------------------- MAIN PASS ---------------------------
        Pass
        {
+          Name "ForwardLit"
           HLSLPROGRAM
           #pragma vertex vert
           #pragma fragment frag
@@ -51,6 +56,9 @@ Shader "Unlit/grass"
           #pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
           #pragma multi_compile_instancing
           #pragma shader_feature USE_WC
+
+          // ----- 新增：启用 URP 主光源阴影与级联阴影的变体编译 -----
+          #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE
 
           #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
           #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DBuffer.hlsl"
@@ -71,6 +79,8 @@ Shader "Unlit/grass"
              float3 worldPos : TEXCOORD1;
              float3 worldNormal : TEXCOORD2;
              float fogCoord : TEXCOORD3;
+             // ----- 新增：用于存储阴影采样的坐标 -----
+             float4 shadowCoord : TEXCOORD4; 
              UNITY_VERTEX_INPUT_INSTANCE_ID
           };
 
@@ -87,6 +97,9 @@ Shader "Unlit/grass"
           float _WorldRotation;
           float _LightIntensity;
           float4 _ShadowColor;
+          
+          float _ToonThreshold;
+          float _ToonSmoothness;
           
           // 溶解常量映射
           float4 _DissolveEdgeColor;
@@ -107,12 +120,20 @@ Shader "Unlit/grass"
              o.worldPos = vertexInput.positionWS;
              o.worldNormal = TransformObjectToWorldNormal(v.normal);
              o.fogCoord = ComputeFogFactor(vertexInput.positionCS.z);
+
+             // ----- 新增：计算阴影屏幕/空间坐标 -----
+             #if SHADOWS_SCREEN
+                 o.shadowCoord = ComputeScreenPos(vertexInput.positionCS);
+             #else
+                 o.shadowCoord = TransformWorldToShadowCoord(vertexInput.positionWS);
+             #endif
+
              return o;
           }
 
           half4 frag(v2f i) : SV_Target
           {
-             // 0. 溶解裁剪（最先处理，确保溶解区域完全剔除）
+             // 0. 溶解裁剪
              float dissolveDist = distance(i.worldPos, _Center.xyz);
              clip(_Distance - dissolveDist);
 
@@ -137,18 +158,32 @@ Shader "Unlit/grass"
              half3 baseColor = ground.rgb * _GroundColor.rgb * _Color.rgb;
              half3 col = baseColor * colMask;
 
-             // ========== 光照计算（支持阴影颜色） ==========
-             Light mainLight = GetMainLight();
-             float3 lightDir = normalize(mainLight.direction);
+             // ========== 二次元/原神风分阶段卡通光照计算（已完美融合接收投影） ==========
              float3 worldNormal = normalize(i.worldNormal);
-             float ndotl = max(0, dot(worldNormal, lightDir));
              
-             // 计算混合系数：强度为0时完全不受光照影响，强度为1时标准漫反射
-             float blend = clamp(lerp(1.0, ndotl, _LightIntensity), 0, 1);
-             // 最终颜色 = 插值(阴影颜色×原始颜色 , 原始颜色 , 混合系数)
+             // ----- 修改：传入正确的 shadowCoord 以获取场景物体的投影数据 -----
+             Light mainLight = GetMainLight(i.shadowCoord);
+             float3 lightDir = normalize(mainLight.direction);
+             
+             // 自身的受光面分析（半兰伯特映射映射到 0~1）
+             float ndotl = dot(worldNormal, lightDir) * 0.5 + 0.5; 
+             
+             // mainLight.shadowAttenuation 现在包含了场景中其他物体投射过来的阴影数据
+             float shadowAttenuation = mainLight.shadowAttenuation;
+             
+             // 将自发光遮罩与场景物体的投影相乘，混合出最终的“明暗依据”
+             float shadowMask = ndotl * shadowAttenuation;
+
+             // 使用 smoothstep 做硬边/微羽化的卡通分阶处理（原神风）
+             float toonHalf = smoothstep(_ToonThreshold - _ToonSmoothness, _ToonThreshold + _ToonSmoothness, shadowMask);
+             
+             // 强度控制：_LightIntensity 为 0 时全亮，为 1 时展示硬核卡通阴影
+             float finalToonFactor = lerp(1.0, toonHalf, _LightIntensity);
+             
+             // 颜色混合：让场景物体投射过来的阴影也渲染为我们指定的 _ShadowColor 调色
              half3 shadowCol = col * _ShadowColor.rgb;
-             col = lerp(shadowCol, col, blend);
-             // =========================================
+             col = lerp(shadowCol, col, finalToonFactor);
+             // =========================================================================
 
     #ifdef _DBUFFER
              ApplyDecalToBaseColor(i.pos, col);
@@ -195,7 +230,6 @@ Shader "Unlit/grass"
           };
 
           CBUFFER_START(UnityPerMaterial)
-          // 需要在此声明溶解变量，供当前 Pass 读取
           float4 _Center;
           float _Distance;
           CBUFFER_END
@@ -212,11 +246,9 @@ Shader "Unlit/grass"
 
           half4 frag(v2f i) : SV_Target 
           {
-             // 溶解裁剪
              float dissolveDist = distance(i.worldPos, _Center.xyz);
              clip(_Distance - dissolveDist);
 
-             // 写入 URP 默认的法线深度格式
              #if defined(_GBUFFER_NORMALS_OCT)
              float2 packNormal = PackNormalOctQuadEncode(normalize(i.normalWS));
              return half4(packNormal, 0.0, 0.0);
@@ -266,7 +298,7 @@ Shader "Unlit/grass"
              v2f o; 
              UNITY_SETUP_INSTANCE_ID(v);
              float3 positionWS = TransformObjectToWorld(v.vertex.xyz);
-             o.worldPos = positionWS; // 传出世界坐标
+             o.worldPos = positionWS;
              
              float3 normalWS = TransformObjectToWorldNormal(v.normal);
              float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, _MainLightPosition.xyz));
@@ -276,12 +308,11 @@ Shader "Unlit/grass"
                 positionCS.z = max(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
              #endif
              o.pos = positionCS; 
-             return o;
+             return o; 
           }
 
           half4 frag(v2f i) : SV_Target 
           { 
-             // 阴影裁剪：超出溶解距离则剔除投射的阴影
              float dissolveDist = distance(i.worldPos, _Center.xyz);
              clip(_Distance - dissolveDist);
              return 0;
@@ -331,7 +362,6 @@ Shader "Unlit/grass"
 
           half4 frag(v2f i) : SV_Target 
           { 
-             // 深度图裁剪：防止出现隐形物体的剔除错误
              float dissolveDist = distance(i.worldPos, _Center.xyz);
              clip(_Distance - dissolveDist);
              return 0;
