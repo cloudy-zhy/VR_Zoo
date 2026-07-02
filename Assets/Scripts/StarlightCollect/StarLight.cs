@@ -39,6 +39,7 @@ namespace StarlightCollect
         public void OnShot(RaycastHit hit)
         {
             if (IsShotLocked) return;
+            AudioManagerGlobal.Instance.Play("StarLight_Hit");
             this.Broadcast(StarlightConstant.StarlightMarked, this);
         }
 
