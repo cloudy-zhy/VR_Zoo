@@ -59,6 +59,8 @@ namespace StarlightCollect
         
         private void Collected()
         {
+            int index = Random.Range(1, 4);
+            AudioManagerGlobal.Instance.Play($"StarLight_Collect_0{index}");
             this.Broadcast(StarlightConstant.StarLightCollected);
             GameManager.Pool.Return(gameObject);
         }

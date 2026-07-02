@@ -77,3 +77,35 @@ MonoBehaviour:
     Pitch: 1
     Loop: 0
     SpatialBlend: 1
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: 3f4c04c9a1cbaf14ba366255f41ceb2b, type: 3}
+    Group: {fileID: -737599633395567625, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: StarLight_Collect_01
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    SpatialBlend: 1
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: addefea935e09184bbf39002e5942b42, type: 3}
+    Group: {fileID: -737599633395567625, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: StarLight_Collect_02
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    SpatialBlend: 1
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: c3fca8c293728354581592a17024cb27, type: 3}
+    Group: {fileID: -737599633395567625, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: StarLight_Collect_03
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    SpatialBlend: 1
+  - Source: {fileID: 0}
+    Clip: {fileID: 8300000, guid: 89c39b2133a57f54ba7ff093509404be, type: 3}
+    Group: {fileID: -737599633395567625, guid: 0250116c199135a4486867393bf38824, type: 2}
+    Name: StarLight_Hit
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    SpatialBlend: 1
