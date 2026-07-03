@@ -171,6 +171,32 @@ public class DialogueController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 直接显示最后一句对话（用于超时等强制结束场景），会停止自动播放协程
+    /// </summary>
+    public void ShowLastDialogue()
+    {
+        if (dialogueSequence.Count == 0) return;
+
+        if (dialogueCoroutine != null)
+        {
+            StopCoroutine(dialogueCoroutine);
+            dialogueCoroutine = null;
+        }
+
+        int lastIndex = dialogueSequence.Count - 1;
+        var dialogueEntry = dialogueSequence[lastIndex];
+        ShowDialogue(dialogueEntry);
+        PlayDialogueAudio(lastIndex);
+
+        float displayTime = dialogueEntry.displayDuration;
+        if (displayTime <= 0)
+            displayTime = Mathf.Max(minimumDisplayTime, dialogueEntry.dialogueText.Length * timePerCharacter);
+
+        StartCoroutine(DialogsHideDelay(displayTime));
+        currentDialogueIndex = lastIndex;
+    }
+
     public void ShowDialogueWithIndex()
     {
         if (currentDialogueIndex >= dialogueSequence.Count) return;

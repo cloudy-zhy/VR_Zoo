@@ -55,7 +55,10 @@ public class AudioManagerGlobal : PersistentSingleton<AudioManagerGlobal>
     {
         if(audioDictionary.TryGetValue(name, out AudioType type))
         {
-            type.Source.Pause();
+            if (type.Source != null)
+            {
+                type.Source.Pause();
+            }
             return;
         }
         Debug.LogError("AudioManagerGlobal.Pause: " + name + " not found");
@@ -63,8 +66,11 @@ public class AudioManagerGlobal : PersistentSingleton<AudioManagerGlobal>
     public void Stop(string name)
     {
         if(audioDictionary.TryGetValue(name, out AudioType type))
-        { 
-            type.Source.Stop(); 
+        {
+            if (type.Source != null)
+            {
+                type.Source.Stop();
+            }
             return;
         }
         Debug.LogError("AudioManagerGlobal.Stop: " + name + " not found");
