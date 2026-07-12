@@ -180,6 +180,7 @@ namespace Slingshot
         }
         private void StopPowerLoop()
         {
+            CancelInvoke("PlayPowerLoop");
             AudioManagerGlobal.Instance.Stop("powerloop");
         }
         private void OnRelease(EventContext<DodoBird> context)

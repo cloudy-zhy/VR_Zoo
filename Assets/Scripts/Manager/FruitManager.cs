@@ -127,7 +127,7 @@ public class FruitManager : MonoBehaviour
 
     public void TimeOutPass()
     {
-        DialogueController.Instance.ShowDialogueWithIndex();
+        DialogueController.Instance.ShowLastDialogue();
         trainComeAgain.Play();
         var controller = FindObjectOfType<Slingshot.SlingshotController>();
         if (controller != null && controller.CurrentBird != null)
